@@ -32,5 +32,8 @@
     "dev": "webpack-dev-server",
     "repl": "ts-node",
     "build": "make -f main.mk dist"
+  },
+  "dependencies": {
+    "d3": "^5.0.0"
   }
 }
