@@ -1,0 +1,13 @@
+{
+    "include": ["src/*.ts", "test/*.ts"],
+    "compilerOptions": {
+        "target": "es5",
+        // We use some ES6 features that will get transpiled for the ES5 target.
+        "lib": ["es2015", "dom"],
+        "alwaysStrict": true,
+//        "noImplicitAny": true,
+        "noImplicitThis": true
+//        "strictNullChecks": true,
+//        "strictFunctionTypes": true
+    }
+}

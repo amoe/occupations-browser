@@ -1,0 +1,13 @@
+/* main.css */
+
+ div.task {
+     border: 0.1em solid gray;
+     
+     /* I quite like this layout, more horizontal space than vertical space */
+     padding-left: 4em;
+     padding-right: 4em;
+     padding-top: 2em;
+     padding-bottom: 2em;
+
+     margin: 1em;
+ }
