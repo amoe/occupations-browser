@@ -40,6 +40,14 @@ function stratifyKey(a, b) {
     return a.height - b.height || a.id.localeCompare(b.id);
  }
 
+// This constructs the 'd' attribute of the path elements.
+function getPathDescription(d) {
+    return "M" + project(d.x, d.y)
+        + "C" + project(d.x, (d.y + d.parent.y) / 2)
+        + " " + project(d.parent.x, (d.y + d.parent.y) / 2)
+        + " " + project(d.parent.x, d.parent.y);
+}
+
 export default Vue.extend({
     components: {
     },
@@ -81,19 +89,15 @@ export default Vue.extend({
             d3.csv("flare.csv").then(data => {
                 const stratify = d3.stratify().parentId(getParentId);
                 const root = stratify(data).sort(stratifyKey);
+                const result = cluster(root);
 
-                cluster(root);
+                console.log("result is %o", result);
 
                 var link = g.selectAll(".link")
                     .data(root.descendants().slice(1))
                     .enter().append("path")
                     .attr("class", "link")
-                    .attr("d", function(d) {
-                        return "M" + project(d.x, d.y)
-                            + "C" + project(d.x, (d.y + d.parent.y) / 2)
-                            + " " + project(d.parent.x, (d.y + d.parent.y) / 2)
-                            + " " + project(d.parent.x, d.parent.y);
-                    });
+                    .attr("d", getPathDescription);
 
                 var node = g.selectAll(".node")
                     .data(root.descendants())
