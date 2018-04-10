@@ -7,9 +7,16 @@
     <label for="height">Height</label>
     <input id="height" v-model.number="height" type="number">
 
+    <label for="aspect">Aspect</label>
+    <input id="aspect" v-model.number="aspect" type="number" step="0.01">
+
+    <label for="yMargin">Y Margin FIXME</label>
+    <input id="yMargin" v-model.number="yMargin" type="number">
+
+
     <div>
       <!-- original vis is 960x900, aspect 1.06 -->
-      <svg :width="height * aspect" :height="height"></svg>
+      <svg :width="width" :height="height"></svg>
     </div>
   </div>
 </template>
@@ -40,6 +47,7 @@ export default Vue.extend({
         return {
             height: 900,
             aspect: 16/15,
+            yMargin: 20
         };
     },
     mounted() {
@@ -50,13 +58,13 @@ export default Vue.extend({
     methods: {
         drawClustered() {
             const svg = d3.select("svg");
-            const width = +svg.attr("width");
-            const height = +svg.attr("height");
-
+            const width = this.width;
+            const height = this.height;
             
             const xOffset = width / 2;
-            const yOffset = (height / 2 + 20);
+            const yOffset = (height / 2 + this.yMargin);
 
+            // This only happens once, so it won't react.  FIXME
             const g = svg.append("g").attr("transform", "translate(" + xOffset + "," + yOffset + ")");
 
             const breadth = 360;              // This is an angle
@@ -117,6 +125,9 @@ export default Vue.extend({
     computed: {
         count: function (this: any) {
             return this.$store.state.count;
+        },
+        width: function (this: any) {
+            return this.height * this.aspect;
         }
     }
 });
