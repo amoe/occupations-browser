@@ -1,14 +1,15 @@
 <template>
   <div>
-    <h1>New Project from amoe-vue-template</h1>
-
-    <p>Hi there!</p>
     <p>The value is: <code>{{count}}</code></p>
     <button v-on:click="greet">Greet</button>
     <button v-on:click="doIncrement">Inc</button>
 
+    <label for="height">Height</label>
+    <input id="height" v-model.number="height" type="number">
+
     <div>
-      <svg width="960" height="900"></svg>
+      <!-- original vis is 960x900, aspect 1.06 -->
+      <svg :width="height * aspect" :height="height"></svg>
     </div>
   </div>
 </template>
@@ -37,6 +38,8 @@ export default Vue.extend({
     },
     data: function() {
         return {
+            height: 900,
+            aspect: 16/15,
         };
     },
     mounted() {
@@ -52,8 +55,7 @@ export default Vue.extend({
 
             
             const xOffset = width / 2;
-            const yOffset = (height / 2 + 20)
-
+            const yOffset = (height / 2 + 20);
 
             const g = svg.append("g").attr("transform", "translate(" + xOffset + "," + yOffset + ")");
 
@@ -69,9 +71,6 @@ export default Vue.extend({
                 .size([breadth, depth]);
 
             d3.csv("flare.csv").then(data => {
-                // console.log("Some error happened, %o", error);
-                // if (error) throw error;
-
                 const stratify = d3.stratify().parentId(getParentId);
                 const root = stratify(data).sort(stratifyKey);
 
