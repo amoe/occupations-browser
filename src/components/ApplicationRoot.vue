@@ -8,9 +8,15 @@
     <div>
       <svg width="960" height="900">
         <g transform="translate(480, 470)">
-          <path v-for="node in weirdSlice"
+          <path v-for="node in allButRoot"
                 class="link"
                 :d="getPathDescription(node)"/>
+          
+          <!-- The group for nodes and their associated labels -->
+          <g v-for="node in allIncludingRoot"
+             class=""
+             transform="">
+          </g>
         </g>
       </svg>
     </div>
@@ -75,7 +81,7 @@ export default Vue.extend({
                 + " " + project(d.parent.x, d.parent.y);
         },
        greet() {
-           console.log("slice is %o", this.weirdSlice);
+           console.log("hello");
         },
         doIncrement() {
             this.$store.dispatch('increment');
@@ -87,11 +93,18 @@ export default Vue.extend({
         count: function (this: any) {
             return this.$store.state.count;
         },
-        weirdSlice: function(this: any) {
+        allButRoot: function(this: any) {
             if (this.root === null) {
                 return [];
             } else {
                 return this.root.descendants().slice(1);
+            }
+        },
+        allIncludingRoot: function(this: any) {
+            if (this.root === null) {
+                return [];
+            } else {
+                return this.root.descendants();
             }
         }
     }
