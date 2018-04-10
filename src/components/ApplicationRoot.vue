@@ -11,6 +11,16 @@
 
       <label for="yMargin">Y Margin</label>
       <input id="yMargin" v-model.number="yMargin">
+
+      <label for="depthOffset">Depth Offset</label>
+      <input id="depthOffset" v-model.number="depthOffset">
+
+      <label for="textOffset">Text Offset</label>
+      <input id="textOffset" v-model.number="textOffset">
+
+      <label for="breadth">Breadth</label>
+      <input id="breadth" v-model.number="breadth">
+
     </div>
 
     <div>
@@ -72,27 +82,19 @@ export default Vue.extend({
     },
     data: function() {
         return {
-            root: null,
+            data: null,
             width: 960,
             height: 900,
-            yMargin: 20
+            yMargin: 20,
+            depthOffset: 120,
+            textOffset: 6,
+            breadth: 360
         };
     },
     created() {
         //const stratify = d3.stratify().parentId(getParentId);
         d3.csv("flare.csv").then(data => {
-            const width = 960;
-            const height = 900;
-            
-            const breadth = 360;                // This is an angle
-            const depth = (width / 2) - 120;    // This is a radius
-
-            const cluster = d3.cluster().size([breadth, depth]);
-
-            const stratify = d3.stratify().parentId(getParentId);
-            const root = stratify(data).sort(ourCompare);
-
-            this.root = cluster(root);
+            this.data = data;
         });
     },
     mounted() {
@@ -119,9 +121,9 @@ export default Vue.extend({
         getTextXOffset(node) {
             // This is like exclusive or or some shit.
             if (isOnRightSide(node)) {
-                return 6;
+                return this.textOffset;
             } else {
-                return -6;
+                return -this.textOffset;
             }
         },
         getPathDescription(node) {
@@ -176,7 +178,20 @@ export default Vue.extend({
             const yOffset = (this.height / 2) + this.yMargin;
             
             return "translate(" + xOffset + "," + yOffset + ")";
+        },
+        root: function(this: any) {
+            if (this.data === null)  return null;
+
+            const depth = (this.width / 2) - this.depthOffset;    // This is a radius
+
+            const cluster = d3.cluster().size([this.breadth, depth]);
+
+            const stratify = d3.stratify().parentId(getParentId);
+            const root = stratify(this.data).sort(ourCompare);
+
+            return cluster(root);
         }
+
     }
 });
 </script>
