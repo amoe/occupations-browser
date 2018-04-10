@@ -6,6 +6,10 @@
     <p>The value is: <code>{{count}}</code></p>
     <button v-on:click="greet">Greet</button>
     <button v-on:click="doIncrement">Inc</button>
+
+    <div>
+      <svg width="960" height="900"></svg>
+    </div>
   </div>
 </template>
 
@@ -19,6 +23,11 @@ import utility from '../utility';
      data: function() {
          return {
          };
+     },
+     mounted() {
+         this.$nextTick(function () {
+             console.log("tick");
+         })
      },
      methods: {
          greet() {
