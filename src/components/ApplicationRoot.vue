@@ -1,21 +1,37 @@
 <template>
   <div>
-    <h1>RAD-DEN</h1>
-    <p>The value is: <code>{{count}}</code></p>
-    <button v-on:click="greet">Greet</button>
-    <button v-on:click="doIncrement">Inc</button>
+    <h1>Cluster demo</h1> 
+    
+    <div class="control">
+      <label for="width">Width</label>
+      <input id="width" v-model.number="width">
+
+      <label for="height">Height</label>
+      <input id="height" v-model.number="height">
+
+      <label for="yMargin">Y Margin</label>
+      <input id="yMargin" v-model.number="yMargin">
+    </div>
 
     <div>
-      <svg width="960" height="900">
-        <g transform="translate(480, 470)">
+      <svg :width="width" :height="height">
+        <g :transform="rootTranslation">
           <path v-for="node in allButRoot"
                 class="link"
                 :d="getPathDescription(node)"/>
           
           <!-- The group for nodes and their associated labels -->
+          <!-- The funny thing is that it's totally possible to rewrite these as
+               a group of computed properties derived from the state. -->
+          <!-- We just do it in this d3-ish way as a first pass. -->
           <g v-for="node in allIncludingRoot"
-             class=""
-             transform="">
+             :class="getNodeGroupClass(node)"
+             :transform="getNodeGroupTransformation(node)">
+            <circle r="2.5"/>
+            <text dy="0.31em"
+                  :transform="getTextRotation(node)"
+                  :text-anchor="getTextAnchor(node)"
+                  :x="getTextXOffset(node)">{{getNodeTextContent(node)}}</text>
           </g>
         </g>
       </svg>
@@ -44,13 +60,22 @@ function project(x, y) {
     return [radius * Math.cos(angle), radius * Math.sin(angle)];
 }
 
+function isOnRightSide(node) {
+    const isInFirstHalf = node.x < 180;
+    const isLeafNode = !node.children;
+
+    return isInFirstHalf == isLeafNode;
+}
 
 export default Vue.extend({
     components: {
     },
     data: function() {
         return {
-            root: null
+            root: null,
+            width: 960,
+            height: 900,
+            yMargin: 20
         };
     },
     created() {
@@ -73,6 +98,32 @@ export default Vue.extend({
     mounted() {
     },
     methods: {
+        getTextRotation(node) {
+            let rotation;
+
+            if (node.x < 180) {
+                rotation = node.x - 90;
+            } else {
+                rotation = node.x + 90;
+            }
+
+            return "rotate(" + rotation + ")";
+        },
+        getTextAnchor(node) {
+            if (isOnRightSide(node)) {
+                return "start";
+            } else {
+                return "end";
+            }
+        },
+        getTextXOffset(node) {
+            // This is like exclusive or or some shit.
+            if (isOnRightSide(node)) {
+                return 6;
+            } else {
+                return -6;
+            }
+        },
         getPathDescription(node) {
             const d = node;
             return "M" + project(d.x, d.y)
@@ -80,8 +131,21 @@ export default Vue.extend({
                 + " " + project(d.parent.x, (d.y + d.parent.y) / 2)
                 + " " + project(d.parent.x, d.parent.y);
         },
-       greet() {
-           console.log("hello");
+        getNodeGroupTransformation(d) {
+            return "translate(" + project(d.x, d.y) + ")";
+        },
+        getNodeGroupClass(d) {
+            if (d.children) {
+                return "node node--internal";
+            } else {
+                return "node node--leaf";
+            }
+        },
+        getNodeTextContent(d) {
+            return d.id.substring(d.id.lastIndexOf(".") + 1);
+        },
+        greet() {
+            console.log("hello");
         },
         doIncrement() {
             this.$store.dispatch('increment');
@@ -106,23 +170,18 @@ export default Vue.extend({
             } else {
                 return this.root.descendants();
             }
+        },
+        rootTranslation: function(this: any) {
+            const xOffset = this.width / 2;
+            const yOffset = (this.height / 2) + this.yMargin;
+            
+            return "translate(" + xOffset + "," + yOffset + ")";
         }
     }
 });
 </script>
 
 <style>
-body {
-    max-width: 64rem;
-    margin-left: auto;
-    margin-right: auto;
-    background-color: #fdfdfd;
-}
-
-h1,h2 { font-family: Georgia; }
-
-p, label { font-family: Arial, sans-serif; }
-
 
 .node circle {
   fill: #999;
