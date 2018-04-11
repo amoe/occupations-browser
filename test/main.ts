@@ -21,8 +21,7 @@ const singleItemGraph = {
             token: "the",
             children: [
                 {
-                    token: "brandy",
-                    children: [null]
+                    token: "brandy"
                 }
             ]
         }
