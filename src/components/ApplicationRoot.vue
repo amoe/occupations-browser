@@ -88,7 +88,40 @@ export default Vue.extend({
             yMargin: 20,
             depthOffset: 120,
             textOffset: 6,
-            breadth: 360
+            breadth: 360,
+            data2: {
+                "name": "Eve",
+                "children": [
+                    {
+                        "name": "Cain"
+                    },
+                    {
+                        "name": "Seth",
+                        "children": [
+                            {
+                                "name": "Enos"
+                            },
+                            {
+                                "name": "Noam"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Abel"
+                    },
+                    {
+                        "name": "Awan",
+                        "children": [
+                            {
+                                "name": "Enoch"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Azura"
+                    }
+                ]
+            }                
         };
     },
     created() {
@@ -144,7 +177,10 @@ export default Vue.extend({
             }
         },
         getNodeTextContent(d) {
-            return d.id.substring(d.id.lastIndexOf(".") + 1);
+            console.log("text content requested, %o", d.data.name);
+
+            // data goes here, whereas it's on id when using the stratified set from csv
+            return d.data.name;
         },
         greet() {
             console.log("hello");
@@ -186,8 +222,13 @@ export default Vue.extend({
 
             const cluster = d3.cluster().size([this.breadth, depth]);
 
-            const stratify = d3.stratify().parentId(getParentId);
-            const root = stratify(this.data).sort(ourCompare);
+
+            // This is one option; not sure if sort is needed
+//            const stratify = d3.stratify().parentId(getParentId);
+//            const root = stratify(this.data).sort(ourCompare);
+
+            // This is another option
+            let root = d3.hierarchy(this.data2, d => d.children);
 
             return cluster(root);
         }
