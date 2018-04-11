@@ -54,6 +54,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import utility from '../utility';
 import * as d3 from 'd3';
+import graph from '../graph';
 
 function getParentId(d) {
     return d.id.substring(0, d.id.lastIndexOf("."));
@@ -120,8 +121,9 @@ export default Vue.extend({
                     {
                         "name": "Azura"
                     }
-                ]
-            }                
+                ],
+            },              
+            data3: graph.stratifySentence(["the", "big", "red", "dog"])
         };
     },
     created() {
@@ -177,10 +179,10 @@ export default Vue.extend({
             }
         },
         getNodeTextContent(d) {
-            console.log("text content requested, %o", d.data.name);
+            console.log("text content requested, %o", d.data.token);
 
             // data goes here, whereas it's on id when using the stratified set from csv
-            return d.data.name;
+            return d.data.token;
         },
         greet() {
             console.log("hello");
@@ -228,7 +230,8 @@ export default Vue.extend({
 //            const root = stratify(this.data).sort(ourCompare);
 
             // This is another option
-            let root = d3.hierarchy(this.data2, d => d.children);
+            console.log("data3 was %o", JSON.stringify(this.data3, null, 4));
+            let root = d3.hierarchy(this.data3, d => d.children);
 
             return cluster(root);
         }
