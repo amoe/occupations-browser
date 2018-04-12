@@ -1,5 +1,9 @@
 <template>
   <div class="page">
+    <div class="header">
+      <h1>OV {{date}}</h1>
+    </div>
+
     <div class="taxonomy">
     </div>
     
@@ -47,6 +51,12 @@
         </g>
       </svg>
     </div>
+
+    <div class="text-view">
+    </div>
+
+    <div class="timeline">
+    </div>
   </div>
 </template>
 
@@ -56,6 +66,7 @@ import Vuex from 'vuex';
 import utility from '../utility';
 import * as d3 from 'd3';
 import graph from '../graph';
+import * as dateFns from 'date-fns';
 
 function getParentId(d) {
     return d.id.substring(0, d.id.lastIndexOf("."));
@@ -84,9 +95,10 @@ export default Vue.extend({
     },
     data: function() {
         return {
+            date: dateFns.format(new Date(), 'YYYY-MM-DD'),
             data: null,
-            width: 960,
-            height: 900,
+            width: 600,
+            height: 600,
             yMargin: 20,
             depthOffset: 120,
             textOffset: 6,
@@ -241,13 +253,23 @@ export default Vue.extend({
 </script>
 
 <style>
+@font-face {
+    font-family: 'Oxygen';
+    src: url("/static/fonts/Oxygen-Regular.ttf");
+}
+
+body {
+    background-color: #fdfdfd;
+    font-family: 'Oxygen', sans-serif;
+}
+
 
 .node circle {
   fill: #999;
 }
 
 .node text {
-  font: 10px sans-serif;
+    font-size: 0.8em;
 }
 
 .node--internal circle {
@@ -273,17 +295,47 @@ div.page {
     grid-template-columns: repeat(12, [col-start] 1fr);
 }
 
-div.taxonomy {
+div.header {
     grid-row: 1;
+    grid-column: col-start 2 / span 12;
+}
+
+h1 {
+   font-style: italic;
+}
+
+
+div.taxonomy {
+    grid-row: 2;
     height: 8em;
     background-color: #a0a0a0;
+    grid-column: col-start / span 12;
+    margin: 1em;
 }
 
 div.control {
-    grid-row: 2;
+    grid-row: 3;
+    grid-column: col-start 2 / span 10;
 }
 
 div.graph {
-    grid-row: 3;
+    grid-row: 4;
+    grid-column: col-start 4 / span 4;
+}
+
+div.text-view {
+    grid-row: 5;
+    height: 4em;
+    background-color: #a0a0a0;
+    margin: 1em;
+    grid-column: col-start / span 12;
+}
+
+div.timeline {
+    grid-row: 6;
+    height: 4em;
+    background-color: #a0a0a0;
+    margin: 1em;
+    grid-column: col-start / span 12;
 }
 </style>
