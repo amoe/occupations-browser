@@ -1,6 +1,8 @@
 <template>
   <div>
     <h1>Cluster demo</h1> 
+
+
     
     <div class="control">
       <label for="width">Width</label>
@@ -54,6 +56,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import utility from '../utility';
 import * as d3 from 'd3';
+import graph from '../graph';
 
 function getParentId(d) {
     return d.id.substring(0, d.id.lastIndexOf("."));
@@ -88,7 +91,41 @@ export default Vue.extend({
             yMargin: 20,
             depthOffset: 120,
             textOffset: 6,
-            breadth: 360
+            breadth: 360,
+            data2: {
+                "name": "Eve",
+                "children": [
+                    {
+                        "name": "Cain"
+                    },
+                    {
+                        "name": "Seth",
+                        "children": [
+                            {
+                                "name": "Enos"
+                            },
+                            {
+                                "name": "Noam"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Abel"
+                    },
+                    {
+                        "name": "Awan",
+                        "children": [
+                            {
+                                "name": "Enoch"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Azura"
+                    }
+                ],
+            },              
+            data3: graph.stratifySentence(["the", "big", "red", "dog"])
         };
     },
     created() {
@@ -144,7 +181,10 @@ export default Vue.extend({
             }
         },
         getNodeTextContent(d) {
-            return d.id.substring(d.id.lastIndexOf(".") + 1);
+            console.log("text content requested, %o", d.id);
+
+            // data goes here, whereas it's on id when using the stratified set from csv
+            return d.id;
         },
         greet() {
             console.log("hello");
@@ -186,8 +226,14 @@ export default Vue.extend({
 
             const cluster = d3.cluster().size([this.breadth, depth]);
 
-            const stratify = d3.stratify().parentId(getParentId);
-            const root = stratify(this.data).sort(ourCompare);
+
+            // This is one option; not sure if sort is needed
+           const stratify = d3.stratify().parentId(getParentId);
+           const root = stratify(this.data).sort(ourCompare);
+
+            // This is another option
+            // console.log("data3 was %o", JSON.stringify(this.data3, null, 4));
+            // let root = d3.hierarchy(this.data3, d => d.children);
 
             return cluster(root);
         }
