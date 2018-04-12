@@ -1,8 +1,7 @@
 <template>
-  <div>
-    <h1>Cluster demo</h1> 
-
-
+  <div class="page">
+    <div class="taxonomy">
+    </div>
     
     <div class="control">
       <label for="width">Width</label>
@@ -25,7 +24,7 @@
 
     </div>
 
-    <div>
+    <div class="graph">
       <svg :width="width" :height="height">
         <g :transform="rootTranslation">
           <path v-for="node in allButRoot"
@@ -181,10 +180,10 @@ export default Vue.extend({
             }
         },
         getNodeTextContent(d) {
-            console.log("text content requested, %o", d.id);
+            console.log("text content requested, %o", d.data.name);
 
             // data goes here, whereas it's on id when using the stratified set from csv
-            return d.id;
+            return d.data.name;
         },
         greet() {
             console.log("hello");
@@ -228,12 +227,11 @@ export default Vue.extend({
 
 
             // This is one option; not sure if sort is needed
-           const stratify = d3.stratify().parentId(getParentId);
-           const root = stratify(this.data).sort(ourCompare);
+           // const stratify = d3.stratify().parentId(getParentId);
+           // const root = stratify(this.data).sort(ourCompare);
 
             // This is another option
-            // console.log("data3 was %o", JSON.stringify(this.data3, null, 4));
-            // let root = d3.hierarchy(this.data3, d => d.children);
+            let root = d3.hierarchy(this.data2, d => d.children);
 
             return cluster(root);
         }
@@ -267,4 +265,25 @@ export default Vue.extend({
   stroke-width: 1.5px;
 }
 
+div.taxonomy {
+}
+
+div.page {
+    display: grid;
+    grid-template-columns: repeat(12, [col-start] 1fr);
+}
+
+div.taxonomy {
+    grid-row: 1;
+    height: 8em;
+    background-color: #a0a0a0;
+}
+
+div.control {
+    grid-row: 2;
+}
+
+div.graph {
+    grid-row: 3;
+}
 </style>
