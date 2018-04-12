@@ -1,6 +1,8 @@
 <template>
   <div>
     <h1>Cluster demo</h1> 
+
+
     
     <div class="control">
       <label for="width">Width</label>
@@ -179,10 +181,10 @@ export default Vue.extend({
             }
         },
         getNodeTextContent(d) {
-            console.log("text content requested, %o", d.data.token);
+            console.log("text content requested, %o", d.id);
 
             // data goes here, whereas it's on id when using the stratified set from csv
-            return d.data.token;
+            return d.id;
         },
         greet() {
             console.log("hello");
@@ -226,12 +228,12 @@ export default Vue.extend({
 
 
             // This is one option; not sure if sort is needed
-//            const stratify = d3.stratify().parentId(getParentId);
-//            const root = stratify(this.data).sort(ourCompare);
+           const stratify = d3.stratify().parentId(getParentId);
+           const root = stratify(this.data).sort(ourCompare);
 
             // This is another option
-            console.log("data3 was %o", JSON.stringify(this.data3, null, 4));
-            let root = d3.hierarchy(this.data3, d => d.children);
+            // console.log("data3 was %o", JSON.stringify(this.data3, null, 4));
+            // let root = d3.hierarchy(this.data3, d => d.children);
 
             return cluster(root);
         }
