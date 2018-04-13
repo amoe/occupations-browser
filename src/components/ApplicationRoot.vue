@@ -29,7 +29,12 @@
     </div>
 
     <div class="graph">
-      <active-graph></active-graph>
+      <active-graph :width="width"
+                    :height="height"
+                    :y-margin="yMargin"
+                    :depth-offset="depthOffset"
+                    :text-offset="textOffset"
+                    :breadth="breadth"></active-graph>
     </div>
 
     <div class="text-view">
@@ -55,6 +60,12 @@ export default Vue.extend({
     data: function() {
         return {
             date: dateFns.format(new Date(), 'YYYY-MM-DD'),
+            width: 600,
+            height: 600,
+            yMargin: 20,
+            depthOffset: 120,
+            textOffset: 22,   // depends on circle radius
+            breadth: 360
         };
     },
     // mapState doesn't work with typescript: "Property 'mapState' does not exist on type"

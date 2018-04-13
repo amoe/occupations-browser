@@ -12,7 +12,8 @@
       <g v-for="node in allIncludingRoot"
          :class="getNodeGroupClass(node)"
          :transform="getNodeGroupTransformation(node)">
-        <circle r="1em"/>
+        <circle r="1em"
+                v-on:mousedown="handleMousedown"/>
         <text dy="0.31em"
               :transform="getTextRotation(node)"
               :text-anchor="getTextAnchor(node)"
@@ -29,14 +30,9 @@ import layoutFunctions from '../layout-functions';
 import graph from '../graph';
 
 export default Vue.extend({
+    props: ['width', 'height', 'yMargin', 'depthOffset', 'textOffset', 'breadth'],
     data() {
         return {
-            width: 600,
-            height: 600,
-            yMargin: 20,
-            depthOffset: 120,
-            textOffset: 22,   // depends on circle radius
-            breadth: 360,
             data: null,
             data2: {
                 "name": "Eve",
@@ -83,6 +79,9 @@ export default Vue.extend({
     mounted() {
     },
     methods: {
+        handleMousedown() {
+            console.log("got mousedown %o", arguments);
+        },
         getTextRotation(node) {
             let rotation;
 
