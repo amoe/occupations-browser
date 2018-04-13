@@ -2,56 +2,54 @@
   <circle r="1em"
           :cx="cx"
           :cy="cy"
-          v-on:mousemove="handleMousemove"
-          v-on:mousedown="handleMousedown"
-          v-on:mouseup="handleMouseup"/>
+          ref="svgElement"/>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
+import * as d3 from 'd3';
+
+// We use d3's drag behaviour here because programmatically dealing with drag
+// of SVG elements is a huge pain.  It's easier to just delegate than to deal
+// with the various corner cases.
 
 export default Vue.extend({
     data() {
         return {
-            isBeingDragged: false,
-            originalLocation: null,
             cx: 0,
             cy: 0
         };
     },
+    created() {
+    },
+    mounted() {
+        this.$nextTick(() => {
+            const svg  = this.$refs.svgElement;
+            const selection = d3.select(svg);
+            console.log("selection is %o", selection);
+            
+            const dragBehaviourAdder = d3.drag()
+                .on('start', this.dragStarted)
+                .on('drag', this.dragged)
+                .on('end', this.dragEnded);
+                                   
+            selection.call(dragBehaviourAdder);
+        })
+    },
     methods: {
-        handleMousemove(event) {
-            console.log("move");
-
-            if (this.isBeingDragged) {
-                console.log("move event is %o", event);
-                
-                const diffX = event.clientX - this.originalLocation.x;
-                const diffY = event.clientY - this.originalLocation.y;
-
-                this.cx = diffX;
-                this.cy = diffY;
-            }
-            
+        dragStarted(d) {
+            console.log("start");
         },
-        handleMousedown(event) {
-            console.log("down");
-            
-            this.isBeingDragged = true;
-            this.originalLocation = {
-                x: event.clientX,
-                y: event.clientY
-            };
+        dragEnded(d) {
+            console.log("end");
         },
-        handleMouseup() {
-            console.log("up");
-
-            this.isBeingDragged = false;
+        dragged(d) {
+            this.cx = d3.event.x;
+            this.cy = d3.event.y;
         }
     }
 });
 </script>
-
 <style>
 </style>
 
