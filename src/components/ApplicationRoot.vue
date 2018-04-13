@@ -29,27 +29,7 @@
     </div>
 
     <div class="graph">
-      <svg :width="width" :height="height">
-        <g :transform="rootTranslation">
-          <path v-for="node in allButRoot"
-                class="link"
-                :d="getPathDescription(node)"/>
-          
-          <!-- The group for nodes and their associated labels -->
-          <!-- The funny thing is that it's totally possible to rewrite these as
-               a group of computed properties derived from the state. -->
-          <!-- We just do it in this d3-ish way as a first pass. -->
-          <g v-for="node in allIncludingRoot"
-             :class="getNodeGroupClass(node)"
-             :transform="getNodeGroupTransformation(node)">
-            <circle r="2.5"/>
-            <text dy="0.31em"
-                  :transform="getTextRotation(node)"
-                  :text-anchor="getTextAnchor(node)"
-                  :x="getTextXOffset(node)">{{getNodeTextContent(node)}}</text>
-          </g>
-        </g>
-      </svg>
+      <active-graph></active-graph>
     </div>
 
     <div class="text-view">
@@ -67,6 +47,7 @@ import utility from '../utility';
 import * as d3 from 'd3';
 import graph from '../graph';
 import * as dateFns from 'date-fns';
+import ActiveGraph from './ActiveGraph.vue';
 
 function getParentId(d) {
     return d.id.substring(0, d.id.lastIndexOf("."));
@@ -91,8 +72,7 @@ function isOnRightSide(node) {
 }
 
 export default Vue.extend({
-    components: {
-    },
+    components: {ActiveGraph},
     data: function() {
         return {
             date: dateFns.format(new Date(), 'YYYY-MM-DD'),
@@ -101,7 +81,7 @@ export default Vue.extend({
             height: 600,
             yMargin: 20,
             depthOffset: 120,
-            textOffset: 6,
+            textOffset: 22,   // depends on circle radius
             breadth: 360,
             data2: {
                 "name": "Eve",
@@ -265,7 +245,8 @@ body {
 
 
 .node circle {
-  fill: #999;
+    fill: #999;
+    cursor: move;
 }
 
 .node text {
