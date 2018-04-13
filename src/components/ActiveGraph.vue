@@ -12,8 +12,7 @@
       <g v-for="node in allIncludingRoot"
          :class="getNodeGroupClass(node)"
          :transform="getNodeGroupTransformation(node)">
-        <circle r="1em"
-                v-on:mousedown="handleMousedown"/>
+        <node-circle/>
         <text dy="0.31em"
               :transform="getTextRotation(node)"
               :text-anchor="getTextAnchor(node)"
@@ -25,12 +24,14 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import NodeCircle from './NodeCircle.vue';
 import * as d3 from 'd3';
 import layoutFunctions from '../layout-functions';
 import graph from '../graph';
 
 export default Vue.extend({
     props: ['width', 'height', 'yMargin', 'depthOffset', 'textOffset', 'breadth'],
+    components: {NodeCircle},
     data() {
         return {
             data: null,
@@ -81,6 +82,9 @@ export default Vue.extend({
     methods: {
         handleMousedown() {
             console.log("got mousedown %o", arguments);
+        },
+        handleMousemove() {
+            console.log("got mousemove");
         },
         getTextRotation(node) {
             let rotation;
