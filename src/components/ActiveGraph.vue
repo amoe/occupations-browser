@@ -12,7 +12,7 @@
       <g v-for="node in allIncludingRoot"
          :class="getNodeGroupClass(node)"
          :transform="getNodeGroupTransformation(node)">
-        <node-circle/>
+        <node-circle v-on:node-drop-candidate-changed="foo"/>
         <text dy="0.31em"
               :transform="getTextRotation(node)"
               :text-anchor="getTextAnchor(node)"
@@ -80,6 +80,9 @@ export default Vue.extend({
     mounted() {
     },
     methods: {
+        foo() {
+            console.log("NODE DROP");
+        },
         handleMousedown() {
             console.log("got mousedown %o", arguments);
         },

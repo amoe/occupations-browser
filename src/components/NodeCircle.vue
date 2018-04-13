@@ -8,6 +8,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import * as d3 from 'd3';
+import events from '../events';
 
 // We use d3's drag behaviour here because programmatically dealing with drag
 // of SVG elements is a huge pain.  It's easier to just delegate than to deal
@@ -50,6 +51,7 @@ export default Vue.extend({
     }
 });
 </script>
+
 <style>
 </style>
 
