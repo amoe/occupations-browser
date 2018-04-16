@@ -69,6 +69,10 @@ export default Vue.extend({
         }
     },
     computed: {
+        // When you are dragging an element it's always put to the front,
+        // but that means that it will automatically receive any 
+        // mouseover/mouseout events, so we need to temporarily disable them
+        // during the drag period.
         pointerEvents: function(this: any) {
             return this.isBlockingPointerEvents ? "none" : "auto";
         }
