@@ -4,7 +4,7 @@
       <h1>OV {{date}}</h1>
     </div>
     
-    <dnd-demo></dnd-demo>
+    <d-n-d-demo></d-n-d-demo>
     
   </div>
 </template>
@@ -17,6 +17,7 @@ import * as d3 from 'd3';
 import graph from '../graph';
 import * as dateFns from 'date-fns';
 import ActiveGraph from './ActiveGraph.vue';
+import DNDDemo from './DNDDemo.vue';
 
 export default Vue.extend({
     components: {ActiveGraph, DNDDemo},
