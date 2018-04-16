@@ -4,16 +4,44 @@
       <h1>OV {{date}}</h1>
     </div>
 
-    <!--
-    <d-n-d-demo></d-n-d-demo>
-    -->
+    <div class="taxonomy">
+    </div>
+    
+    <div class="control">
+      <label for="width">Width</label>
+      <input id="width" v-model.number="width">
 
-  <div class="foo">
-    <svg width="640" height="480">
-      <hexagon :cx="200" :cy="200" :r="25" class-name="glyph"></hexagon>
-    </svg>
-  </div>
+      <label for="height">Height</label>
+      <input id="height" v-model.number="height">
 
+      <label for="yMargin">Y Margin</label>
+      <input id="yMargin" v-model.number="yMargin">
+
+      <label for="depthOffset">Depth Offset</label>
+      <input id="depthOffset" v-model.number="depthOffset">
+
+      <label for="textOffset">Text Offset</label>
+      <input id="textOffset" v-model.number="textOffset">
+
+      <label for="breadth">Breadth</label>
+      <input id="breadth" v-model.number="breadth">
+
+    </div>
+
+    <div class="graph">
+      <active-graph :width="width"
+                    :height="height"
+                    :y-margin="yMargin"
+                    :depth-offset="depthOffset"
+                    :text-offset="textOffset"
+                    :breadth="breadth"></active-graph>
+    </div>
+
+    <div class="text-view">
+    </div>
+
+    <div class="timeline">
+    </div>
   </div>
 </template>
 

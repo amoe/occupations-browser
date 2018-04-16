@@ -2,7 +2,10 @@
   <circle r="1em"
           :cx="cx"
           :cy="cy"
-          ref="svgElement"/>
+          ref="svgElement"
+          :pointer-events="pointerEvents"
+          v-on:mouseover="handleMouseover"
+          v-on:mouseout="handleMouseout"/>
 </template>
 
 <script lang="ts">
@@ -18,7 +21,8 @@ export default Vue.extend({
     data() {
         return {
             cx: 0,
-            cy: 0
+            cy: 0,
+            isPointerEventsEnabled: true
         };
     },
     created() {
@@ -40,13 +44,30 @@ export default Vue.extend({
     methods: {
         dragStarted(d) {
             console.log("start");
+            this.isPointerEventsEnabled = false;
         },
         dragEnded(d) {
             console.log("end");
+            this.isPointerEventsEnabled = true;
         },
         dragged(d) {
             this.cx = d3.event.x;
             this.cy = d3.event.y;
+        },
+        handleMouseover() {
+            console.log("mouseover");
+        },
+        handleMouseout() {
+            console.log("mouseout");
+        }
+    },
+    computed: {
+        // When you are dragging an element it's always put to the front,
+        // but that means that it will automatically receive any 
+        // mouseover/mouseout events, so we need to temporarily disable them
+        // during the drag period.
+        pointerEvents(this: any) {
+            return this.isPointerEventsEnabled ? "auto" : "none";
         }
     }
 });
