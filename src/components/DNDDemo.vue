@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="dnd">
     <svg width="640" height="480">
       <!-- Need the groups to put them in the correct order -->
       <g id="targetElements">
@@ -54,6 +54,10 @@ export default Vue.extend({
         dragEnded(d) {
             console.log("end");
             this.isBlockingPointerEvents = false;
+
+            if (this.selectedNode !== null) {
+                console.log("a successful drag happened");
+            }
         },
         dragged(d) {
             this.cx = d3.event.x;
@@ -81,4 +85,11 @@ export default Vue.extend({
 </script>
 
 <style>
+div.dnd {
+    border: 1px solid grey;
+}
+
+circle:hover {
+    opacity: 0.2;
+}
 </style>

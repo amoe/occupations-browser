@@ -3,9 +3,17 @@
     <div class="header">
       <h1>OV {{date}}</h1>
     </div>
-    
+
+    <!--
     <d-n-d-demo></d-n-d-demo>
-    
+    -->
+
+  <div class="foo">
+    <svg width="640" height="480">
+      <hexagon :cx="200" :cy="200" :r="25" class-name="glyph"></hexagon>
+    </svg>
+  </div>
+
   </div>
 </template>
 
@@ -18,9 +26,10 @@ import graph from '../graph';
 import * as dateFns from 'date-fns';
 import ActiveGraph from './ActiveGraph.vue';
 import DNDDemo from './DNDDemo.vue';
+import Hexagon from './Hexagon.vue';
 
 export default Vue.extend({
-    components: {ActiveGraph, DNDDemo},
+    components: {ActiveGraph, DNDDemo, Hexagon},
     data: function() {
         return {
             date: dateFns.format(new Date(), 'YYYY-MM-DD'),
@@ -103,5 +112,9 @@ div.timeline {
     background-color: #a0a0a0;
     margin: 1em;
     grid-column: col-start / span 12;
+}
+
+.glyph {
+    fill: red;
 }
 </style>
