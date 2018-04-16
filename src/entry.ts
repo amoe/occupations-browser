@@ -6,16 +6,24 @@ import ApplicationRoot from './components/ApplicationRoot.vue';
 import Vue from 'vue';
 import Vuex from 'vuex';
 import actions from './actions'
+import mc from './mutation-constants';
 
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
     state: {
         count: 0,
+        dropInteractionCandidate: null
     },
     mutations: {
         increment(state) {
             state.count++;
+        },
+        [mc.SET_DROP_INTERACTION_CANDIDATE]: (state, chosen) => {
+            state.dropInteractionCandidate = chosen;
+        },
+        [mc.CLEAR_DROP_INTERACTION_CANDIDATE]: (state, chosen) => {
+            state.dropInteractionCandidate = null;
         }
     },
     actions

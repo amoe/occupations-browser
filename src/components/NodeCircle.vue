@@ -12,6 +12,7 @@
 import Vue from 'vue';
 import * as d3 from 'd3';
 import events from '../events';
+import mc from '../mutation-constants';
 
 // We use d3's drag behaviour here because programmatically dealing with drag
 // of SVG elements is a huge pain.  It's easier to just delegate than to deal
@@ -56,9 +57,11 @@ export default Vue.extend({
         },
         handleMouseover() {
             console.log("mouseover");
+            this.$store.commit(mc.SET_DROP_INTERACTION_CANDIDATE, 'something');
         },
         handleMouseout() {
             console.log("mouseout");
+            this.$store.commit(mc.CLEAR_DROP_INTERACTION_CANDIDATE);
         }
     },
     computed: {
