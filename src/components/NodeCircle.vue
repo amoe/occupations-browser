@@ -13,6 +13,7 @@ import Vue from 'vue';
 import * as d3 from 'd3';
 import events from '../events';
 import mc from '../mutation-constants';
+import {mapGetters} from 'vuex';
 
 // We use d3's drag behaviour here because programmatically dealing with drag
 // of SVG elements is a huge pain.  It's easier to just delegate than to deal
@@ -45,10 +46,12 @@ export default Vue.extend({
     methods: {
         dragStarted(d) {
             console.log("start");
+            this.$store.commit(mc.SWITCH_DRAG_IN_PROGRESS_ON);
             this.isPointerEventsEnabled = false;
         },
         dragEnded(d) {
             console.log("end");
+            this.$store.commit(mc.SWITCH_DRAG_IN_PROGRESS_OFF);
             this.isPointerEventsEnabled = true;
         },
         dragged(d) {
@@ -57,7 +60,10 @@ export default Vue.extend({
         },
         handleMouseover() {
             console.log("mouseover");
-            this.$store.commit(mc.SET_DROP_INTERACTION_CANDIDATE, 'something');
+
+            if (this.isDragInProgress) {
+                this.$store.commit(mc.SET_DROP_INTERACTION_CANDIDATE, 'something');
+            }
         },
         handleMouseout() {
             console.log("mouseout");
@@ -71,6 +77,9 @@ export default Vue.extend({
         // during the drag period.
         pointerEvents(this: any) {
             return this.isPointerEventsEnabled ? "auto" : "none";
+        },
+        isDragInProgress(this: any) {
+            return this.$store.getters['isDragInProgress'];
         }
     }
 });

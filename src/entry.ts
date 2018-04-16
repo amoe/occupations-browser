@@ -5,15 +5,18 @@ import mymodule from './mymodule';
 import ApplicationRoot from './components/ApplicationRoot.vue';
 import Vue from 'vue';
 import Vuex from 'vuex';
-import actions from './actions'
+import actions from './actions';
 import mc from './mutation-constants';
+import getters from './getters';
 
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
+    getters,
     state: {
         count: 0,
-        dropInteractionCandidate: null
+        dropInteractionCandidate: null,
+        isDragInProgress: false
     },
     mutations: {
         increment(state) {
@@ -24,6 +27,12 @@ const store = new Vuex.Store({
         },
         [mc.CLEAR_DROP_INTERACTION_CANDIDATE]: (state, chosen) => {
             state.dropInteractionCandidate = null;
+        },
+        [mc.SWITCH_DRAG_IN_PROGRESS_OFF]: (state, chosen) => {
+            state.isDragInProgress = false;
+        },
+        [mc.SWITCH_DRAG_IN_PROGRESS_ON]: (state, chosen) => {
+            state.isDragInProgress = true;
         }
     },
     actions
