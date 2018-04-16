@@ -205,4 +205,8 @@ export default Vue.extend({
   stroke-opacity: 0.4;
   stroke-width: 1.5px;
 }
+
+svg {
+    border: 1px solid #a0a0a0;
+}
 </style>

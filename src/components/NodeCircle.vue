@@ -53,6 +53,10 @@ export default Vue.extend({
             console.log("end");
             this.$store.commit(mc.SWITCH_DRAG_IN_PROGRESS_OFF);
             this.isPointerEventsEnabled = true;
+
+            if (this.isDropCandidate) {
+                console.log("successful drop");
+            }
         },
         dragged(d) {
             this.cx = d3.event.x;
@@ -80,11 +84,18 @@ export default Vue.extend({
         },
         isDragInProgress(this: any) {
             return this.$store.getters['isDragInProgress'];
+        },
+        isDropCandidate(this: any) {
+            return this.$store.getters['isDropCandidate'];
         }
+
     }
 });
 </script>
 
 <style>
+circle:hover {
+    fill: red;
+}
 </style>
 
