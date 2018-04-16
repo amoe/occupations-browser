@@ -1,6 +1,7 @@
 <template>
   <div>
     <svg width="640" height="480">
+      <!-- Need the groups to put them in the correct order -->
       <g id="targetElements">
         <circle r="1em" cx="400" cy="400" fill="#ff5f00" id="target" 
                 ref="targetElement"
