@@ -3,45 +3,9 @@
     <div class="header">
       <h1>OV {{date}}</h1>
     </div>
-
-    <div class="taxonomy">
-    </div>
     
-    <div class="control">
-      <label for="width">Width</label>
-      <input id="width" v-model.number="width">
-
-      <label for="height">Height</label>
-      <input id="height" v-model.number="height">
-
-      <label for="yMargin">Y Margin</label>
-      <input id="yMargin" v-model.number="yMargin">
-
-      <label for="depthOffset">Depth Offset</label>
-      <input id="depthOffset" v-model.number="depthOffset">
-
-      <label for="textOffset">Text Offset</label>
-      <input id="textOffset" v-model.number="textOffset">
-
-      <label for="breadth">Breadth</label>
-      <input id="breadth" v-model.number="breadth">
-
-    </div>
-
-    <div class="graph">
-      <active-graph :width="width"
-                    :height="height"
-                    :y-margin="yMargin"
-                    :depth-offset="depthOffset"
-                    :text-offset="textOffset"
-                    :breadth="breadth"></active-graph>
-    </div>
-
-    <div class="text-view">
-    </div>
-
-    <div class="timeline">
-    </div>
+    <dnd-demo></dnd-demo>
+    
   </div>
 </template>
 
@@ -54,9 +18,8 @@ import graph from '../graph';
 import * as dateFns from 'date-fns';
 import ActiveGraph from './ActiveGraph.vue';
 
-
 export default Vue.extend({
-    components: {ActiveGraph},
+    components: {ActiveGraph, DNDDemo},
     data: function() {
         return {
             date: dateFns.format(new Date(), 'YYYY-MM-DD'),
