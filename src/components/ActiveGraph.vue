@@ -12,7 +12,7 @@
       <g v-for="node in allIncludingRoot"
          :class="getNodeGroupClass(node)"
          :transform="getNodeGroupTransformation(node)">
-        <circle r="1em"/>
+        <node-circle v-on:node-drop-candidate-changed="foo"/>
         <text dy="0.31em"
               :transform="getTextRotation(node)"
               :text-anchor="getTextAnchor(node)"
@@ -24,19 +24,16 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import NodeCircle from './NodeCircle.vue';
 import * as d3 from 'd3';
 import layoutFunctions from '../layout-functions';
 import graph from '../graph';
 
 export default Vue.extend({
+    props: ['width', 'height', 'yMargin', 'depthOffset', 'textOffset', 'breadth'],
+    components: {NodeCircle},
     data() {
         return {
-            width: 600,
-            height: 600,
-            yMargin: 20,
-            depthOffset: 120,
-            textOffset: 22,   // depends on circle radius
-            breadth: 360,
             data: null,
             data2: {
                 "name": "Eve",
@@ -83,6 +80,15 @@ export default Vue.extend({
     mounted() {
     },
     methods: {
+        foo() {
+            console.log("NODE DROP");
+        },
+        handleMousedown() {
+            console.log("got mousedown %o", arguments);
+        },
+        handleMousemove() {
+            console.log("got mousemove");
+        },
         getTextRotation(node) {
             let rotation;
 
