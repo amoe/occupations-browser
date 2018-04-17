@@ -8,6 +8,7 @@ import Vuex from 'vuex';
 import actions from './actions';
 import mc from './mutation-constants';
 import getters from './getters';
+import { DragAndDropOperation, NodeIdentifier } from './interfaces';
 
 Vue.use(Vuex);
 
@@ -15,17 +16,19 @@ const store = new Vuex.Store({
     getters,
     state: {
         count: 0,
+        dragSource: null,
         dropInteractionCandidate: null,
-        isDragInProgress: false
+        isDragInProgress: false,
+        lastDrop: null,
     },
     mutations: {
         increment(state) {
             state.count++;
         },
-        [mc.SET_DROP_INTERACTION_CANDIDATE]: (state, chosen) => {
+        [mc.SET_DROP_INTERACTION_CANDIDATE]: (state, chosen: NodeIdentifier) => {
             state.dropInteractionCandidate = chosen;
         },
-        [mc.CLEAR_DROP_INTERACTION_CANDIDATE]: (state, chosen) => {
+        [mc.CLEAR_DROP_INTERACTION_CANDIDATE]: (state) => {
             state.dropInteractionCandidate = null;
         },
         [mc.SWITCH_DRAG_IN_PROGRESS_OFF]: (state, chosen) => {
@@ -33,6 +36,19 @@ const store = new Vuex.Store({
         },
         [mc.SWITCH_DRAG_IN_PROGRESS_ON]: (state, chosen) => {
             state.isDragInProgress = true;
+        },
+        [mc.SET_DRAG_SOURCE]: (state, source: NodeIdentifier) => {
+            state.dragSource = source;
+        },
+        [mc.CONFIRM_DROP]: (state) => {
+            const theDrop: DragAndDropOperation = {
+                source: state.dragSource,
+                target: state.dropInteractionCandidate
+            };
+
+            state.lastDrop = theDrop;
+            state.dropInteractionCandidate = null;
+            state.dragSource = null;
         }
     },
     actions

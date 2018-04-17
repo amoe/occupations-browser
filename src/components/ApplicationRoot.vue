@@ -25,7 +25,10 @@
 
       <label for="breadth">Breadth</label>
       <input id="breadth" v-model.number="breadth">
+    </div>
 
+    <div>
+      <p>Drag in progress: {{isDragInProgress}}, last drop {{lastDrop}}</p>
     </div>
 
     <div class="graph">
@@ -47,7 +50,6 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import Vuex from 'vuex';
 import utility from '../utility';
 import * as d3 from 'd3';
 import graph from '../graph';
@@ -55,6 +57,9 @@ import * as dateFns from 'date-fns';
 import ActiveGraph from './ActiveGraph.vue';
 import DNDDemo from './DNDDemo.vue';
 import Hexagon from './Hexagon.vue';
+import {mapGetters} from 'vuex';
+import bus from '../event-bus';
+import events from '../events';
 
 export default Vue.extend({
     components: {ActiveGraph, DNDDemo, Hexagon},
@@ -69,12 +74,21 @@ export default Vue.extend({
             breadth: 360
         };
     },
+    methods: {
+        handleDragAndDrop() {
+            console.log("detected a drag and drop");
+        }
+    },
+    created: function() {
+        bus.$on(events.DRAG_AND_DROP_OPERATION_CONFIRMED, () => this.handleDragAndDrop())
+    },
     // mapState doesn't work with typescript: "Property 'mapState' does not exist on type"
     // So we manually create the relevant computed properties.
     computed: {
         count: function (this: any) {
             return this.$store.state.count;
-        }
+        },
+        ...mapGetters(['lastDrop', 'isDragInProgress'])
     }
 });
 </script>

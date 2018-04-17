@@ -12,7 +12,7 @@
       <g v-for="node in allIncludingRoot"
          :class="getNodeGroupClass(node)"
          :transform="getNodeGroupTransformation(node)">
-        <node-circle v-on:node-drop-candidate-changed="foo"/>
+        <node-circle :identifier="getNodeTextContent(node)"/>
         <text dy="0.31em"
               :transform="getTextRotation(node)"
               :text-anchor="getTextAnchor(node)"
@@ -80,9 +80,6 @@ export default Vue.extend({
     mounted() {
     },
     methods: {
-        foo() {
-            console.log("NODE DROP");
-        },
         handleMousedown() {
             console.log("got mousedown %o", arguments);
         },
@@ -182,8 +179,11 @@ export default Vue.extend({
 </script>
 
 <style>
+/* All of the fill stuff here has been superseded by the stuff in the nodecircle
+   component */
+
 .node circle {
-    fill: #999;
+/*    fill: #999;*/
     cursor: move;
 }
 
@@ -192,7 +192,8 @@ export default Vue.extend({
 }
 
 .node--internal circle {
-  fill: #555;
+
+/*  fill: #555;*/
 }
 
 .node--internal text {
