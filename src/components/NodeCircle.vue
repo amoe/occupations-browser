@@ -1,11 +1,26 @@
 <template>
-  <circle r="1em"
-          :cx="cx"
-          :cy="cy"
-          ref="svgElement"
-          :pointer-events="pointerEvents"
-          v-on:mouseover="handleMouseover"
-          v-on:mouseout="handleMouseout"/>
+  <!-- The starting position is given by a containing <g></g> in the scope
+       of the containing Vue component. -->
+  <g>
+    <circle class="real-node"
+            r="1em"
+            ref="realNodeSvgCircle"/>
+
+    <!-- The ghost node has to handle all of the events, because it's always
+         in front of the real node.  Luckily the fact that the ghost node
+         retains its real 'identity' in terms of the drop selection means that
+         we're still able to find our way back to the real node. -->
+    <circle class="ghost-node"
+            r="1em"
+            ref="ghostNodeSvgCircle"
+            :cx="cx"
+            :cy="cy"
+            :opacity="ghostOpacity"
+            v-on:mouseover="handleMouseover"
+            v-on:mouseout="handleMouseout"
+            :pointer-events="pointerEvents"/>
+
+  </g>
 </template>
 
 <script lang="ts">
@@ -24,6 +39,7 @@ export default Vue.extend({
         return {
             cx: 0,
             cy: 0,
+            ghostOpacity: 0.0,
             isPointerEventsEnabled: true
         };
     },
@@ -31,7 +47,7 @@ export default Vue.extend({
     },
     mounted() {
         this.$nextTick(() => {
-            const svg  = this.$refs.svgElement;
+            const svg  = this.$refs.ghostNodeSvgCircle;
             const selection = d3.select(svg);
             console.log("selection is %o", selection);
             
@@ -45,6 +61,7 @@ export default Vue.extend({
     },
     methods: {
         dragStarted(d) {
+            this.ghostOpacity = 0.2;
             console.log("start");
             this.$store.commit(mc.SWITCH_DRAG_IN_PROGRESS_ON);
             this.isPointerEventsEnabled = false;
@@ -53,6 +70,10 @@ export default Vue.extend({
             console.log("end");
             this.$store.commit(mc.SWITCH_DRAG_IN_PROGRESS_OFF);
             this.isPointerEventsEnabled = true;
+
+            // Return the ghost node to its 'home'
+            this.cx = 0;
+            this.cy = 0;
 
             if (this.isDropCandidate) {
                 console.log("successful drop");
@@ -94,8 +115,10 @@ export default Vue.extend({
 </script>
 
 <style>
+/*
 circle:hover {
     fill: red;
 }
+*/
 </style>
 
