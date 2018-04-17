@@ -179,8 +179,11 @@ export default Vue.extend({
 </script>
 
 <style>
+/* All of the fill stuff here has been superseded by the stuff in the nodecircle
+   component */
+
 .node circle {
-    fill: #999;
+/*    fill: #999;*/
     cursor: move;
 }
 
@@ -189,7 +192,8 @@ export default Vue.extend({
 }
 
 .node--internal circle {
-  fill: #555;
+
+/*  fill: #555;*/
 }
 
 .node--internal text {

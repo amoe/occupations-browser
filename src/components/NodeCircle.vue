@@ -4,6 +4,7 @@
   <g>
     <circle class="real-node"
             r="1em"
+            :fill="realNodeFill"
             ref="realNodeSvgCircle"/>
 
     <!-- The ghost node has to handle all of the events, because it's always
@@ -11,7 +12,7 @@
          retains its real 'identity' in terms of the drop selection means that
          we're still able to find our way back to the real node. -->
     <circle class="ghost-node"
-            r="1em"
+            :r="ghostRadiusEm"
             ref="ghostNodeSvgCircle"
             :cx="cx"
             :cy="cy"
@@ -41,7 +42,9 @@ export default Vue.extend({
             cx: 0,
             cy: 0,
             ghostOpacity: 0.0,
-            isPointerEventsEnabled: true
+            isPointerEventsEnabled: true,
+            ghostRadius: 2,
+            realNodeFill: "black"
         };
     },
     created() {
@@ -67,6 +70,9 @@ export default Vue.extend({
             this.$store.commit(mc.SWITCH_DRAG_IN_PROGRESS_ON);
             this.$store.commit(mc.SET_DRAG_SOURCE, this.identifier);
             this.isPointerEventsEnabled = false;
+
+            // Shrink the ghost
+            this.ghostRadius = 1;
         },
         dragEnded(d) {
             console.log("end");
@@ -76,6 +82,9 @@ export default Vue.extend({
             // Return the ghost node to its 'home'
             this.cx = 0;
             this.cy = 0;
+            this.ghostRadius = 2;
+            this.ghostOpacity = 0.0;
+
 
             if (this.isDropCandidate) {
                 console.log("successful drop");
@@ -91,13 +100,21 @@ export default Vue.extend({
         // These are handled by nodes when they are acting as 'target nodes'
         handleMouseover() {
             console.log("mouseover");
+            
 
             if (this.isDragInProgress) {
+                this.realNodeFill = "green";
                 this.$store.commit(mc.SET_DROP_INTERACTION_CANDIDATE, this.identifier);
+            } else {
+                // Just about to be dragged; 'draggable'
+                this.realNodeFill = "blue";
             }
         },
         handleMouseout() {
             console.log("mouseout");
+            
+            this.realNodeFill = "black";
+            
             this.$store.commit(mc.CLEAR_DROP_INTERACTION_CANDIDATE);
         }
     },
@@ -114,8 +131,10 @@ export default Vue.extend({
         },
         isDropCandidate(this: any) {
             return this.$store.getters['isDropCandidate'];
+        },
+        ghostRadiusEm(this: any) {
+            return this.ghostRadius + "em";
         }
-
     }
 });
 </script>
