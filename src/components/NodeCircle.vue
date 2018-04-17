@@ -27,9 +27,10 @@
 <script lang="ts">
 import Vue from 'vue';
 import * as d3 from 'd3';
-import events from '../events';
 import mc from '../mutation-constants';
 import {mapGetters} from 'vuex';
+import bus from '../event-bus';
+import events from '../events';
 
 // We use d3's drag behaviour here because programmatically dealing with drag
 // of SVG elements is a huge pain.  It's easier to just delegate than to deal
@@ -88,7 +89,11 @@ export default Vue.extend({
 
             if (this.isDropCandidate) {
                 console.log("successful drop");
+
                 this.$store.commit(mc.CONFIRM_DROP);
+
+                // Raise an event to communicate to parents
+                bus.$emit(events.DRAG_AND_DROP_OPERATION_CONFIRMED);
             }
 
             // It should be fine to leave the drag source as it was here
