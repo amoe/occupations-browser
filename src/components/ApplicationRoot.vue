@@ -25,7 +25,10 @@
 
       <label for="breadth">Breadth</label>
       <input id="breadth" v-model.number="breadth">
+    </div>
 
+    <div>
+      <p>Drag in progress: {{isDragInProgress}}, last drop {{lastDrop}}</p>
     </div>
 
     <div class="graph">
@@ -47,7 +50,6 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import Vuex from 'vuex';
 import utility from '../utility';
 import * as d3 from 'd3';
 import graph from '../graph';
@@ -55,6 +57,7 @@ import * as dateFns from 'date-fns';
 import ActiveGraph from './ActiveGraph.vue';
 import DNDDemo from './DNDDemo.vue';
 import Hexagon from './Hexagon.vue';
+import {mapGetters} from 'vuex';
 
 export default Vue.extend({
     components: {ActiveGraph, DNDDemo, Hexagon},
@@ -74,7 +77,8 @@ export default Vue.extend({
     computed: {
         count: function (this: any) {
             return this.$store.state.count;
-        }
+        },
+        ...mapGetters(['lastDrop', 'isDragInProgress'])
     }
 });
 </script>

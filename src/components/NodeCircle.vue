@@ -35,6 +35,7 @@ import {mapGetters} from 'vuex';
 // with the various corner cases.
 
 export default Vue.extend({
+    props: ['identifier'],
     data() {
         return {
             cx: 0,
@@ -64,6 +65,7 @@ export default Vue.extend({
             this.ghostOpacity = 0.2;
             console.log("start");
             this.$store.commit(mc.SWITCH_DRAG_IN_PROGRESS_ON);
+            this.$store.commit(mc.SET_DRAG_SOURCE, this.identifier);
             this.isPointerEventsEnabled = false;
         },
         dragEnded(d) {
@@ -77,17 +79,21 @@ export default Vue.extend({
 
             if (this.isDropCandidate) {
                 console.log("successful drop");
+                this.$store.commit(mc.CONFIRM_DROP);
             }
+
+            // It should be fine to leave the drag source as it was here
         },
         dragged(d) {
             this.cx = d3.event.x;
             this.cy = d3.event.y;
         },
+        // These are handled by nodes when they are acting as 'target nodes'
         handleMouseover() {
             console.log("mouseover");
 
             if (this.isDragInProgress) {
-                this.$store.commit(mc.SET_DROP_INTERACTION_CANDIDATE, 'something');
+                this.$store.commit(mc.SET_DROP_INTERACTION_CANDIDATE, this.identifier);
             }
         },
         handleMouseout() {

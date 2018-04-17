@@ -4,5 +4,8 @@ export default {
     },
     isDropCandidate(state, getters) {
         return state.dropInteractionCandidate !== null;
+    },
+    lastDrop(state, getters) {
+        return state.lastDrop;
     }
 };
