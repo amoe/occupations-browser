@@ -32,6 +32,8 @@ import NodeCircle from './NodeCircle.vue';
 import * as d3 from 'd3';
 import layoutFunctions from '../layout-functions';
 import graph from '../graph';
+import bus from '../event-bus';
+import events from '../events';
 
 export default Vue.extend({
     props: ['width', 'height', 'yMargin', 'depthOffset', 'textOffset', 'breadth'],
@@ -76,6 +78,8 @@ export default Vue.extend({
         };
     },
     created() {
+        bus.$on(events.DRAG_AND_DROP_OPERATION_CONFIRMED, () => this.handleDragAndDrop());
+
         //const stratify = d3.stratify().parentId(getParentId);
         d3.csv("flare.csv").then(data => {
             this.data = data;
@@ -84,6 +88,12 @@ export default Vue.extend({
     mounted() {
     },
     methods: {
+        handleDragAndDrop(this: any) {
+            console.log("detected a drag and drop");
+            console.log("lastDrop was %o => %o", this.lastDrop.source, this.lastDrop.target);
+            const removedChildren = this.data2.children[1].children.splice(0, 1);
+            this.data2.children[1].name +=  "\u00b7" + removedChildren[0].name;
+        },
         removeNode() {
             console.log("remove node %o", true);
             const removedElt = this.data2.children.shift();
@@ -182,6 +192,12 @@ export default Vue.extend({
             let root = d3.hierarchy(this.data2, d => d.children);
 
             return cluster(root);
+        },
+        lastDrop: function(this: any) {
+            return this.$store.getters.lastDrop;
+        },
+        isDragInProgress: function(this: any) {
+            return this.$store.getters.isDragInProgress;
         }
     }
 });

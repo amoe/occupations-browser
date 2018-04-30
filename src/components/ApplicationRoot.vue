@@ -75,25 +75,14 @@ export default Vue.extend({
         };
     },
     methods: {
-        handleDragAndDrop() {
-            console.log("detected a drag and drop");
-            console.log("lastDrop was %o => %o", this.lastDrop.source, this.lastDrop.target);
-        }
     },
     created: function() {
-        bus.$on(events.DRAG_AND_DROP_OPERATION_CONFIRMED, () => this.handleDragAndDrop())
     },
     // mapState doesn't work with typescript: "Property 'mapState' does not exist on type"
     // So we manually create the relevant computed properties.
     computed: {
         count: function (this: any) {
             return this.$store.state.count;
-        },
-        lastDrop: function(this: any) {
-            return this.$store.getters.lastDrop;
-        },
-        isDragInProgress: function(this: any) {
-            return this.$store.getters.isDragInProgress;
         }
     }
 });
