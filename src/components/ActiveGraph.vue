@@ -1,4 +1,7 @@
 <template>
+<div>
+  <button v-on:click="removeNode">foo</button>
+
   <svg :width="width" :height="height">
     <g :transform="rootTranslation">
       <path v-for="node in allButRoot"
@@ -20,6 +23,7 @@
       </g>
     </g>
   </svg>
+</div>
 </template>
 
 <script lang="ts">
@@ -80,6 +84,11 @@ export default Vue.extend({
     mounted() {
     },
     methods: {
+        removeNode() {
+            console.log("remove node %o", true);
+            const removedElt = this.data2.children.shift();
+            console.log("removed element: %o", removedElt);
+        },
         handleMousedown() {
             console.log("got mousedown %o", arguments);
         },
