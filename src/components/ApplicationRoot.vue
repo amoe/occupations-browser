@@ -77,6 +77,7 @@ export default Vue.extend({
     methods: {
         handleDragAndDrop() {
             console.log("detected a drag and drop");
+            console.log("lastDrop was %o => %o", this.lastDrop.source, this.lastDrop.target);
         }
     },
     created: function() {
@@ -88,7 +89,12 @@ export default Vue.extend({
         count: function (this: any) {
             return this.$store.state.count;
         },
-        ...mapGetters(['lastDrop', 'isDragInProgress'])
+        lastDrop: function(this: any) {
+            return this.$store.getters.lastDrop;
+        },
+        isDragInProgress: function(this: any) {
+            return this.$store.getters.isDragInProgress;
+        }
     }
 });
 </script>
