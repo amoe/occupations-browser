@@ -1,12 +1,14 @@
-language: node_js
-node_js:
-  - 8
-addons:
-  chrome: stable
-cache:
-  yarn: true
-  directories:
-    - node_modules
-# The following is a workaround for
-# <https://github.com/travis-ci/travis-ci/issues/9024>
-sudo: required
+matrix:
+  include:
+    - language: node_js
+      node_js:
+        - 8
+      addons:
+        chrome: stable
+      cache:
+        yarn: true
+        directories:
+          - node_modules
+      # The following is a workaround for
+      # <https://github.com/travis-ci/travis-ci/issues/9024>
+      sudo: required
