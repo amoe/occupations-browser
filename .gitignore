@@ -6,3 +6,4 @@ dist/
 bundle.js
 yarn-error.log
 data/
+components/backend/.cache
