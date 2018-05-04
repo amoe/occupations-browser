@@ -25,18 +25,43 @@ def reduction(v, acc):
 def stratify(sentence):
     return foldr(reduction, None, sentence)
 
+def add_sentence(the_root, sentence):
+    if sentence:
+        this_item = sentence.pop(0)
+        
+        children = the_root['children']
+        
+        found = False
+        idx = 0
+        for child in children:
+            if child['token'] == this_item:
+                found = True
+                break
+            idx += 1
+
+        # now we know the index
+        if found:
+            children[idx]['
+            
+
+        
+
+
 class HierarchyBuilder(object):
     def run(self, args):
-        roots = {}
+        the_root = {'token': 'NONESUCH', 'children': []}
 
         json_file = args[0]
         all_sentences = json.load(open(json_file, 'r'))
         
         for sentence in all_sentences:
-            for word in sentence:
-                roots[word] = stratify(sentence)
+            if sentence[0] != "Queen":
+                continue
 
-        pprint.pprint(roots)
+            # Mutative!
+            add_sentence(the_root, sentence)
+
+        pprint.pprint(the_root)
 
 if __name__ == '__main__':
     obj = HierarchyBuilder()
