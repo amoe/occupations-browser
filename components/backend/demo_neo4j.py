@@ -42,7 +42,27 @@ with driver.session() as session:
 ["ironmonger" "and" "founder"]
 
 
+roots should be ['keep', 'ironmonger', 'hold']
 
+The tree accessible through root('ironmonger') should be:
+
+{
+    'content': 'ironmonger',
+    'children': [
+        {
+            'content': 'and',
+            'children': [
+                {
+                    'content': 'founder'
+                }
+            ]
+        }
+    ]
+}
+
+
+
+But the expected tree for the other should be something very different.
 
 
 # MATCH a WHERE NOT (a)-[:LOVES]->()
