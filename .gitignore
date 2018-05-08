@@ -1,8 +1,6 @@
-intermediate_data/
-.ipynb_checkpoints/
-node_modules/
+components/frontend/node_modules
 __pycache__/
-dist/
-bundle.js
-yarn-error.log
+components/frontend/dist
+components/frontend/yarn-error.log
 data/
+components/backend/.cache
