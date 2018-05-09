@@ -17,7 +17,17 @@ def get_roots():
         }
     ]
 
+    # Roots index is a dictionary that's mapping from a string to the array
+    # index.  This is a little bit weird perhaps but it's just more clear to
+    # me for some reason, given that the array of roots is the correct
+    # end-representation.
+    roots_index = {
+        'foo': 0,
+        
+    }
+
     with driver.session() as session:
         with session.begin_transaction() as tx:
             results = tx.run(READ_ENTIRE_GRAPH_QUERY)
-            return roots
+            # results is of type BoltStatementResult
+            return results

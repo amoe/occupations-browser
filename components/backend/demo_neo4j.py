@@ -22,6 +22,13 @@ roots_index = {
     
 }
 
+def run_some_query(query):
+    with driver.session() as session:
+        with session.begin_transaction() as tx:
+            results = tx.run(query)
+            return results
+
+
 def read_all_nodes():
     with driver.session() as session:
         with session.begin_transaction() as tx:
