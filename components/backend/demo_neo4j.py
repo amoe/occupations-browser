@@ -22,12 +22,11 @@ roots_index = {
     
 }
 
-
-with driver.session() as session:
-    with session.begin_transaction() as tx:
-        results = tx.run(READ_ENTIRE_GRAPH_QUERY)
-        for record in results:
-            node['content'] = record['n']
+def read_all_nodes():
+    with driver.session() as session:
+        with session.begin_transaction() as tx:
+            results = tx.run(READ_ENTIRE_GRAPH_QUERY)
+            return results
 
 
 # assert that 'ironmonger' is a root
@@ -36,15 +35,15 @@ with driver.session() as session:
 
 # given the data set provided by the shuffled set, which is as such
 
-["keep" "the" "Bell" "at" "Uxbridge"]
-["keep" "the" "Half-moon"]
-["hold" "a" "situation" "under" "the" "Honourable" "East" "India" "Company"]
-["ironmonger" "and" "founder"]
+# ["keep" "the" "Bell" "at" "Uxbridge"]
+# ["keep" "the" "Half-moon"]
+# ["hold" "a" "situation" "under" "the" "Honourable" "East" "India" "Company"]
+# ["ironmonger" "and" "founder"]
 
 
-roots should be ['keep', 'ironmonger', 'hold']
+# roots should be ['keep', 'ironmonger', 'hold']
 
-The tree accessible through root('ironmonger') should be:
+# The tree accessible through root('ironmonger') should be:
 
 {
     'content': 'ironmonger',
@@ -62,7 +61,7 @@ The tree accessible through root('ironmonger') should be:
 
 
 
-But the expected tree for the other should be something very different.
+# But the expected tree for the other should be something very different.
 
 
 # MATCH a WHERE NOT (a)-[:LOVES]->()
