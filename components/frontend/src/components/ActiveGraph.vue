@@ -1,6 +1,7 @@
 <template>
 <div>
   <button v-on:click="removeNode">foo</button>
+  <button v-on:click="removeNodeFromBackend">Remove node from backing store</button>
 
   <svg :width="width" :height="height">
     <g :transform="rootTranslation">
@@ -47,18 +48,31 @@ export default Vue.extend({
     },
     created() {
         bus.$on(events.DRAG_AND_DROP_OPERATION_CONFIRMED, () => this.handleDragAndDrop());
-
-        const rootToken = 'bear';
-
-        axios.get("/api/tree?root=" + rootToken).then(response => {
-            this.data = response.data;
-        }).catch(error => {
-            this.$message.error('Failed to query data from API');
-        });
+        this.updateFromBackend();
     },
     mounted() {
     },
     methods: {
+        removeNodeFromBackend() {
+            const rootToken = 'the';
+
+            // silliness
+            axios.post("/api/delete_some_node").then(response => {
+                this.$message('Removed an arbitrary node.');
+                this.updateFromBackend();
+            }).catch(error => {
+                this.$message.error('Something went wrong.');
+            });
+        },
+        updateFromBackend() {
+            const rootToken = 'the';
+
+            axios.get("/api/tree?root=" + rootToken).then(response => {
+                this.data = response.data;
+            }).catch(error => {
+                this.$message.error('Failed to query data from API');
+            });
+        },
         handleDragAndDrop(this: any) {
             console.log("detected a drag and drop");
             console.log("lastDrop was %o => %o", this.lastDrop.source, this.lastDrop.target);

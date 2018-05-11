@@ -15,3 +15,8 @@ def get_corpus():
 def get_tree_by_root():
     root = flask.request.args.get('root')
     return flask.jsonify(graph_operations.get_tree_by_root(root))
+
+@app.route('/delete_some_node', methods=['POST'])
+def delete_some_node():
+    graph_operations.delete_node('fox');
+    return ('', 204);

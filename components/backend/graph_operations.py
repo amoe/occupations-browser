@@ -20,6 +20,10 @@ APOC_TREE_GENERATOR_QUERY = """
     RETURN value
 """
 
+DELETE_NODE_QUERY = """
+    MATCH (n:Token {content: {wanted}}) DETACH DELETE n
+"""
+
 def run_some_query(query, parameters):
     with driver.session() as session:
         with session.begin_transaction() as tx:
@@ -63,3 +67,6 @@ def find_nodes_by_content_attribute(g, wanted):
     return [
         n for n, d in g.nodes(data=True) if d['content'] == wanted 
     ]
+
+def delete_node(wanted_content):
+    run_some_query(DELETE_NODE_QUERY, {'wanted': wanted_content})   
