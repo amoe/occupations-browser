@@ -24,6 +24,14 @@ DELETE_NODE_QUERY = """
     MATCH (n:Token {content: {wanted}}) DETACH DELETE n
 """
 
+CLEAR_GRAPH_QUERY = """
+    MATCH (n) DETACH DELETE n
+"""
+
+GET_ALL_ROOTS_QUERY = """
+    MATCH (n) WHERE NOT (n)<-[:PRECEDES]-() RETURN n
+"""
+
 def run_some_query(query, parameters):
     with driver.session() as session:
         with session.begin_transaction() as tx:
@@ -70,3 +78,12 @@ def find_nodes_by_content_attribute(g, wanted):
 
 def delete_node(wanted_content):
     run_some_query(DELETE_NODE_QUERY, {'wanted': wanted_content})   
+
+def clear_entire_graph():
+    run_some_query(CLEAR_GRAPH_QUERY, {})
+
+def get_all_roots():
+    return [
+        r.value()['content']
+        for r in run_some_query(GET_ALL_ROOTS_QUERY, {})
+    ]

@@ -2,6 +2,16 @@
 <div>
   <button v-on:click="removeNode">foo</button>
   <button v-on:click="removeNodeFromBackend">Remove node from backing store</button>
+  <button v-on:click="clearEntireGraph">Clear entire graph</button>
+
+  <el-select v-model="value" placeholder="Select">
+    <el-option
+      v-for="item in options"
+      :key="item.value"
+      :label="item.label"
+      :value="item.value">
+    </el-option>
+  </el-select>
 
   <svg :width="width" :height="height">
     <g :transform="rootTranslation">
@@ -43,16 +53,36 @@ export default Vue.extend({
     data() {
         return {
             data: null,
-            data3: graph.stratifySentence(["the", "big", "red", "dog"])
+            data3: graph.stratifySentence(["the", "big", "red", "dog"]),
+            options: []
         };
     },
     created() {
         bus.$on(events.DRAG_AND_DROP_OPERATION_CONFIRMED, () => this.handleDragAndDrop());
+
+        axios.get("/api/all_roots").then(response => {
+            console.log("found that roots were %o", response.data);
+            this.options = response.data.map(x => ({value: x, label: x}));
+        }).catch(error => {
+            this.$message.error('Failed to query data from API');
+        });
+
+        
+
         this.updateFromBackend();
     },
     mounted() {
     },
     methods: {
+        clearEntireGraph() {
+            axios.post("/api/clear_all_nodes").then(response => {
+                this.$message('Cleared graph');
+                this.updateFromBackend();
+            }).catch(error => {
+                this.$message.error('Something went wrong.');
+            });
+        },
+
         removeNodeFromBackend() {
             const rootToken = 'the';
 
