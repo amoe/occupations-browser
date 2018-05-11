@@ -1,5 +1,6 @@
 #! /usr/bin/env python3
 
+import functools
 import matplotlib
 import matplotlib.pyplot
 import networkx
@@ -12,32 +13,37 @@ uri = "bolt://localhost:7687"
 
 driver = neo4j.v1.GraphDatabase.driver(uri, auth=credentials)
 
-# This is the one you need, it operates with v2 of the rs2graph code below 
-# Note that the node with content 'the' is at the root here
-# There's a bug here because it's not going to return absolute leaf nodes at all
-# So that will fail with an empty result set causing strict_first to raise
-# an exception.
-INSANE_GRAPH_QUERY = """
-    MATCH (a:Token {content: {root}})-[:PRECEDES*]->(t:Token)
-    WITH COLLECT(a) + COLLECT(DISTINCT t) AS nodes_
-    UNWIND nodes_ AS n
-    OPTIONAL MATCH p = (n)-[r]-()
-    WITH n AS n2, COLLECT(DISTINCT RELATIONSHIPS(p)) AS nestedrel
-    RETURN n2, REDUCE(output = [], rel in nestedrel | output + rel) AS rels
+APOC_TREE_GENERATOR_QUERY = """
+    MATCH p = (:Token {content: {root}})-[:PRECEDES*]->(end:Token) 
+    WHERE NOT (end)-[:PRECEDES]->()
+    CALL apoc.convert.toTree([p]) YIELD value
+    RETURN value
 """
-
-
-
-def quickplot(g):
-    matplotlib.pyplot.clf()
-    networkx.draw_networkx(g)
-    matplotlib.pyplot.show()
 
 def run_some_query(query, parameters):
     with driver.session() as session:
         with session.begin_transaction() as tx:
             results = tx.run(query, parameters)
             return results
+
+def tree_to_graph(tree):
+    # defined by apoc, precedes is based on the relationship label
+    object_format = dict(id='_id', children='precedes')
+    return networkx.tree_graph(tree, object_format)
+
+def get_subgraph(root):
+    result = run_some_query(APOC_TREE_GENERATOR_QUERY, {'root': root})
+    paths = result.value()
+
+    if not paths:
+        raise Exception("no results. this can happen on attempt to query nonexistent node OR a leaf node")
+
+    return functools.reduce(networkx.compose, map(tree_to_graph, paths))
+
+def quickplot(g):
+    matplotlib.pyplot.clf()
+    networkx.draw_networkx(g)
+    matplotlib.pyplot.show()
 
 def strict_first(seq):
     if not seq:
@@ -49,7 +55,7 @@ def strict_first(seq):
     return seq[0]
 
 def get_tree_by_root(root):
-    graph = rs2graph_v3(run_some_query(INSANE_GRAPH_QUERY, {'root': root}))
+    graph = get_subgraph(root)
     root_id = strict_first(find_nodes_by_content_attribute(graph, root))
     return networkx.tree_data(graph, root_id)
 
@@ -59,71 +65,3 @@ def find_nodes_by_content_attribute(g, wanted):
     ]
 
 
-# this version expects a collection of rels in the variable 'rels'
-# But, this version doesn't handle dangling references
-def rs2graph_v2(rs):
-    graph = networkx.MultiDiGraph()
-
-    for record in rs:
-        node = record['n2']
-        if not node:
-            raise Exception('every row should have a node')
-
-        print("adding node")
-        nx_properties = {}
-        nx_properties.update(node.properties)
-        nx_properties['labels'] = list(node.labels)
-        graph.add_node(node.id, **nx_properties)
-
-        relationship_list = record['rels']
-
-        for relationship in relationship_list:
-            print("adding edge")
-            graph.add_edge(
-                relationship.start, relationship.end, key=relationship.type,
-                **relationship.properties
-            )
-
-    return graph
-
-
-# This version has to materialize the entire node set up front in order
-# to check for dangling references.  This may induce memory problems in large
-# result sets
-def rs2graph_v3(rs):
-    graph = networkx.MultiDiGraph()
-
-    materialized_result_set = list(rs)
-    node_id_set = set([
-        record['n2'].id for record in materialized_result_set
-    ])
-
-    for record in materialized_result_set:
-        node = record['n2']
-        if not node:
-            raise Exception('every row should have a node')
-
-        print("adding node")
-        nx_properties = {}
-        nx_properties.update(node.properties)
-        nx_properties['labels'] = list(node.labels)
-        graph.add_node(node.id, **nx_properties)
-
-        relationship_list = record['rels']
-
-        for relationship in relationship_list:
-            print("adding edge")
-
-            # Bear in mind that when we ask for all relationships on a node,
-            # we may find a node that PRECEDES the current node -- i.e. a node
-            # whose relationship starts outside the current subgraph returned
-            # by this query.
-            if relationship.start in node_id_set:
-                graph.add_edge(
-                    relationship.start, relationship.end, key=relationship.type,
-                    **relationship.properties
-                )
-            else:
-                print("ignoring dangling relationship [no need to worry]")
-
-    return graph
