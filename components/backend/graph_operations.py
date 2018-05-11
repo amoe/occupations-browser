@@ -63,5 +63,3 @@ def find_nodes_by_content_attribute(g, wanted):
     return [
         n for n, d in g.nodes(data=True) if d['content'] == wanted 
     ]
-
-
