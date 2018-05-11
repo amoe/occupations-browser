@@ -34,6 +34,7 @@ import layoutFunctions from '../layout-functions';
 import graph from '../graph';
 import bus from '../event-bus';
 import events from '../events';
+import axios from 'axios';
 
 export default Vue.extend({
     props: ['width', 'height', 'yMargin', 'depthOffset', 'textOffset', 'breadth'],
@@ -41,48 +42,16 @@ export default Vue.extend({
     data() {
         return {
             data: null,
-            data2: {
-                "name": "Eve",
-                "children": [
-                    {
-                        "name": "Cain"
-                    },
-                    {
-                        "name": "Seth",
-                        "children": [
-                            {
-                                "name": "Enos"
-                            },
-                            {
-                                "name": "Noam"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "Abel"
-                    },
-                    {
-                        "name": "Awan",
-                        "children": [
-                            {
-                                "name": "Enoch"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "Azura"
-                    }
-                ],
-            },              
             data3: graph.stratifySentence(["the", "big", "red", "dog"])
         };
     },
     created() {
         bus.$on(events.DRAG_AND_DROP_OPERATION_CONFIRMED, () => this.handleDragAndDrop());
 
-        //const stratify = d3.stratify().parentId(getParentId);
-        d3.csv("flare.csv").then(data => {
-            this.data = data;
+        axios.get("/api/tree?root=the").then(response => {
+            this.data = response.data;
+        }).catch(error => {
+            console.error("something went wrong: %o", error);
         });
     },
     mounted() {
@@ -92,11 +61,11 @@ export default Vue.extend({
             console.log("detected a drag and drop");
             console.log("lastDrop was %o => %o", this.lastDrop.source, this.lastDrop.target);
             const removedChildren = this.data2.children[1].children.splice(0, 1);
-            this.data2.children[1].name +=  "\u00b7" + removedChildren[0].name;
+            this.data.children[1].name +=  "\u00b7" + removedChildren[0].name;
         },
         removeNode() {
             console.log("remove node %o", true);
-            const removedElt = this.data2.children.shift();
+            const removedElt = this.data.children.shift();
             console.log("removed element: %o", removedElt);
         },
         handleMousedown() {
@@ -152,7 +121,7 @@ export default Vue.extend({
             console.log("text content requested, %o", d.data.name);
 
             // data goes here, whereas it's on id when using the stratified set from csv
-            return d.data.name;
+            return d.data.content;
         },
     },
     computed: {
@@ -189,7 +158,7 @@ export default Vue.extend({
            // const root = stratify(this.data).sort(ourCompare);
 
             // This is another option
-            let root = d3.hierarchy(this.data2, d => d.children);
+            let root = d3.hierarchy(this.data, d => d.children);
 
             return cluster(root);
         },
