@@ -48,7 +48,9 @@ export default Vue.extend({
     created() {
         bus.$on(events.DRAG_AND_DROP_OPERATION_CONFIRMED, () => this.handleDragAndDrop());
 
-        axios.get("/api/tree?root=the").then(response => {
+        const rootToken = 'bear';
+
+        axios.get("/api/tree?root=" + rootToken).then(response => {
             this.data = response.data;
         }).catch(error => {
             console.error("something went wrong: %o", error);

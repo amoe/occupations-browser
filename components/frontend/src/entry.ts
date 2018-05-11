@@ -10,6 +10,10 @@ import mc from './mutation-constants';
 import getters from './getters';
 import { DragAndDropOperation, NodeIdentifier } from './interfaces';
 
+import Element from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+
+Vue.use(Element)
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
