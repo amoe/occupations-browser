@@ -53,7 +53,7 @@ export default Vue.extend({
         axios.get("/api/tree?root=" + rootToken).then(response => {
             this.data = response.data;
         }).catch(error => {
-            console.error("something went wrong: %o", error);
+            this.$message.error('Failed to query data from API');
         });
     },
     mounted() {
