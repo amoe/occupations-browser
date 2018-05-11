@@ -4,7 +4,7 @@
   <button v-on:click="removeNodeFromBackend">Remove node from backing store</button>
   <button v-on:click="clearEntireGraph">Clear entire graph</button>
 
-  <el-select v-model="value" placeholder="Select">
+  <el-select v-model="value" placeholder="Select" v-on:change="changed">
     <el-option
       v-for="item in options"
       :key="item.value"
@@ -54,7 +54,8 @@ export default Vue.extend({
         return {
             data: null,
             data3: graph.stratifySentence(["the", "big", "red", "dog"]),
-            options: []
+            options: [],
+            currentRoot: 'the'
         };
     },
     created() {
@@ -74,6 +75,11 @@ export default Vue.extend({
     mounted() {
     },
     methods: {
+        changed(val) {
+            console.log("changed was called with value %o", val);
+            this.currentRoot = val;
+            this.updateFromBackend();
+        },
         clearEntireGraph() {
             axios.post("/api/clear_all_nodes").then(response => {
                 this.$message('Cleared graph');
@@ -95,9 +101,7 @@ export default Vue.extend({
             });
         },
         updateFromBackend() {
-            const rootToken = 'the';
-
-            axios.get("/api/tree?root=" + rootToken).then(response => {
+            axios.get("/api/tree?root=" + this.currentRoot).then(response => {
                 this.data = response.data;
             }).catch(error => {
                 this.$message.error('Failed to query data from API');
