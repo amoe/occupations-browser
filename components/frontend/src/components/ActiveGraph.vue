@@ -4,7 +4,7 @@
   <button v-on:click="removeNodeFromBackend">Remove node from backing store</button>
   <button v-on:click="clearEntireGraph">Clear entire graph</button>
 
-  <el-select v-model="value" placeholder="Select" v-on:change="changed">
+  <el-select v-model="currentRoot" placeholder="Select" v-on:change="changed">
     <el-option
       v-for="item in options"
       :key="item.value"
@@ -77,7 +77,6 @@ export default Vue.extend({
     methods: {
         changed(val) {
             console.log("changed was called with value %o", val);
-            this.currentRoot = val;
             this.updateFromBackend();
         },
         clearEntireGraph() {
