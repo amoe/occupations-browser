@@ -1,9 +1,12 @@
 #! /usr/bin/env python3
 
+import neo4j
+import neo4j.v1
 import matplotlib
 import matplotlib.pyplot
 import networkx
 import pprint
+import misc
 
 result_set = []
 
@@ -25,13 +28,6 @@ for item in result_set:
             key=rel.get('type'), **properties
         )
 
-import neo4j
-import neo4j.v1
-
-credentials = ('neo4j', 'password')
-uri = "bolt://localhost:7687"
-
-driver = neo4j.v1.GraphDatabase.driver(uri, auth=credentials)
 
 # This is the one you need, it operates with v2 of the rs2graph code below 
 # Note that the node with content 'the' is at the root here
@@ -66,19 +62,9 @@ READ_GRAPH_NODES = """
     MATCH (n) RETURN n
 """
 
-def quickplot(g):
-    matplotlib.pyplot.clf()
-    networkx.draw_networkx(g)
-    matplotlib.pyplot.show()
-
-def run_some_query(query, parameters):
-    with driver.session() as session:
-        with session.begin_transaction() as tx:
-            results = tx.run(query, parameters)
-            return results
 
 def blah():
-    return rs2graph(run_some_query(SLURP_GRAPH_FROM_SPECIFIC_ROOT_INCLUDING_ROOT, {}))
+    return rs2graph(misc.run_some_query(SLURP_GRAPH_FROM_SPECIFIC_ROOT_INCLUDING_ROOT, {}))
 
 def rs2graph(rs):
     graph = networkx.MultiDiGraph()

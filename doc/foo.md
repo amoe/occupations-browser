@@ -1,7 +1,5 @@
 Given the following graph:
 
-
-
 Which is creatable by the following Cypher script:
 
     CREATE

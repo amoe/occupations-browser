@@ -7,11 +7,7 @@ import networkx
 import pprint
 import neo4j
 import neo4j.v1
-
-credentials = ('neo4j', 'password')
-uri = "bolt://localhost:7687"
-
-driver = neo4j.v1.GraphDatabase.driver(uri, auth=credentials)
+import misc
 
 APOC_TREE_GENERATOR_QUERY = """
     MATCH p = (:Token {content: {root}})-[:PRECEDES*]->(end:Token) 
@@ -32,11 +28,6 @@ GET_ALL_ROOTS_QUERY = """
     MATCH (n) WHERE NOT (n)<-[:PRECEDES]-() RETURN n
 """
 
-def run_some_query(query, parameters):
-    with driver.session() as session:
-        with session.begin_transaction() as tx:
-            results = tx.run(query, parameters)
-            return results
 
 def tree_to_graph(tree):
     # defined by apoc, precedes is based on the relationship label
@@ -44,7 +35,7 @@ def tree_to_graph(tree):
     return networkx.tree_graph(tree, object_format)
 
 def get_subgraph(root):
-    result = run_some_query(APOC_TREE_GENERATOR_QUERY, {'root': root})
+    result = misc.run_some_query(APOC_TREE_GENERATOR_QUERY, {'root': root})
     paths = result.value()
 
     if not paths:
@@ -77,10 +68,10 @@ def find_nodes_by_content_attribute(g, wanted):
     ]
 
 def delete_node(wanted_content):
-    run_some_query(DELETE_NODE_QUERY, {'wanted': wanted_content})   
+    misc.run_some_query(DELETE_NODE_QUERY, {'wanted': wanted_content})   
 
 def clear_entire_graph():
-    run_some_query(CLEAR_GRAPH_QUERY, {})
+    misc.run_some_query(CLEAR_GRAPH_QUERY, {})
 
 def get_all_roots():
     return [
