@@ -1,18 +1,21 @@
 <template>
 <div>
-  <button v-on:click="removeNode">foo</button>
-  <button v-on:click="removeNodeFromBackend">Remove node from backing store</button>
-  <button v-on:click="clearEntireGraph">Clear entire graph</button>
+  <el-button v-on:click="removeNode">foo</el-button>
+  <el-button v-on:click="removeNodeFromBackend">Remove node from backing store</el-button>
+  <el-button v-on:click="clearEntireGraph">Clear entire graph</el-button>
 
-  <el-select filterable
-             remote
-             v-model="currentRoot"
-             :remote-method="remoteMethod"
-             v-on:change="changed">
-    <el-option v-for="item in options4"
-               :label="item.label"
-               :value="item.value"/>
-  </el-select>
+  <div>
+    <el-select filterable
+               remote
+               v-model="currentRoot"
+               :remote-method="searchRoots"
+               v-on:change="changed">
+      <el-option v-for="item in options4"
+                 :key="item.value"
+                 :label="item.label"
+                 :value="item.value"/>
+    </el-select>
+  </div>
 
   <svg :width="width" :height="height">
     <g :transform="rootTranslation">
@@ -55,7 +58,6 @@ export default Vue.extend({
         return {
             data: null,
             data3: graph.stratifySentence(["the", "big", "red", "dog"]),
-            options: [],
             options4: [],
             value9: null,
             currentRoot: 'Oyl'
@@ -63,23 +65,12 @@ export default Vue.extend({
     },
     created() {
         bus.$on(events.DRAG_AND_DROP_OPERATION_CONFIRMED, () => this.handleDragAndDrop());
-
-        // does this even make sense
-        axios.get("/api/tezra/roots").then(response => {
-            console.log("found %o roots", response.data.length);
-            this.options = response.data.map(x => ({value: x, label: x}));
-        }).catch(error => {
-            this.$message.error('Failed to query data from API');
-        });
-
-        
-
         this.updateFromBackend();
     },
     mounted() {
     },
     methods: {
-        remoteMethod(query) {
+        searchRoots(query) {
             console.log("remote method called with argument %o", query);
             axios.get("/api/tezra/roots?q=" + query).then(response => {
                 this.options4 = response.data.map(x => ({value: x, label: x}));
