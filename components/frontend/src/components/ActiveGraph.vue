@@ -4,13 +4,14 @@
   <button v-on:click="removeNodeFromBackend">Remove node from backing store</button>
   <button v-on:click="clearEntireGraph">Clear entire graph</button>
 
-  <el-select v-model="currentRoot" placeholder="Select" v-on:change="changed">
-    <el-option
-      v-for="item in options"
-      :key="item.value"
-      :label="item.label"
-      :value="item.value">
-    </el-option>
+  <el-select filterable
+             remote
+             v-model="currentRoot"
+             :remote-method="remoteMethod"
+             v-on:change="changed">
+    <el-option v-for="item in options4"
+               :label="item.label"
+               :value="item.value"/>
   </el-select>
 
   <svg :width="width" :height="height">
@@ -55,6 +56,8 @@ export default Vue.extend({
             data: null,
             data3: graph.stratifySentence(["the", "big", "red", "dog"]),
             options: [],
+            options4: [],
+            value9: null,
             currentRoot: 'Oyl'
         };
     },
@@ -63,7 +66,7 @@ export default Vue.extend({
 
         // does this even make sense
         axios.get("/api/tezra/roots").then(response => {
-            console.log("found that roots were %o", response.data);
+            console.log("found %o roots", response.data.length);
             this.options = response.data.map(x => ({value: x, label: x}));
         }).catch(error => {
             this.$message.error('Failed to query data from API');
@@ -76,6 +79,14 @@ export default Vue.extend({
     mounted() {
     },
     methods: {
+        remoteMethod(query) {
+            console.log("remote method called with argument %o", query);
+            axios.get("/api/tezra/roots?q=" + query).then(response => {
+                this.options4 = response.data.map(x => ({value: x, label: x}));
+            }).catch(error => {
+                this.$message.error('Failed to query data from API');
+            });
+        },
         changed(val) {
             console.log("changed was called with value %o", val);
             this.updateFromBackend();
@@ -168,7 +179,7 @@ export default Vue.extend({
             }
         },
         getNodeTextContent(d) {
-            console.log("text content requested, %o", d.data);
+//            console.log("text content requested, %o", d.data);
 
             // data goes here, whereas it's on id when using the stratified set from csv
             return d.data.id;

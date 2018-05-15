@@ -42,4 +42,5 @@ def tezra_get_tree():
 
 @app.route('/tezra/roots', methods=['GET'])
 def tezra_get_roots():
-    return flask.jsonify(graph_operations_tezra.get_all_roots())
+    q = flask.request.args.get('q')
+    return flask.jsonify(graph_operations_tezra.get_roots_with_substring_match(q))

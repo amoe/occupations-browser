@@ -54,7 +54,7 @@ export default Vue.extend({
         this.$nextTick(() => {
             const svg  = this.$refs.ghostNodeSvgCircle;
             const selection = d3.select(svg);
-            console.log("selection is %o", selection);
+//            console.log("selection is %o", selection);
             
             const dragBehaviourAdder = d3.drag()
                 .on('start', this.dragStarted)
