@@ -1,5 +1,7 @@
 #! /usr/bin/env python3
 
+# This is for the first data model
+
 import functools
 import matplotlib
 import matplotlib.pyplot
@@ -76,5 +78,5 @@ def clear_entire_graph():
 def get_all_roots():
     return [
         r.value()['content']
-        for r in run_some_query(GET_ALL_ROOTS_QUERY, {})
+        for r in misc.run_some_query(GET_ALL_ROOTS_QUERY, {})
     ]

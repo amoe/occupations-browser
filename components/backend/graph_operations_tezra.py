@@ -15,6 +15,12 @@ PULL_ALL_TOKEN_SEQUENCES = """
     RETURN s1, COLLECT(t) AS seq;
 """
 
+GET_ALL_ROOTS_QUERY = """
+    MATCH (t1:Token)<-[r:CONTAINS]-(s1:Sentence)
+    WHERE r.index = 0
+    RETURN DISTINCT t1 AS root
+"""
+
 def declare_group(synonym, master):
     results = misc.run_some_query(DECLARE_GROUP_QUERY, {'synonym': synonym, 'master': master})
     print(results)
@@ -43,8 +49,13 @@ def pull_graph():
 
     return graph
 
-def getblah():
+def get_tree_by_root(root):
     g = pull_graph()
-    tree = networkx.dfs_tree(g, 'Oyl', depth_limit=2)
-    return networkx.tree_data(tree, 'Oyl')
+    tree = networkx.dfs_tree(g, root, depth_limit=2)
+    return networkx.tree_data(tree, root)
     
+def get_all_roots():
+    return [
+        record['root'].properties['content']
+        for record in misc.run_some_query(GET_ALL_ROOTS_QUERY, {})
+    ]

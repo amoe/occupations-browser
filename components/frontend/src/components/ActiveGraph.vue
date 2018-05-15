@@ -55,13 +55,14 @@ export default Vue.extend({
             data: null,
             data3: graph.stratifySentence(["the", "big", "red", "dog"]),
             options: [],
-            currentRoot: 'the'
+            currentRoot: 'Oyl'
         };
     },
     created() {
         bus.$on(events.DRAG_AND_DROP_OPERATION_CONFIRMED, () => this.handleDragAndDrop());
 
-        axios.get("/api/all_roots").then(response => {
+        // does this even make sense
+        axios.get("/api/tezra/roots").then(response => {
             console.log("found that roots were %o", response.data);
             this.options = response.data.map(x => ({value: x, label: x}));
         }).catch(error => {
@@ -100,7 +101,7 @@ export default Vue.extend({
             });
         },
         updateFromBackend() {
-            axios.get("/api/tree?root=" + this.currentRoot).then(response => {
+            axios.get("/api/tezra/tree?root=" + this.currentRoot).then(response => {
                 this.data = response.data;
             }).catch(error => {
                 this.$message.error('Failed to query data from API');
@@ -167,10 +168,10 @@ export default Vue.extend({
             }
         },
         getNodeTextContent(d) {
-            console.log("text content requested, %o", d.data.name);
+            console.log("text content requested, %o", d.data);
 
             // data goes here, whereas it's on id when using the stratified set from csv
-            return d.data.content;
+            return d.data.id;
         },
     },
     computed: {
