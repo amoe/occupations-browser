@@ -42,3 +42,9 @@ def pull_graph():
         add_linear_nodes(graph, [node.properties['content'] for node in result['seq']])
 
     return graph
+
+def getblah():
+    g = pull_graph()
+    tree = networkx.dfs_tree(g, 'Oyl', depth_limit=2)
+    return networkx.tree_data(tree, 'Oyl')
+    

@@ -2,21 +2,21 @@
 
 
 
-// CREATE
-//   (s1:Sentence {tokens: ["Jake", "wanted", "the", "dog", "the", "neighbours", "had"]}),
-//   (t1:Token {content: "Jake"}),
-//   (t2:Token {content: "wanted"}),
-//   (det:Token {content: "the"}),
-//   (t3:Token {content: "dog"}),
-//   (t4:Token {content: "neighbours"}),
-//   (t5:Token {content: "had"}),
-//   (s1)-[:CONTAINS {index: 0, firstToken: true}]->(t1),
-//   (s1)-[:CONTAINS {index: 1}]->(t2),
-//   (s1)-[:CONTAINS {index: 2}]->(det),
-//   (s1)-[:CONTAINS {index: 3}]->(t3),
-//   (s1)-[:CONTAINS {index: 4}]->(det),
-//   (s1)-[:CONTAINS {index: 5}]->(t4),
-//   (s1)-[:CONTAINS {index: 6, lastToken: true}]->(t5);
+CREATE
+  (s1:Sentence {tokens: ["Jake", "wanted", "the", "dog", "the", "neighbours", "had"]}),
+  (t1:Token {content: "Jake"}),
+  (t2:Token {content: "wanted"}),
+  (det:Token {content: "the"}),
+  (t3:Token {content: "dog"}),
+  (t4:Token {content: "neighbours"}),
+  (t5:Token {content: "had"}),
+  (s1)-[:CONTAINS {index: 0, firstToken: true}]->(t1),
+  (s1)-[:CONTAINS {index: 1}]->(t2),
+  (s1)-[:CONTAINS {index: 2}]->(det),
+  (s1)-[:CONTAINS {index: 3}]->(t3),
+  (s1)-[:CONTAINS {index: 4}]->(det),
+  (s1)-[:CONTAINS {index: 5}]->(t4),
+  (s1)-[:CONTAINS {index: 6, lastToken: true}]->(t5);
 
 
 CREATE (s1:Sentence {tokens: ["Oyl", "shop"]}),
@@ -48,11 +48,11 @@ CREATE (s1:Sentence {tokens: ["the", "quick", "brown", "fox"]}),
        (s2)-[:CONTAINS {index: 2}]->(n3),
        (s2)-[:CONTAINS {index: 3}]->(n5);
 
-// CREATE (s1:Sentence {tokens: ["lonely", "island"]}),
-//        (n1:Token {content: "lonely"}),
-//        (n2:Token {content: "island"}),
-//        (s1)-[:CONTAINS {index: 0}]->(n1),
-//        (s1)-[:CONTAINS {index: 1}]->(n2);
+CREATE (s1:Sentence {tokens: ["lonely", "island"]}),
+       (n1:Token {content: "lonely"}),
+       (n2:Token {content: "island"}),
+       (s1)-[:CONTAINS {index: 0}]->(n1),
+       (s1)-[:CONTAINS {index: 1}]->(n2);
 
 
 // MATCH (s1:Sentence)-[r:CONTAINS]->(t1:Token)

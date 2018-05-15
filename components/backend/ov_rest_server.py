@@ -1,5 +1,6 @@
 import flask
 import graph_operations
+import graph_operations_tezra
 
 def create_app():
     app = flask.Flask(__name__)
@@ -32,3 +33,8 @@ def clear_all_nodes():
 def get_all_roots():
     return flask.jsonify(graph_operations.get_all_roots())
 
+
+
+@app.route('/tezra/tree', methods=['GET'])
+def tezra_get_tree():
+    return flask.jsonify(graph_operations_tezra.getblah())
