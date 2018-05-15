@@ -10,7 +10,7 @@
                v-model="currentRoot"
                :remote-method="searchRoots"
                v-on:change="changed">
-      <el-option v-for="item in options4"
+      <el-option v-for="item in possibleRoots"
                  :key="item.value"
                  :label="item.label"
                  :value="item.value"/>
@@ -58,7 +58,7 @@ export default Vue.extend({
         return {
             data: null,
             data3: graph.stratifySentence(["the", "big", "red", "dog"]),
-            options4: [],
+            possibleRoots: [],
             value9: null,
             currentRoot: 'Oyl'
         };
@@ -73,7 +73,7 @@ export default Vue.extend({
         searchRoots(query) {
             console.log("remote method called with argument %o", query);
             axios.get("/api/tezra/roots?q=" + query).then(response => {
-                this.options4 = response.data.map(x => ({value: x, label: x}));
+                this.possibleRoots = response.data.map(x => ({value: x, label: x}));
             }).catch(error => {
                 this.$message.error('Failed to query data from API');
             });
