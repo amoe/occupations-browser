@@ -19,6 +19,19 @@
 //   (s1)-[:CONTAINS {index: 6, lastToken: true}]->(t5);
 
 
+CREATE (s1:Sentence {tokens: ["Oyl", "shop"]}),
+       (s2:Sentence {tokens: ["oil", "broker"]}),
+       (n1:Token {content: "Oyl"}),
+       (n2:Token {content: "shop"}),
+       (n3:Token {content: "oil"}),
+       (n4:Token {content: "broker"}),
+       (s1)-[:CONTAINS {index: 0}]->(n1),
+       (s1)-[:CONTAINS {index: 1}]->(n2),
+       (s2)-[:CONTAINS {index: 0}]->(n3),
+       (s2)-[:CONTAINS {index: 1}]->(n4);
+    
+
+         
 CREATE (s1:Sentence {tokens: ["the", "quick", "brown", "fox"]}),
        (s2:Sentence {tokens: ["the", "quick", "brown", "bear"]}),
        (n1:Token {content: "the"}),
