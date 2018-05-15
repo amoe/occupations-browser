@@ -2,6 +2,8 @@ import neo4j
 import neo4j.v1
 import matplotlib
 import networkx
+import matplotlib
+import matplotlib.pyplot
 
 credentials = ('neo4j', 'password')
 uri = "bolt://localhost:7687"
