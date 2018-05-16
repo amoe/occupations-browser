@@ -33,14 +33,27 @@ def clear_all_nodes():
 def get_all_roots():
     return flask.jsonify(graph_operations.get_all_roots())
 
-
-
 @app.route('/tezra/tree', methods=['GET'])
 def tezra_get_tree():
     root = flask.request.args.get('root')
-    return flask.jsonify(graph_operations_tezra.get_tree_by_root(root))
+    zoom_depth = int(flask.request.args.get('zoom_depth'))
+    return flask.jsonify(graph_operations_tezra.get_tree_by_root(root, zoom_depth))
 
 @app.route('/tezra/roots', methods=['GET'])
 def tezra_get_roots():
     q = flask.request.args.get('q')
     return flask.jsonify(graph_operations_tezra.get_roots_with_substring_match(q))
+
+# what does it mean to ask for the source?
+# We can only ask for a source by node.
+@app.route('/tezra/sources', methods=['GET'])
+def tezra_get_sources():
+    # Sources should return a list of sentence identifiers.
+    sources = [
+        {'token_list': ["the", "quick", "brown", "fox"],
+         'source': 1},
+        {'token_list': ["jake", "had", "a", "dog"],
+         'source': 2}
+    ]
+    return flask.jsonify(sources)
+    

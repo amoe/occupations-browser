@@ -19,7 +19,7 @@ def run_some_query(query, parameters):
 
 CREATE_PARENT_SENTENCE = """
     CREATE
-      (s1:Sentence {tokens: {token_list}})
+      (s1:Sentence {tokens: {token_list}, source: {source}})
 """
 
 MERGE_TOKEN_NODE = """
@@ -36,14 +36,16 @@ CREATE_CONTAINS_RELATIONSHIP = """
 for path in sys.argv[1:]:
     with open(path, 'r') as csvfile:
         reader = csv.DictReader(csvfile)
-        for row in reader:
+        for index, row in enumerate(reader):
             tokens = nltk.word_tokenize(row['occupation_status'])
-            result = run_some_query(CREATE_PARENT_SENTENCE, {'token_list': tokens})
+            result = run_some_query(
+                CREATE_PARENT_SENTENCE, {'token_list': tokens, 'source': index}
+            )
 
             for index, token in enumerate(tokens):
                 run_some_query(MERGE_TOKEN_NODE, {'content': token})
                 run_some_query(
                     CREATE_CONTAINS_RELATIONSHIP,
-                    {'content': token, 'index': index, 'token_list': tokens}
+                    {'content': token, 'index': index, 'token_list': tokens,}
                 )
                 

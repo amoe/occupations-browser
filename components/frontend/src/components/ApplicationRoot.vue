@@ -25,6 +25,9 @@
 
       <label for="breadth">Breadth</label>
       <input id="breadth" v-model.number="breadth">
+
+      <label for="zoomDepth">Zoom Depth</label>
+      <input id="zoomDepth" v-model.number="zoomDepth">
     </div>
 
     <div>
@@ -37,7 +40,8 @@
                     :y-margin="yMargin"
                     :depth-offset="depthOffset"
                     :text-offset="textOffset"
-                    :breadth="breadth"></active-graph>
+                    :breadth="breadth"
+                    :zoom-depth="zoomDepth"></active-graph>
     </div>
 
     <div class="text-view">
@@ -71,7 +75,8 @@ export default Vue.extend({
             yMargin: 20,
             depthOffset: 120,
             textOffset: 22,   // depends on circle radius
-            breadth: 360
+            breadth: 360,
+            zoomDepth: 2
         };
     },
     methods: {

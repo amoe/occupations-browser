@@ -3,6 +3,15 @@
   <el-button v-on:click="removeNode">foo</el-button>
   <el-button v-on:click="removeNodeFromBackend">Remove node from backing store</el-button>
   <el-button v-on:click="clearEntireGraph">Clear entire graph</el-button>
+  <el-button v-on:click="updateFromBackend">Update from backend</el-button>
+
+    <el-popover placement="top-start"
+                title="Title"
+                width="200"
+                trigger="hover"
+                ref="nonesuch"
+                content="this is content, this is content, this is content">
+    </el-popover>
 
   <div>
     <el-select filterable
@@ -16,6 +25,10 @@
                  :value="item.value"/>
     </el-select>
   </div>
+
+  <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" width="200" height="200">
+    <circle v-popover:nonesuch cx="50" cy="50" r="50"/>
+  </svg>
 
   <svg :width="width" :height="height">
     <g :transform="rootTranslation">
@@ -52,7 +65,7 @@ import events from '../events';
 import axios from 'axios';
 
 export default Vue.extend({
-    props: ['width', 'height', 'yMargin', 'depthOffset', 'textOffset', 'breadth'],
+    props: ['width', 'height', 'yMargin', 'depthOffset', 'textOffset', 'breadth', 'zoomDepth'],
     components: {NodeCircle},
     data() {
         return {
@@ -103,7 +116,7 @@ export default Vue.extend({
             });
         },
         updateFromBackend() {
-            axios.get("/api/tezra/tree?root=" + this.currentRoot).then(response => {
+            axios.get("/api/tezra/tree?root=" + this.currentRoot + "&zoom_depth=" + this.zoomDepth).then(response => {
                 this.data = response.data;
             }).catch(error => {
                 this.$message.error('Failed to query data from API');

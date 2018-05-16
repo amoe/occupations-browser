@@ -55,9 +55,9 @@ def pull_graph():
 
     return graph
 
-def get_tree_by_root(root):
+def get_tree_by_root(root, depth_limit):
     g = pull_graph()
-    tree = networkx.dfs_tree(g, root, depth_limit=2)
+    tree = networkx.dfs_tree(g, root, depth_limit=depth_limit)
     return networkx.tree_data(tree, root)
 
 def get_roots_with_substring_match(substring):
