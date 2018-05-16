@@ -13,6 +13,8 @@
                 content="this is content, this is content, this is content">
     </el-popover>
 
+  <test-component></test-component>
+
   <div>
     <el-select filterable
                remote
@@ -27,7 +29,15 @@
   </div>
 
   <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" width="200" height="200">
-    <circle v-popover:nonesuch cx="50" cy="50" r="50"/>
+    <el-popover placement="top-start"
+                title="Title"
+                width="200"
+                trigger="hover"
+                ref="inside"
+                content="this is content, this is content, this is content">
+    </el-popover>
+
+    <circle v-popover:inside cx="50" cy="50" r="50"/>
   </svg>
 
   <svg :width="width" :height="height">
@@ -57,6 +67,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import NodeCircle from './NodeCircle.vue';
+import TestComponent from './TestComponent.vue';
 import * as d3 from 'd3';
 import layoutFunctions from '../layout-functions';
 import graph from '../graph';
@@ -66,7 +77,7 @@ import axios from 'axios';
 
 export default Vue.extend({
     props: ['width', 'height', 'yMargin', 'depthOffset', 'textOffset', 'breadth', 'zoomDepth'],
-    components: {NodeCircle},
+    components: {NodeCircle, TestComponent},
     data() {
         return {
             data: null,
