@@ -10,7 +10,6 @@
                 content="this is content, this is content, this is content">
     </el-popover>
 
-
     <el-button v-popover:daveref>Hover to activate</el-button>
   </div>
 </template>

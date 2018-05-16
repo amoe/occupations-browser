@@ -35,9 +35,8 @@
                 trigger="hover"
                 ref="inside"
                 content="this is content, this is content, this is content">
+      <circle slot="reference" v-popover:inside cx="50" cy="50" r="50"/>
     </el-popover>
-
-    <circle v-popover:inside cx="50" cy="50" r="50"/>
   </svg>
 
   <svg :width="width" :height="height">
