@@ -7,5 +7,6 @@ export default {
     SET_DRAG_SOURCE: 'setDragSource',
     SWAP_TAXONOMY_WIDGETS: 'swapTaxonomyWidgets',
     SHUFFLE: 'shuffle',
-    ADD_WIDGET: 'addWidget'
+    ADD_WIDGET: 'addWidget',
+    REMOVE_WIDGET: 'removeWidget'
 };

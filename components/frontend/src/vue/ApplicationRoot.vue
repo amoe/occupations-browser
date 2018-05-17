@@ -62,10 +62,19 @@ export default Vue.extend({
             },
         };
     },
+    created: function() {
+        // Set up all of our events
+        bus.$on(events.WIDGET_REMOVED, (name) => this.handleWidgetRemoved(name));
+    },
     methods: {
+        handleWidgetRemoved(name) {
+            console.log("received widget removed event, name was %o", name);
+            this.$store.commit(mc.REMOVE_WIDGET, {name});
+        },
         addWidget() {
             console.log("adding widget");
 
+            // This should really happen in one mutation
             const id = uuidv4();
             this.widgets[id] = {
                 content: "New widget",
@@ -85,8 +94,6 @@ export default Vue.extend({
         drop(e) {
             console.log("drop occurred, event was %o", e);
         }
-    },
-    created: function() {
     },
     // mapState doesn't work with typescript: "Property 'mapState' does not exist on type"
     // So we manually create the relevant computed properties.

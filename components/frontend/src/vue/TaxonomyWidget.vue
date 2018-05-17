@@ -8,6 +8,11 @@
         :class="category">
     <!-- Dragover must be preventDefaulted, because the default handler will
          disallow a drop. -->
+    <el-button v-on:click="removeWidget"
+               type="info"
+               icon="el-icon-close"></el-button>
+
+
     <input name="taxonomyType" :value="content"></input>
     <input name="taxonomySubtype" :value="content"></input>
   </div>
@@ -17,6 +22,8 @@
 import Vue from 'vue';
 import {mapGetters} from 'vuex';
 import mc from '../mutation-constants';
+import events from '../events';
+import bus from '../event-bus';
 
 const DND_DATA_CONTENT_TYPE = 'text/plain';
 
@@ -28,6 +35,11 @@ export default Vue.extend({
         };
     },
     methods: {
+        removeWidget() {
+            console.log("about to broadcast event");
+            // This should be broacasting an event on the bus.
+            bus.$emit(events.WIDGET_REMOVED, this.name);
+        },
         dragOver(e) {
             console.log("drag over event happened, event was %o");
         },

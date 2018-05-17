@@ -78,6 +78,9 @@ const store = new Vuex.Store({
         },
         [mc.ADD_WIDGET]: (state, { id }) => {
             state.widgetOrder.push(id);
+        },
+        [mc.REMOVE_WIDGET]: (state, { name }) => {
+            state.widgetOrder = _.filter(state.widgetOrder, w => w !== name);
         }
     },
     actions
