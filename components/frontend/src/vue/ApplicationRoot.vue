@@ -4,7 +4,9 @@
       <taxonomy-widget v-for="item in widgetOrder"
                        :key="item"
                        :name="item"
-                       :content="widgets[item].content">
+                       :category="widgets[item].category"
+                       :content="widgets[item].content"
+                       :includedInWorkingSet="widgets[item].includedInWorkingSet">
         </taxonomy-widget>
     </div>
 
@@ -38,12 +40,18 @@ export default Vue.extend({
             widgets: {
                 alpha: {
                     content: "Alpha Widget",
+                    category: 'title',
+                    includedInWorkingSet: true
                 },
                 beta: {
                     content: "Beta Widget",
+                    category: 'place',
+                    includedInWorkingSet: false
                 },
                 gamma: {
                     content: "Gamma Widget",
+                    category: 'object',
+                    includedInWorkingSet: true
                 }
             },
         };
@@ -82,5 +90,4 @@ body {
 }
 
 button { margin: 2em; }
-
 </style>

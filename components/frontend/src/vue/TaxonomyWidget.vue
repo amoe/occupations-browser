@@ -3,7 +3,9 @@
         draggable="true"
         v-on:dragstart="dragStart"
         v-on:dragover.prevent="dragOver"
-        v-on:drop="drop">
+        v-on:drop="drop"
+        v-bind:style="calculateStyle()"
+        :class="category">
     <!-- Dragover must be preventDefaulted, because the default handler will
          disallow a drop. -->
     <input name="taxonomyType" :value="content"></input>
@@ -19,7 +21,7 @@ import mc from '../mutation-constants';
 const DND_DATA_CONTENT_TYPE = 'text/plain';
 
 export default Vue.extend({
-    props: ['content', 'name'],
+    props: ['content', 'name', 'category', 'includedInWorkingSet'],
     components: {},
     data: function() {
         return {
@@ -40,6 +42,24 @@ export default Vue.extend({
             console.log("drop occurred, drop data was %o", source);
 
             this.$store.commit(mc.SWAP_TAXONOMY_WIDGETS, {source, target});
+        },
+        getClass() {
+            return {
+                'title': true
+            };
+        },
+        calculateStyle() {
+            console.log("computed style called");
+
+            const hue = 22.4;
+            const lightness = 50;
+            const saturation = this.includedInWorkingSet ? 100 : 50;
+
+            const colorExpression = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+
+            const foo =  `background-color: ${colorExpression}`;
+            console.log("foo is %o", foo);
+            return foo;
         }
     },
     computed: {
@@ -53,10 +73,23 @@ export default Vue.extend({
 <style>
 .taxonomy-widget {
     border: 1px solid black;
-    background-color: #ff5f00;
     display: inline;
     padding: 1em;
     margin: 1em;
 }
+
+/*
+.title {
+    background-color: hsl(22.4, 100%, 50%);
+}
+
+.place {
+    background-color: hsl(317.6, 100%, 29.2%);
+}
+
+.object {
+    background-color: hsl(198.1, 100%, 44.3%);
+}
+*/
 </style>
         
