@@ -2,7 +2,7 @@
 
 import * as log from 'loglevel';
 import mymodule from './mymodule';
-import ApplicationRoot from './components/ApplicationRoot.vue';
+import ApplicationRoot from './vue/ApplicationRoot.vue';
 import Vue from 'vue';
 import Vuex from 'vuex';
 import actions from './actions';
