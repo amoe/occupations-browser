@@ -5,14 +5,6 @@
   <el-button v-on:click="clearEntireGraph">Clear entire graph</el-button>
   <el-button v-on:click="updateFromBackend">Update from backend</el-button>
 
-    <el-popover placement="top-start"
-                title="Title"
-                width="200"
-                trigger="hover"
-                ref="nonesuch"
-                content="this is content, this is content, this is content">
-    </el-popover>
-
   <test-component></test-component>
 
   <div>
@@ -29,12 +21,6 @@
   </div>
 
   <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" width="200" height="200">
-    <el-popover placement="top-start"
-                title="Title"
-                width="200"
-                trigger="hover"
-                ref="inside"
-                content="this is content, this is content, this is content">
       <circle slot="reference" v-popover:inside cx="50" cy="50" r="50"/>
     </el-popover>
   </svg>

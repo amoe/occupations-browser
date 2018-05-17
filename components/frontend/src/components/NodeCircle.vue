@@ -7,8 +7,6 @@
             :fill="realNodeFill"
             ref="realNodeSvgCircle"/>
 
-
-
     <!-- The ghost node has to handle all of the events, because it's always
          in front of the real node.  Luckily the fact that the ghost node
          retains its real 'identity' in terms of the drop selection means that
@@ -16,13 +14,14 @@
     <circle class="ghost-node"
             :r="ghostRadiusEm"
             ref="ghostNodeSvgCircle"
-            v-popover:nonesuch
             :cx="cx"
             :cy="cy"
             :opacity="ghostOpacity"
             v-on:mouseover="handleMouseover"
             v-on:mouseout="handleMouseout"
-            :pointer-events="pointerEvents"/>
+            :pointer-events="pointerEvents">
+      <title>This is a tooltip</title>
+    </circle>
 
   </g>
 </template>
@@ -40,7 +39,7 @@ import events from '../events';
 // with the various corner cases.
 
 export default Vue.extend({
-    props: ['identifier'],
+    props: ['identifier', 'source'],
     data() {
         return {
             cx: 0,
@@ -105,10 +104,15 @@ export default Vue.extend({
             this.cx = d3.event.x;
             this.cy = d3.event.y;
         },
+        showTooltip() {
+            console.log("the tooltip is as such");
+        },
         // These are handled by nodes when they are acting as 'target nodes'
         handleMouseover() {
             console.log("mouseover");
             
+
+            this.showTooltip();
 
             if (this.isDragInProgress) {
                 this.realNodeFill = "green";
