@@ -6,5 +6,6 @@ export default {
     CONFIRM_DROP: 'confirmDrop',
     SET_DRAG_SOURCE: 'setDragSource',
     SWAP_TAXONOMY_WIDGETS: 'swapTaxonomyWidgets',
-    SHUFFLE: 'shuffle'
+    SHUFFLE: 'shuffle',
+    ADD_WIDGET: 'addWidget'
 };

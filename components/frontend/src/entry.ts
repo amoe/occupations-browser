@@ -75,6 +75,9 @@ const store = new Vuex.Store({
             state.widgetOrder = copy;
 
             console.log("widget order is now %o", state.widgetOrder);
+        },
+        [mc.ADD_WIDGET]: (state, { id }) => {
+            state.widgetOrder.push(id);
         }
     },
     actions

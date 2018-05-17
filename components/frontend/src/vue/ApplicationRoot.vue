@@ -7,8 +7,13 @@
                        :category="widgets[item].category"
                        :content="widgets[item].content"
                        :includedInWorkingSet="widgets[item].includedInWorkingSet">
-        </taxonomy-widget>
+      </taxonomy-widget>
     </div>
+
+    <el-button v-on:click="addWidget"
+               type="primary"
+               icon="el-icon-plus"
+               circle></el-button>
 
     <button v-on:click="shuffle">Shuffle!</button>
   </div>
@@ -26,6 +31,7 @@ import bus from '../event-bus';
 import events from '../events';
 import mc from '../mutation-constants';
 import TaxonomyWidget from './TaxonomyWidget.vue';
+import { v4 as uuidv4 } from 'uuid';
 
 export default Vue.extend({
     components: {TaxonomyWidget},
@@ -57,6 +63,18 @@ export default Vue.extend({
         };
     },
     methods: {
+        addWidget() {
+            console.log("adding widget");
+
+            const id = uuidv4();
+            this.widgets[id] = {
+                content: "New widget",
+                category: 'title',
+                includedInWorkingSet: false
+            };
+
+            this.$store.commit(mc.ADD_WIDGET, {id});
+        },
         shuffle() {
             console.log("about to shuffle");
             this.$store.commit(mc.SHUFFLE);
