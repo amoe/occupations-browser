@@ -32,6 +32,7 @@ export default Vue.extend({
         dragStart(e) {
             console.log("drag started, event was %o", e);
             e.dataTransfer.setData(DND_DATA_CONTENT_TYPE, this.name);
+            e.dataTransfer.dropEffect = 'move';
         },
         drop(e) {
             const source = e.dataTransfer.getData(DND_DATA_CONTENT_TYPE);
