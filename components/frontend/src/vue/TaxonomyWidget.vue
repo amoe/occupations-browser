@@ -1,12 +1,14 @@
 <template>
-  <span>
+  <div class="taxonomy-widget"
+        draggable="true"
+        v-on:dragstart="dragStart"
+        v-on:dragover.prevent="dragOver"
+        v-on:drop="drop">
     <!-- Dragover must be preventDefaulted, because the default handler will
          disallow a drop. -->
-    <input draggable="true"
-           v-on:dragstart="dragStart"
-           v-on:dragover.prevent="dragOver"
-           v-on:drop="drop"></input>
-  </span>
+    <input name="taxonomyType" :value="content"></input>
+    <input name="taxonomySubtype" :value="content"></input>
+  </div>
 </template>
 
 <script lang="ts">
@@ -14,6 +16,7 @@ import Vue from 'vue';
 import {mapGetters} from 'vuex';
 
 export default Vue.extend({
+    props: ['content'],
     components: {},
     data: function() {
         return {
@@ -37,4 +40,14 @@ export default Vue.extend({
     }
 })
 </script>
+
+<style>
+.taxonomy-widget {
+    border: 1px solid black;
+    background-color: #ff5f00;
+    display: inline;
+    padding: 1em;
+    margin: 1em;
+}
+</style>
         

@@ -1,10 +1,13 @@
 <template>
   <div class="page">
     <div>
-      <taxonomy-widget></taxonomy-widget>
-      <taxonomy-widget></taxonomy-widget>
-      <taxonomy-widget></taxonomy-widget>
+      <taxonomy-widget v-for="item in widgetOrder"
+                       :key="item"
+                       :content="widgets[item].content">
+        </taxonomy-widget>
     </div>
+
+    <button v-on:click="shuffle">Shuffle!</button>
   </div>
 </template>
 
@@ -14,6 +17,7 @@ import utility from '../utility';
 import * as d3 from 'd3';
 import graph from '../graph';
 import * as dateFns from 'date-fns';
+import * as _ from 'lodash';
 import {mapGetters} from 'vuex';
 import bus from '../event-bus';
 import events from '../events';
@@ -28,10 +32,28 @@ export default Vue.extend({
             options: [
                 {'label': 'Foo', 'value': 'foo'},
                 {'label': 'Bar', 'value': 'bar'}
+            ],
+            widgets: {
+                alpha: {
+                    content: "Alpha Widget",
+                },
+                beta: {
+                    content: "Beta Widget",
+                },
+                gamma: {
+                    content: "Gamma Widget",
+                }
+            },
+            widgetOrder: [
+                'alpha', 'beta', 'gamma'
             ]
         };
     },
     methods: {
+        shuffle() {
+            console.log("about to shuffle");
+            this.widgetOrder = _.shuffle(this.widgetOrder);
+        },
         dragStart(e) {
             console.log("drag started, event was %o", e);
         },
@@ -52,8 +74,11 @@ export default Vue.extend({
 </script>
 
 <style>
-.grid-content {
-    border-radius: 4px;
-    min-height: 36px;
+
+body {
+    margin-top: 2em;
 }
+
+button { margin: 2em; }
+
 </style>
