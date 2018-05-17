@@ -1,6 +1,20 @@
 <template>
   <div class="page">
-    <div class="taxonomy">
+    <el-row>
+      <el-col :span="24">
+        <div class="grid-content bg-purple-dark">
+          <p>Content content content content</p>
+        </div>
+      </el-col>
+    </el-row>
+
+    <el-row>
+      <el-col :span="24">
+        <div class="grid-content bg-purple-dark">
+          <p>Content content content content</p>
+        </div>
+      </el-col>
+    </el-row>
     </div>
   </div>
 </template>
@@ -36,4 +50,8 @@ export default Vue.extend({
 </script>
 
 <style>
+.grid-content {
+    border-radius: 4px;
+    min-height: 36px;
+}
 </style>
