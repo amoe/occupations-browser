@@ -9,6 +9,8 @@ import actions from './actions';
 import mc from './mutation-constants';
 import getters from './getters';
 import { DragAndDropOperation, NodeIdentifier } from './interfaces';
+import * as _ from 'lodash';
+
 
 import Element from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
@@ -24,6 +26,9 @@ const store = new Vuex.Store({
         dropInteractionCandidate: null,
         isDragInProgress: false,
         lastDrop: null,
+        widgetOrder: [
+            'alpha', 'beta', 'gamma'
+        ]
     },
     mutations: {
         increment(state) {
@@ -53,6 +58,23 @@ const store = new Vuex.Store({
             state.lastDrop = theDrop;
             state.dropInteractionCandidate = null;
             state.dragSource = null;
+        },
+        [mc.SHUFFLE]: (state) => {
+            state.widgetOrder = _.shuffle(state.widgetOrder);
+        },
+        [mc.SWAP_TAXONOMY_WIDGETS]: (state, { source, target }) => {
+            const copy = _.clone(state.widgetOrder);
+
+            const sourceIndex = _.findIndex(state.widgetOrder, w => w === source);
+            const targetIndex = _.findIndex(state.widgetOrder, w => w === target);
+
+            // Not sure if this will work because of vue/vuex array
+            copy[targetIndex] = source;
+            copy[sourceIndex] = target;
+
+            state.widgetOrder = copy;
+
+            console.log("widget order is now %o", state.widgetOrder);
         }
     },
     actions

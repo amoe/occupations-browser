@@ -14,9 +14,12 @@
 <script lang="ts">
 import Vue from 'vue';
 import {mapGetters} from 'vuex';
+import mc from '../mutation-constants';
+
+const DND_DATA_CONTENT_TYPE = 'text/plain';
 
 export default Vue.extend({
-    props: ['content'],
+    props: ['content', 'name'],
     components: {},
     data: function() {
         return {
@@ -28,9 +31,14 @@ export default Vue.extend({
         },
         dragStart(e) {
             console.log("drag started, event was %o", e);
+            e.dataTransfer.setData(DND_DATA_CONTENT_TYPE, this.name);
         },
         drop(e) {
-            console.log("drop occurred, event was %o", e);
+            const source = e.dataTransfer.getData(DND_DATA_CONTENT_TYPE);
+            const target = this.name;
+            console.log("drop occurred, drop data was %o", source);
+
+            this.$store.commit(mc.SWAP_TAXONOMY_WIDGETS, {source, target});
         }
     },
     computed: {

@@ -4,5 +4,7 @@ export default {
     SWITCH_DRAG_IN_PROGRESS_ON: 'switchDragInProgressOn',
     SWITCH_DRAG_IN_PROGRESS_OFF: 'switchDragInProgressOff',
     CONFIRM_DROP: 'confirmDrop',
-    SET_DRAG_SOURCE: 'setDragSource'
+    SET_DRAG_SOURCE: 'setDragSource',
+    SWAP_TAXONOMY_WIDGETS: 'swapTaxonomyWidgets',
+    SHUFFLE: 'shuffle'
 };

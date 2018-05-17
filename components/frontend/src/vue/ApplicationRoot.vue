@@ -3,6 +3,7 @@
     <div>
       <taxonomy-widget v-for="item in widgetOrder"
                        :key="item"
+                       :name="item"
                        :content="widgets[item].content">
         </taxonomy-widget>
     </div>
@@ -21,6 +22,7 @@ import * as _ from 'lodash';
 import {mapGetters} from 'vuex';
 import bus from '../event-bus';
 import events from '../events';
+import mc from '../mutation-constants';
 import TaxonomyWidget from './TaxonomyWidget.vue';
 
 export default Vue.extend({
@@ -44,15 +46,12 @@ export default Vue.extend({
                     content: "Gamma Widget",
                 }
             },
-            widgetOrder: [
-                'alpha', 'beta', 'gamma'
-            ]
         };
     },
     methods: {
         shuffle() {
             console.log("about to shuffle");
-            this.widgetOrder = _.shuffle(this.widgetOrder);
+            this.$store.commit(mc.SHUFFLE);
         },
         dragStart(e) {
             console.log("drag started, event was %o", e);
@@ -68,7 +67,10 @@ export default Vue.extend({
     computed: {
         count: function (this: any) {
             return this.$store.state.count;
-        }, ...mapGetters([])
+        },
+        widgetOrder: function (this: any) {
+            return this.$store.getters.widgetOrder;
+        },
     }
 });
 </script>
