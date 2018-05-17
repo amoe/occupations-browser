@@ -1,20 +1,9 @@
 <template>
   <div class="page">
-    <el-row>
-      <el-col :span="24">
-        <div class="grid-content bg-purple-dark">
-          <p>Content content content content</p>
-        </div>
-      </el-col>
-    </el-row>
-
-    <el-row>
-      <el-col :span="24">
-        <div class="grid-content bg-purple-dark">
-          <p>Content content content content</p>
-        </div>
-      </el-col>
-    </el-row>
+    <div>
+      <taxonomy-widget></taxonomy-widget>
+      <taxonomy-widget></taxonomy-widget>
+      <taxonomy-widget></taxonomy-widget>
     </div>
   </div>
 </template>
@@ -28,14 +17,27 @@ import * as dateFns from 'date-fns';
 import {mapGetters} from 'vuex';
 import bus from '../event-bus';
 import events from '../events';
+import TaxonomyWidget from './TaxonomyWidget.vue';
 
 export default Vue.extend({
-    components: {},
+    components: {TaxonomyWidget},
     data: function() {
         return {
+            widgetColSpan: 8,
+            value: null,
+            options: [
+                {'label': 'Foo', 'value': 'foo'},
+                {'label': 'Bar', 'value': 'bar'}
+            ]
         };
     },
     methods: {
+        dragStart(e) {
+            console.log("drag started, event was %o", e);
+        },
+        drop(e) {
+            console.log("drop occurred, event was %o", e);
+        }
     },
     created: function() {
     },
