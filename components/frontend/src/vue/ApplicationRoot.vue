@@ -1,21 +1,54 @@
 <template>
   <div class="page">
-    <div>
-      <taxonomy-widget v-for="item in widgetOrder"
-                       :key="item"
-                       :name="item"
-                       :category="widgets[item].category"
-                       :content="widgets[item].content"
-                       :includedInWorkingSet="widgets[item].includedInWorkingSet">
-      </taxonomy-widget>
+    <div class="header">
+      <h1>OV {{date}}</h1>
     </div>
 
-    <el-button v-on:click="addWidget"
-               type="primary"
-               icon="el-icon-plus"
-               circle></el-button>
+    <widget-bar>
+    </widget-bar>
+    
+    <div class="control">
+      <label for="width">Width</label>
+      <input id="width" v-model.number="width">
 
-    <button v-on:click="shuffle">Shuffle!</button>
+      <label for="height">Height</label>
+      <input id="height" v-model.number="height">
+
+      <label for="yMargin">Y Margin</label>
+      <input id="yMargin" v-model.number="yMargin">
+
+      <label for="depthOffset">Depth Offset</label>
+      <input id="depthOffset" v-model.number="depthOffset">
+
+      <label for="textOffset">Text Offset</label>
+      <input id="textOffset" v-model.number="textOffset">
+
+      <label for="breadth">Breadth</label>
+      <input id="breadth" v-model.number="breadth">
+
+      <label for="zoomDepth">Zoom Depth</label>
+      <input id="zoomDepth" v-model.number="zoomDepth">
+    </div>
+
+    <div>
+      <p>Drag in progress: {{isDragInProgress}}, last drop {{lastDrop}}</p>
+    </div>
+
+    <div class="graph">
+      <active-graph :width="width"
+                    :height="height"
+                    :y-margin="yMargin"
+                    :depth-offset="depthOffset"
+                    :text-offset="textOffset"
+                    :breadth="breadth"
+                    :zoom-depth="zoomDepth"></active-graph>
+    </div>
+
+    <div class="text-view">
+    </div>
+
+    <div class="timeline">
+    </div>
   </div>
 </template>
 
@@ -25,94 +58,108 @@ import utility from '../utility';
 import * as d3 from 'd3';
 import graph from '../graph';
 import * as dateFns from 'date-fns';
-import * as _ from 'lodash';
+import ActiveGraph from './ActiveGraph.vue';
+import DNDDemo from './DNDDemo.vue';
+import Hexagon from './Hexagon.vue';
+import WidgetBar from './WidgetBar.vue';
 import {mapGetters} from 'vuex';
 import bus from '../event-bus';
 import events from '../events';
-import mc from '../mutation-constants';
-import TaxonomyWidget from './TaxonomyWidget.vue';
-import { v4 as uuidv4 } from 'uuid';
 
 export default Vue.extend({
-    components: {TaxonomyWidget},
+    components: {ActiveGraph, DNDDemo, Hexagon, WidgetBar},
     data: function() {
         return {
-            widgetColSpan: 8,
-            value: null,
-            options: [
-                {'label': 'Foo', 'value': 'foo'},
-                {'label': 'Bar', 'value': 'bar'}
-            ],
-            widgets: {
-                alpha: {
-                    content: "Alpha Widget",
-                    category: 'title',
-                    includedInWorkingSet: true
-                },
-                beta: {
-                    content: "Beta Widget",
-                    category: 'place',
-                    includedInWorkingSet: false
-                },
-                gamma: {
-                    content: "Gamma Widget",
-                    category: 'object',
-                    includedInWorkingSet: true
-                }
-            },
+            date: dateFns.format(new Date(), 'YYYY-MM-DD'),
+            width: 600,
+            height: 600,
+            yMargin: 20,
+            depthOffset: 120,
+            textOffset: 22,   // depends on circle radius
+            breadth: 360,
+            zoomDepth: 2
         };
     },
-    created: function() {
-        // Set up all of our events
-        bus.$on(events.WIDGET_REMOVED, (name) => this.handleWidgetRemoved(name));
-    },
     methods: {
-        handleWidgetRemoved(name) {
-            console.log("received widget removed event, name was %o", name);
-            this.$store.commit(mc.REMOVE_WIDGET, {name});
-        },
-        addWidget() {
-            console.log("adding widget");
-
-            // This should really happen in one mutation
-            const id = uuidv4();
-            this.widgets[id] = {
-                content: "New widget",
-                category: 'title',
-                includedInWorkingSet: false
-            };
-
-            this.$store.commit(mc.ADD_WIDGET, {id});
-        },
-        shuffle() {
-            console.log("about to shuffle");
-            this.$store.commit(mc.SHUFFLE);
-        },
-        dragStart(e) {
-            console.log("drag started, event was %o", e);
-        },
-        drop(e) {
-            console.log("drop occurred, event was %o", e);
-        }
+    },
+    created: function() {
     },
     // mapState doesn't work with typescript: "Property 'mapState' does not exist on type"
     // So we manually create the relevant computed properties.
     computed: {
         count: function (this: any) {
             return this.$store.state.count;
-        },
-        widgetOrder: function (this: any) {
-            return this.$store.getters.widgetOrder;
-        },
+        }, ...mapGetters(['isDragInProgress', 'lastDrop'])
     }
 });
 </script>
 
 <style>
-
-body {
-    margin-top: 2em;
+@font-face {
+    font-family: 'Oxygen';
+    src: url("/static/fonts/Oxygen-Regular.ttf");
 }
 
-button { margin: 2em; }
+body {
+    background-color: #fdfdfd;
+    font-family: 'Oxygen', sans-serif;
+}
+
+div.taxonomy {
+    grid-row: 1;
+    grid-column: col-start 1 / span 12;
+}
+
+div.page {
+    display: grid;
+    grid-template-columns: repeat(12, [col-start] 1fr);
+}
+
+div.header {
+    grid-row: 1;
+    grid-column: col-start 2 / span 12;
+}
+
+h1 {
+   font-style: italic;
+}
+
+
+div.taxonomy {
+    grid-row: 2;
+    height: 8em;
+    background-color: #a0a0a0;
+    grid-column: col-start / span 12;
+    margin: 1em;
+}
+
+div.control {
+    grid-row: 3;
+    grid-column: col-start 2 / span 10;
+}
+
+div.graph {
+    grid-row: 4;
+    grid-column: col-start 4 / span 4;
+}
+
+div.text-view {
+    grid-row: 5;
+    height: 4em;
+    background-color: #a0a0a0;
+    margin: 1em;
+    grid-column: col-start / span 12;
+}
+
+div.timeline {
+    grid-row: 6;
+    height: 4em;
+    background-color: #a0a0a0;
+    margin: 1em;
+    grid-column: col-start / span 12;
+}
+
+.glyph {
+    fill: red;
+}
 </style>
