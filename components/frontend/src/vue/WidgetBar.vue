@@ -1,6 +1,6 @@
 <template>
-  <div class="widget-bar">
-    <div>
+  <div class="widget-panel">
+    <div class="widget-hbar">
       <taxonomy-widget v-for="item in widgetOrder"
                        :key="item"
                        :name="item"
@@ -109,10 +109,8 @@ export default Vue.extend({
 </script>
 
 <style>
-
-body {
-    margin-top: 2em;
+.widget-hbar {
+    display: flex;
+    flex-direction: row;
 }
-
-button { margin: 2em; }
 </style>

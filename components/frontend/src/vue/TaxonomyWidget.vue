@@ -105,6 +105,7 @@ export default Vue.extend({
     margin: 1em;
     display: flex;
     flex-direction: column;
+    width: 8em;
 }
 
 /*
