@@ -7,7 +7,7 @@
         <g v-for="(groupTotal, groupIndex)  in bar.groups"
            :transform="getGroupTransformation(bar.groups, groupIndex)">
           <circle v-for="i in groupTotal"
-                  cx="50" :cy="i * 10" r="2"/>
+                  cx="50" :cy="i * constants.GLYPH_Y_OFFSET" r="2"/>
         </g>
       </g>
     </svg>
@@ -18,7 +18,8 @@
 import Vue from 'vue';
 import * as _ from 'lodash';
 
-const GLYPH_Y_OFFSET = 10;
+const BAR_X_OFFSET = 20;
+const GLYPH_Y_OFFSET = 7;
 
 export default Vue.extend({
     components: {},
@@ -29,35 +30,34 @@ export default Vue.extend({
             data: [
                 {
                     x: 1,
-                    groups: [25, 25, 25, 25],
+                    groups: [25, 25, 25, 25]
                 },
                 {
                     x: 2,
-                    groups: [0, 50, 25, 25],
+                    groups: [0, 50, 25, 25]
                 },
                 {
                     x: 3,
-                    groups: [2, 2, 48, 48],
+                    groups: [2, 2, 48, 48]
                 }            
-            ]
+            ],
+            constants: {
+                GLYPH_Y_OFFSET, BAR_X_OFFSET
+            }
         };
+    },
+    created() {
+        console.log("data is %o", JSON.stringify(this.data));
     },
     methods: {
         getBarTransformation(bar) {
-            const xTranslation = bar.x * 20;
-
+            const xTranslation = bar.x * BAR_X_OFFSET;
             return `translate(${xTranslation}, 0)`;
         },
         getGroupTransformation(groups, indexWithinGroup) {
-            console.log("groups passed were %o", groups);
-            console.log("index within group passed was %o", indexWithinGroup);
-
-
             const previousGlyphs = _.take(groups, indexWithinGroup);
             const previousSpace = _.sum(previousGlyphs) * GLYPH_Y_OFFSET;
-
             const yTranslation = previousSpace;
-
             return `translate(0, ${yTranslation})`;
         }
     },
