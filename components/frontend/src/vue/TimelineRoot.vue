@@ -4,7 +4,8 @@
 
     <svg :width="width" :height="height">
       <g v-for="bar in data" :transform="getBarTransformation(bar)">
-        <g v-for="groupTotal in bar.groups" :transform="getGroupTransformation(i)">
+        <g v-for="(groupTotal, groupIndex)  in bar.groups"
+           :transform="getGroupTransformation(bar.groups, groupIndex)">
           <circle v-for="i in groupTotal"
                   cx="50" :cy="i * 10" r="2"/>
         </g>
@@ -15,6 +16,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import * as _ from 'lodash';
 
 const GLYPH_Y_OFFSET = 10;
 
@@ -46,10 +48,9 @@ export default Vue.extend({
 
             return `translate(${xTranslation}, 0)`;
         },
-        getGroupTransformation(i) {
-            const yTranslation = 0;
-
-            return `translate(0, ${yTranslation})`;
+        getGroupTransformation(groups, indexWithinGroup) {
+            console.log("groups passed were %o", groups);
+            console.log("index within group passed was %o", indexWithinGroup);
         }
     },
     computed: {
