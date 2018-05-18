@@ -3,6 +3,7 @@
 import * as log from 'loglevel';
 import mymodule from './mymodule';
 import ApplicationRoot from './vue/ApplicationRoot.vue';
+import TimelineRoot from './vue/TimelineRoot.vue';
 import Vue from 'vue';
 import Vuex from 'vuex';
 import actions from './actions';
@@ -108,7 +109,7 @@ document.addEventListener("DOMContentLoaded", e => {
 
 document.addEventListener("DOMContentLoaded", e => {
     const vueInstance = new Vue({
-        render: h => h(ApplicationRoot),
+        render: h => h(TimelineRoot),
         store: store
     });
     vueInstance.$mount('#vue-outlet');
