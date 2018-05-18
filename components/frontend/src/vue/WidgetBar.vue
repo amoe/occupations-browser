@@ -15,7 +15,7 @@
                icon="el-icon-plus"
                circle></el-button>
 
-    <button v-on:click="shuffle">Shuffle!</button>
+    <el-button v-on:click="shuffle">Shuffle!</el-button>
   </div>
 </template>
 

@@ -4,8 +4,10 @@
       <h1>OV {{date}}</h1>
     </div>
 
-    <widget-bar>
-    </widget-bar>
+    <div class="widget-bar">
+      <widget-bar>
+      </widget-bar>
+    </div>
 
     <div class="control">
       <label for="width">Width</label>
@@ -106,7 +108,7 @@ body {
 }
 
 .widget-bar {
-    grid-row: 1;
+    grid-row: 2;
     grid-column: col-start 1 / span 12;
 }
 

@@ -1,29 +1,23 @@
 <template>
 <div>
-  <el-button v-on:click="removeNode">foo</el-button>
-  <el-button v-on:click="removeNodeFromBackend">Remove node from backing store</el-button>
-  <el-button v-on:click="clearEntireGraph">Clear entire graph</el-button>
   <el-button v-on:click="updateFromBackend">Update from backend</el-button>
 
-  <test-component></test-component>
-
   <div>
+    <label>Root</label>
+
     <el-select filterable
                remote
                v-model="currentRoot"
                :remote-method="searchRoots"
-               v-on:change="changed">
+               v-on:change="changed"
+               loading-text="Loading"
+               placeholder="Root">
       <el-option v-for="item in possibleRoots"
                  :key="item.value"
                  :label="item.label"
                  :value="item.value"/>
     </el-select>
   </div>
-
-  <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" width="200" height="200">
-      <circle slot="reference" v-popover:inside cx="50" cy="50" r="50"/>
-    </el-popover>
-  </svg>
 
   <svg :width="width" :height="height">
     <g :transform="rootTranslation">
@@ -52,7 +46,6 @@
 <script lang="ts">
 import Vue from 'vue';
 import NodeCircle from './NodeCircle.vue';
-import TestComponent from './TestComponent.vue';
 import * as d3 from 'd3';
 import layoutFunctions from '../layout-functions';
 import graph from '../graph';
@@ -62,7 +55,7 @@ import axios from 'axios';
 
 export default Vue.extend({
     props: ['width', 'height', 'yMargin', 'depthOffset', 'textOffset', 'breadth', 'zoomDepth'],
-    components: {NodeCircle, TestComponent},
+    components: {NodeCircle},
     data() {
         return {
             data: null,
@@ -90,26 +83,6 @@ export default Vue.extend({
         changed(val) {
             console.log("changed was called with value %o", val);
             this.updateFromBackend();
-        },
-        clearEntireGraph() {
-            axios.post("/api/clear_all_nodes").then(response => {
-                this.$message('Cleared graph');
-                this.updateFromBackend();
-            }).catch(error => {
-                this.$message.error('Something went wrong.');
-            });
-        },
-
-        removeNodeFromBackend() {
-            const rootToken = 'the';
-
-            // silliness
-            axios.post("/api/delete_some_node").then(response => {
-                this.$message('Removed an arbitrary node.');
-                this.updateFromBackend();
-            }).catch(error => {
-                this.$message.error('Something went wrong.');
-            });
         },
         updateFromBackend() {
             axios.get("/api/tezra/tree?root=" + this.currentRoot + "&zoom_depth=" + this.zoomDepth).then(response => {
