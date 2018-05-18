@@ -47,6 +47,7 @@
     </div>
 
     <div class="text-view">
+      <text-view/>
     </div>
 
     <div class="timeline">
@@ -67,9 +68,10 @@ import WidgetBar from './WidgetBar.vue';
 import {mapGetters} from 'vuex';
 import bus from '../event-bus';
 import events from '../events';
+import TextView from './TextView.vue';
 
 export default Vue.extend({
-    components: {ActiveGraph, DNDDemo, Hexagon, WidgetBar},
+    components: {ActiveGraph, DNDDemo, Hexagon, WidgetBar, TextView},
     data: function() {
         return {
             date: dateFns.format(new Date(), 'YYYY-MM-DD'),
@@ -147,8 +149,6 @@ div.graph {
 
 div.text-view {
     grid-row: 5;
-    height: 4em;
-    background-color: #a0a0a0;
     margin: 1em;
     grid-column: col-start / span 12;
 }
