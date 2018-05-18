@@ -6,7 +6,7 @@
 
     <widget-bar>
     </widget-bar>
-    
+
     <div class="control">
       <label for="width">Width</label>
       <input id="width" v-model.number="width">
@@ -105,7 +105,7 @@ body {
     font-family: 'Oxygen', sans-serif;
 }
 
-div.taxonomy {
+.widget-bar {
     grid-row: 1;
     grid-column: col-start 1 / span 12;
 }

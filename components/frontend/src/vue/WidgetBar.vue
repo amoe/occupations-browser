@@ -1,5 +1,5 @@
 <template>
-  <div class="page">
+  <div class="widget-bar">
     <div>
       <taxonomy-widget v-for="item in widgetOrder"
                        :key="item"
