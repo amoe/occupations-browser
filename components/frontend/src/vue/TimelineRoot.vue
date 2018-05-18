@@ -3,8 +3,8 @@
     <p>Hello world</p>
 
     <svg :width="width" :height="height">
-      <g v-for="bar in data">
-        <g v-for="groupTotal in bar.groups">
+      <g v-for="bar in data" :transform="getBarTransformation(bar)">
+        <g v-for="groupTotal in bar.groups" :transform="getGroupTransformation(i)">
           <circle v-for="i in groupTotal"
                   cx="50" :cy="i * 10" r="2"/>
         </g>
@@ -15,6 +15,8 @@
 
 <script lang="ts">
 import Vue from 'vue';
+
+const GLYPH_Y_OFFSET = 10;
 
 export default Vue.extend({
     components: {},
@@ -37,14 +39,26 @@ export default Vue.extend({
                 }            
             ]
         };
+    },
+    methods: {
+        getBarTransformation(bar) {
+            const xTranslation = bar.x * 20;
+
+            return `translate(${xTranslation}, 0)`;
+        },
+        getGroupTransformation(i) {
+            const yTranslation = 0;
+
+            return `translate(0, ${yTranslation})`;
+        }
+    },
+    computed: {
     }
 });
 </script>
 
 <style>
-
 svg {
     border: 1px solid black;
 }
-
 </style>
