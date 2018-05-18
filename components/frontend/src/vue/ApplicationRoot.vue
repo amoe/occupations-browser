@@ -4,9 +4,11 @@
       <h1>OV {{date}}</h1>
     </div>
 
-    <div class="taxonomy">
+    <div class="widget-bar">
+      <widget-bar>
+      </widget-bar>
     </div>
-    
+
     <div class="control">
       <label for="width">Width</label>
       <input id="width" v-model.number="width">
@@ -61,12 +63,13 @@ import * as dateFns from 'date-fns';
 import ActiveGraph from './ActiveGraph.vue';
 import DNDDemo from './DNDDemo.vue';
 import Hexagon from './Hexagon.vue';
+import WidgetBar from './WidgetBar.vue';
 import {mapGetters} from 'vuex';
 import bus from '../event-bus';
 import events from '../events';
 
 export default Vue.extend({
-    components: {ActiveGraph, DNDDemo, Hexagon},
+    components: {ActiveGraph, DNDDemo, Hexagon, WidgetBar},
     data: function() {
         return {
             date: dateFns.format(new Date(), 'YYYY-MM-DD'),
@@ -104,7 +107,9 @@ body {
     font-family: 'Oxygen', sans-serif;
 }
 
-div.taxonomy {
+.widget-bar {
+    grid-row: 2;
+    grid-column: col-start 1 / span 12;
 }
 
 div.page {

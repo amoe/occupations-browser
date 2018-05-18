@@ -7,5 +7,8 @@ export default {
     },
     lastDrop(state, getters) {
         return state.lastDrop;
+    },
+    widgetOrder(state, getters) {
+        return state.widgetOrder;
     }
 };
