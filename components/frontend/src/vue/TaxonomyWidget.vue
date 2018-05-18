@@ -13,8 +13,19 @@
                icon="el-icon-close"></el-button>
 
 
-    <input name="taxonomyType" :value="content"></input>
-    <input name="taxonomySubtype" :value="content"></input>
+    <el-select v-model="taxonomyType" placeholder="Taxonomy type">
+      <el-option
+        v-for="item in availableTaxonomyTypes"
+        :key="item.value"
+        :label="item.label"
+        :value="item.value">
+      </el-option>
+    </el-select> 
+
+    <!-- These funky names are just to disambiguate and avoid the use of the
+         word 'type'. -->
+    <input name="phylum" :value="content"></input>
+    <input name="subPhylum" :value="content"></input>
   </div>
 </template>
 
@@ -32,6 +43,11 @@ export default Vue.extend({
     components: {},
     data: function() {
         return {
+            availableTaxonomyTypes: [
+                {label: 'Title', value: 'title'},
+                {label: 'Place', value: 'place'},
+                {label: 'Object', value: 'object'}
+            ]
         };
     },
     methods: {
