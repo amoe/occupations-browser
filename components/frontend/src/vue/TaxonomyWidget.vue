@@ -101,9 +101,10 @@ export default Vue.extend({
 <style>
 .taxonomy-widget {
     border: 1px solid black;
-    display: inline;
     padding: 1em;
     margin: 1em;
+    display: flex;
+    flex-direction: column;
 }
 
 /*
