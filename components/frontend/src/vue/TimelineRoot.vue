@@ -3,9 +3,12 @@
     <p>Hello world</p>
 
     <svg :width="width" :height="height">
-      <circle v-for="n in 10"
-              cx="50"
-              :cy="n * 10" r="2"/>
+      <g v-for="bar in data">
+        <g v-for="groupTotal in bar.groups">
+          <circle v-for="i in groupTotal"
+                  cx="50" :cy="i * 10" r="2"/>
+        </g>
+      </g>
     </svg>
   </div>
 </template>
@@ -18,7 +21,21 @@ export default Vue.extend({
     data() {
         return {
             width: 1024,
-            height: 576
+            height: 576,
+            data: [
+                {
+                    x: 1,
+                    groups: [25, 25, 25, 25],
+                },
+                {
+                    x: 2,
+                    groups: [0, 50, 25, 25],
+                },
+                {
+                    x: 3,
+                    groups: [2, 2, 48, 48],
+                }            
+            ]
         };
     }
 });
