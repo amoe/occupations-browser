@@ -24,8 +24,8 @@ export default Vue.extend({
     components: {},
     data() {
         return {
-            width: 1024,
-            height: 576,
+            width: 1366,
+            height: 768,
             data: [
                 {
                     x: 1,
@@ -51,6 +51,14 @@ export default Vue.extend({
         getGroupTransformation(groups, indexWithinGroup) {
             console.log("groups passed were %o", groups);
             console.log("index within group passed was %o", indexWithinGroup);
+
+
+            const previousGlyphs = _.take(groups, indexWithinGroup);
+            const previousSpace = _.sum(previousGlyphs) * GLYPH_Y_OFFSET;
+
+            const yTranslation = previousSpace;
+
+            return `translate(0, ${yTranslation})`;
         }
     },
     computed: {
