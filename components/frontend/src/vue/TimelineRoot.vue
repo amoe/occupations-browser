@@ -5,8 +5,10 @@
     <svg :width="width" :height="height">
       <g v-for="bar in data" :transform="getBarTransformation(bar)">
         <g v-for="(groupTotal, groupIndex)  in bar.groups"
+           class="bar-group"
            :transform="getGroupTransformation(bar.groups, groupIndex)">
           <circle v-for="i in groupTotal"
+                  :fill="groupColors[groupIndex]"
                   cx="50" :cy="i * constants.GLYPH_Y_OFFSET" r="2"/>
         </g>
       </g>
@@ -18,7 +20,7 @@
 import Vue from 'vue';
 import * as _ from 'lodash';
 
-const BAR_X_OFFSET = 20;
+const BAR_X_OFFSET = 5;
 const GLYPH_Y_OFFSET = 7;
 
 export default Vue.extend({
@@ -43,7 +45,10 @@ export default Vue.extend({
             ],
             constants: {
                 GLYPH_Y_OFFSET, BAR_X_OFFSET
-            }
+            },
+            groupColors: [
+                'red', 'green', 'blue', 'purple'
+            ]
         };
     },
     created() {
