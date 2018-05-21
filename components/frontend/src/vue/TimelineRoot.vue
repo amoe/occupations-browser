@@ -23,12 +23,16 @@ import * as _ from 'lodash';
 const BAR_X_OFFSET = 5;
 const GLYPH_Y_OFFSET = 7;
 
+function createGroup(n) {
+    return _.map(_.range(n), i => _.random(0, 100));
+}
+
 export default Vue.extend({
     components: {},
     data() {
         return {
             width: 1366,
-            height: 768,
+            height: "8em",
             data: [
                 {
                     x: 1,
@@ -53,8 +57,12 @@ export default Vue.extend({
     },
     created() {
         console.log("data is %o", JSON.stringify(this.data));
+        this.generateData();
     },
     methods: {
+        generateData() {
+            this.data = _.map(_.range(200), x => ({x: x, groups: createGroup(4)}));
+        },
         getBarTransformation(bar) {
             const xTranslation = bar.x * BAR_X_OFFSET;
             return `translate(${xTranslation}, 0)`;
@@ -64,6 +72,9 @@ export default Vue.extend({
             const previousSpace = _.sum(previousGlyphs) * GLYPH_Y_OFFSET;
             const yTranslation = previousSpace;
             return `translate(0, ${yTranslation})`;
+        },
+        getGroupColor(indexWithinGroup) {
+            return this.groupColors[indexWithinGroup];
         }
     },
     computed: {
