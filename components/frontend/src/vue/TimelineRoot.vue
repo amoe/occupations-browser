@@ -22,9 +22,11 @@ import * as _ from 'lodash';
 
 const BAR_X_OFFSET = 5;
 const GLYPH_Y_OFFSET = 7;
+const GROUP_MAX = 4;
+const TIMELINE_POINTS = 200;
 
 function createGroup(n) {
-    return _.map(_.range(n), i => _.random(0, 100));
+    return _.map(_.range(n), i => _.random(GROUP_MAX));
 }
 
 export default Vue.extend({
@@ -61,7 +63,7 @@ export default Vue.extend({
     },
     methods: {
         generateData() {
-            this.data = _.map(_.range(200), x => ({x: x, groups: createGroup(4)}));
+            this.data = _.map(_.range(TIMELINE_POINTS), x => ({x: x, groups: createGroup(4)}));
         },
         getBarTransformation(bar) {
             const xTranslation = bar.x * BAR_X_OFFSET;
