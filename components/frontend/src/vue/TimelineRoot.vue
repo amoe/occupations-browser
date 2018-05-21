@@ -1,19 +1,15 @@
 <template>
-  <div class="page">
-    <p>Hello world</p>
-
-    <svg>
-      <g v-for="bar in data" :transform="getBarTransformation(bar)">
-        <g v-for="(groupTotal, groupIndex)  in bar.groups"
-           class="bar-group"
-           :transform="getGroupTransformation(bar.groups, groupIndex)">
-          <circle v-for="i in groupTotal"
-                  :fill="groupColors[groupIndex]"
-                  cx="50" :cy="i * constants.GLYPH_Y_OFFSET" r="2"/>
-        </g>
+  <svg class="timeline">
+    <g v-for="bar in data" :transform="getBarTransformation(bar)">
+      <g v-for="(groupTotal, groupIndex)  in bar.groups"
+         class="bar-group"
+         :transform="getGroupTransformation(bar.groups, groupIndex)">
+        <circle v-for="i in groupTotal"
+                :fill="groupColors[groupIndex]"
+                cx="50" :cy="i * constants.GLYPH_Y_OFFSET" r="2"/>
       </g>
-    </svg>
-  </div>
+    </g>
+  </svg>
 </template>
 
 <script lang="ts">
@@ -86,9 +82,8 @@ export default Vue.extend({
 </script>
 
 <style>
-svg {
+svg.timeline {
     border: 1px solid black;
-    margin-left: 1em;
-    margin-right: 1em;
+    width: 100%;
 }
 </style>

@@ -152,15 +152,13 @@ div.graph {
 div.text-view {
     grid-row: 5;
     margin: 1em;
-    grid-column: col-start / span 12;
+    grid-column: col-start 2 / span 10;
 }
 
 div.timeline {
     grid-row: 6;
     height: 4em;
-    background-color: #a0a0a0;
-    margin: 1em;
-    grid-column: col-start / span 12;
+    grid-column: col-start 2 / span 10;     
 }
 
 .glyph {
