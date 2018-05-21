@@ -1,10 +1,8 @@
 <template>
   <div class="page">
-    <!--
     <div class="header">
       <h1>OV {{date}}</h1>
     </div>
-    -->
 
     <div class="widget-bar">
       <widget-bar>
