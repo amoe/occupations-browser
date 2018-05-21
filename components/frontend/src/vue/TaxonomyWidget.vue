@@ -47,7 +47,8 @@ export default Vue.extend({
                 {label: 'Title', value: 'title'},
                 {label: 'Place', value: 'place'},
                 {label: 'Object', value: 'object'}
-            ]
+            ],
+            taxonomyType: null
         };
     },
     methods: {

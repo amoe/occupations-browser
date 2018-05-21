@@ -12,7 +12,7 @@
     </div>
 
     <div class="control-collapse">
-      <el-collapse v-model="activeNames" v-on:change="handleChange">
+      <el-collapse v-model="activeControls" v-on:change="handleChange">
         <el-collapse-item title="Visual options" name="1">
           <div class="control">
             <label for="width">Width</label>
@@ -87,6 +87,7 @@ export default Vue.extend({
     components: {ActiveGraph, DNDDemo, Hexagon, WidgetBar, TextView, TimelineRoot},
     data: function() {
         return {
+            activeControls: [],
             date: dateFns.format(new Date(), 'YYYY-MM-DD'),
             width: 600,
             height: 600,
@@ -98,6 +99,9 @@ export default Vue.extend({
         };
     },
     methods: {
+        handleChange(val) {
+            console.log("collapse was modified with value %o", val);
+        }
     },
     created: function() {
     },
