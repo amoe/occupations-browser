@@ -2,7 +2,7 @@
   <div class="page">
     <p>Hello world</p>
 
-    <svg :width="width" :height="height">
+    <svg>
       <g v-for="bar in data" :transform="getBarTransformation(bar)">
         <g v-for="(groupTotal, groupIndex)  in bar.groups"
            class="bar-group"
@@ -19,6 +19,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import * as _ from 'lodash';
+import * as d3 from 'd3';
 
 const BAR_X_OFFSET = 5;
 const GLYPH_Y_OFFSET = 7;
@@ -87,5 +88,7 @@ export default Vue.extend({
 <style>
 svg {
     border: 1px solid black;
+    margin-left: 1em;
+    margin-right: 1em;
 }
 </style>
