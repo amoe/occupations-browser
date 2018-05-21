@@ -24,8 +24,8 @@
 
     <!-- These funky names are just to disambiguate and avoid the use of the
          word 'type'. -->
-    <input name="phylum" :value="content"></input>
-    <input name="subPhylum" :value="content"></input>
+    <el-input name="phylum" :value="content"></el-input>
+    <el-input name="subPhylum" :value="content"></el-input>
   </div>
 </template>
 
@@ -79,8 +79,12 @@ export default Vue.extend({
         calculateStyle() {
             console.log("computed style called");
 
-            const hue = 22.4;
-            const lightness = 50;
+            // const hue = 22.4;
+            // const lightness = 50;
+
+            const hue = 222;
+            const lightness = 88.2;
+
             const saturation = this.includedInWorkingSet ? 100 : 50;
 
             const colorExpression = `hsl(${hue}, ${saturation}%, ${lightness}%)`;

@@ -1,40 +1,51 @@
 <template>
   <div class="page">
+    <!--
     <div class="header">
       <h1>OV {{date}}</h1>
     </div>
+    -->
 
     <div class="widget-bar">
       <widget-bar>
       </widget-bar>
     </div>
 
-    <div class="control">
-      <label for="width">Width</label>
-      <input id="width" v-model.number="width">
+    <div class="control-collapse">
+      <el-collapse v-model="activeNames" v-on:change="handleChange">
+        <el-collapse-item title="Visual options" name="1">
+          <div class="control">
+            <label for="width">Width</label>
+            <input id="width" v-model.number="width">
 
-      <label for="height">Height</label>
-      <input id="height" v-model.number="height">
+            <label for="height">Height</label>
+            <input id="height" v-model.number="height">
 
-      <label for="yMargin">Y Margin</label>
-      <input id="yMargin" v-model.number="yMargin">
+            <label for="yMargin">Y Margin</label>
+            <input id="yMargin" v-model.number="yMargin">
 
-      <label for="depthOffset">Depth Offset</label>
-      <input id="depthOffset" v-model.number="depthOffset">
+            <label for="depthOffset">Depth Offset</label>
+            <input id="depthOffset" v-model.number="depthOffset">
 
-      <label for="textOffset">Text Offset</label>
-      <input id="textOffset" v-model.number="textOffset">
+            <label for="textOffset">Text Offset</label>
+            <input id="textOffset" v-model.number="textOffset">
 
-      <label for="breadth">Breadth</label>
-      <input id="breadth" v-model.number="breadth">
+            <label for="breadth">Breadth</label>
+            <input id="breadth" v-model.number="breadth">
 
-      <label for="zoomDepth">Zoom Depth</label>
-      <input id="zoomDepth" v-model.number="zoomDepth">
+            <label for="zoomDepth">Zoom Depth</label>
+            <input id="zoomDepth" v-model.number="zoomDepth">
+          </div>
+        </el-collapse-item>
+
+        <el-collapse-item title="Developer" name="2">
+          <div>
+            <p>Drag in progress: {{isDragInProgress}}, last drop {{lastDrop}}</p>
+          </div>
+        </el-collapse-item>
+      </el-collapse>
     </div>
 
-    <div>
-      <p>Drag in progress: {{isDragInProgress}}, last drop {{lastDrop}}</p>
-    </div>
 
     <div class="graph">
       <active-graph :width="width"
@@ -113,7 +124,7 @@ body {
 
 .widget-bar {
     grid-row: 2;
-    grid-column: col-start 1 / span 12;
+    grid-column: col-start 2 / span 10;
 }
 
 div.page {
@@ -134,15 +145,21 @@ h1 {
 div.taxonomy {
     grid-row: 2;
     height: 8em;
-    background-color: #a0a0a0;
     grid-column: col-start / span 12;
     margin: 1em;
 }
 
+div.control-collapse {
+    grid-row: 3;
+    grid-column: col-start 2 / span 10;
+}
+
+/*
 div.control {
     grid-row: 3;
     grid-column: col-start 2 / span 10;
 }
+*/
 
 div.graph {
     grid-row: 4;
