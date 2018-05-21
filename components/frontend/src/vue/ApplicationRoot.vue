@@ -51,6 +51,7 @@
     </div>
 
     <div class="timeline">
+      <timeline-root/>
     </div>
   </div>
 </template>
@@ -69,9 +70,10 @@ import {mapGetters} from 'vuex';
 import bus from '../event-bus';
 import events from '../events';
 import TextView from './TextView.vue';
+import TimelineRoot from './TimelineRoot.vue';
 
 export default Vue.extend({
-    components: {ActiveGraph, DNDDemo, Hexagon, WidgetBar, TextView},
+    components: {ActiveGraph, DNDDemo, Hexagon, WidgetBar, TextView, TimelineRoot},
     data: function() {
         return {
             date: dateFns.format(new Date(), 'YYYY-MM-DD'),
