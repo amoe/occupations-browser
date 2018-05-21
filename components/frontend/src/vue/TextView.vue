@@ -12,11 +12,11 @@
         <template slot-scope="scope">
           <el-button
             size="mini"
-            @click="handleEdit(scope.$index, scope.row)">Confirm</el-button>
+            v-on:click="handleConfirm(scope.$index, scope.row)">Confirm</el-button>
           <el-button
             size="mini"
             type="danger"
-            @click="handleDelete(scope.$index, scope.row)">Deny</el-button>
+            v-on:click="handleDeny(scope.$index, scope.row)">Deny</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -48,6 +48,12 @@ export default Vue.extend({
             if (arg.columnIndex === 0) {
                 return 'text-cell';
             }
+        },
+        handleConfirm(index, row) {
+            console.log("confirming row");
+        },
+        handleDeny(index, row) {
+            console.log("denying row");
         }
     }
 
