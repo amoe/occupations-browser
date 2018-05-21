@@ -61,7 +61,6 @@ export default Vue.extend({
             data: null,
             data3: graph.stratifySentence(["the", "big", "red", "dog"]),
             possibleRoots: [],
-            value9: null,
             currentRoot: 'Oyl'
         };
     },
