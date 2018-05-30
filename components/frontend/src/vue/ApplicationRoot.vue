@@ -156,13 +156,6 @@ div.control-collapse {
     grid-column: col-start 2 / span 10;
 }
 
-/*
-div.control {
-    grid-row: 3;
-    grid-column: col-start 2 / span 10;
-}
-*/
-
 div.graph {
     grid-row: 4;
     grid-column: col-start 4 / span 4;
