@@ -1,10 +1,25 @@
 <template>
   <div>
     <ul class="text-lines">
-      <li>On this afternoon I saw prisoners loitering about the yard</li>
-      <li>On gaining access to the roof we saw Hall standing by a quantity of lead which had been ripped off and was ready for removal</li>
-      <li>On being takes to the station and charged they made no reply</li>
     </ul>
+
+
+    <el-table :data="tableData" :cell-class-name="cellClassName">
+      <el-table-column prop="text" label="Text"></el-table-column>
+
+      <el-table-column
+        label="Operations" width="180">
+        <template slot-scope="scope">
+          <el-button
+            size="mini"
+            v-on:click="handleConfirm(scope.$index, scope.row)">Confirm</el-button>
+          <el-button
+            size="mini"
+            type="danger"
+            v-on:click="handleDeny(scope.$index, scope.row)">Deny</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
   </div>
 </template>
 
@@ -12,13 +27,46 @@
 import Vue from 'vue';
 
 export default Vue.extend({
-    components: {}
+    components: {},
+    data() {
+        return {
+            tableData: [
+                {
+                    text: "On this afternoon I saw prisoners loitering about the yard"
+                },
+                {
+                    text: "On gaining access to the roof we saw Hall standing by a quantity of lead which had been ripped off and was ready for removal"
+                },
+                {
+                    text: "On being takes to the station and charged they made no reply"
+                }
+            ]
+        };
+    },
+    methods: {
+        cellClassName(arg) {
+            if (arg.columnIndex === 0) {
+                return 'text-cell';
+            }
+        },
+        handleConfirm(index, row) {
+            console.log("confirming row");
+        },
+        handleDeny(index, row) {
+            console.log("denying row");
+        }
+    }
+
 });
 </script>
 
 <style>
 ul.text-lines {
     list-style-type: none;
+    font-family: monospace;
+}
+
+.text-cell {
     font-family: monospace;
 }
 </style>

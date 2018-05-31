@@ -15,7 +15,6 @@
                icon="el-icon-plus"
                circle></el-button>
 
-    <el-button v-on:click="shuffle">Shuffle!</el-button>
   </div>
 </template>
 
@@ -83,10 +82,6 @@ export default Vue.extend({
             };
 
             this.$store.commit(mc.ADD_WIDGET, {id});
-        },
-        shuffle() {
-            console.log("about to shuffle");
-            this.$store.commit(mc.SHUFFLE);
         },
         dragStart(e) {
             console.log("drag started, event was %o", e);

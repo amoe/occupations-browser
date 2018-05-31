@@ -9,32 +9,41 @@
       </widget-bar>
     </div>
 
-    <div class="control">
-      <label for="width">Width</label>
-      <input id="width" v-model.number="width">
+    <div class="control-collapse">
+      <el-collapse v-model="activeControls" v-on:change="handleChange">
+        <el-collapse-item title="Visual options" name="1">
+          <div class="control">
+            <label for="width">Width</label>
+            <input id="width" v-model.number="width">
 
-      <label for="height">Height</label>
-      <input id="height" v-model.number="height">
+            <label for="height">Height</label>
+            <input id="height" v-model.number="height">
 
-      <label for="yMargin">Y Margin</label>
-      <input id="yMargin" v-model.number="yMargin">
+            <label for="yMargin">Y Margin</label>
+            <input id="yMargin" v-model.number="yMargin">
 
-      <label for="depthOffset">Depth Offset</label>
-      <input id="depthOffset" v-model.number="depthOffset">
+            <label for="depthOffset">Depth Offset</label>
+            <input id="depthOffset" v-model.number="depthOffset">
 
-      <label for="textOffset">Text Offset</label>
-      <input id="textOffset" v-model.number="textOffset">
+            <label for="textOffset">Text Offset</label>
+            <input id="textOffset" v-model.number="textOffset">
 
-      <label for="breadth">Breadth</label>
-      <input id="breadth" v-model.number="breadth">
+            <label for="breadth">Breadth</label>
+            <input id="breadth" v-model.number="breadth">
 
-      <label for="zoomDepth">Zoom Depth</label>
-      <input id="zoomDepth" v-model.number="zoomDepth">
+            <label for="zoomDepth">Zoom Depth</label>
+            <input id="zoomDepth" v-model.number="zoomDepth">
+          </div>
+        </el-collapse-item>
+
+        <el-collapse-item title="Developer" name="2">
+          <div>
+            <p>Drag in progress: {{isDragInProgress}}, last drop {{lastDrop}}</p>
+          </div>
+        </el-collapse-item>
+      </el-collapse>
     </div>
 
-    <div>
-      <p>Drag in progress: {{isDragInProgress}}, last drop {{lastDrop}}</p>
-    </div>
 
     <div class="graph">
       <active-graph :width="width"
@@ -51,6 +60,7 @@
     </div>
 
     <div class="timeline">
+      <timeline-root/>
     </div>
   </div>
 </template>
@@ -69,11 +79,13 @@ import {mapGetters} from 'vuex';
 import bus from '../event-bus';
 import events from '../events';
 import TextView from './TextView.vue';
+import TimelineRoot from './TimelineRoot.vue';
 
 export default Vue.extend({
-    components: {ActiveGraph, DNDDemo, Hexagon, WidgetBar, TextView},
+    components: {ActiveGraph, DNDDemo, Hexagon, WidgetBar, TextView, TimelineRoot},
     data: function() {
         return {
+            activeControls: [],
             date: dateFns.format(new Date(), 'YYYY-MM-DD'),
             width: 600,
             height: 600,
@@ -85,6 +97,9 @@ export default Vue.extend({
         };
     },
     methods: {
+        handleChange(val) {
+            console.log("collapse was modified with value %o", val);
+        }
     },
     created: function() {
     },
@@ -111,7 +126,7 @@ body {
 
 .widget-bar {
     grid-row: 2;
-    grid-column: col-start 1 / span 12;
+    grid-column: col-start 2 / span 10;
 }
 
 div.page {
@@ -132,12 +147,11 @@ h1 {
 div.taxonomy {
     grid-row: 2;
     height: 8em;
-    background-color: #a0a0a0;
     grid-column: col-start / span 12;
     margin: 1em;
 }
 
-div.control {
+div.control-collapse {
     grid-row: 3;
     grid-column: col-start 2 / span 10;
 }
@@ -150,15 +164,13 @@ div.graph {
 div.text-view {
     grid-row: 5;
     margin: 1em;
-    grid-column: col-start / span 12;
+    grid-column: col-start 2 / span 10;
 }
 
 div.timeline {
     grid-row: 6;
     height: 4em;
-    background-color: #a0a0a0;
-    margin: 1em;
-    grid-column: col-start / span 12;
+    grid-column: col-start 2 / span 10;     
 }
 
 .glyph {
