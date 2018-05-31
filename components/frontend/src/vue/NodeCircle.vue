@@ -3,7 +3,7 @@
        of the containing Vue component. -->
   <g>
     <circle class="real-node"
-            r="1em"
+            r="16"
             :fill="realNodeFill"
             ref="realNodeSvgCircle"/>
 
@@ -12,7 +12,7 @@
          retains its real 'identity' in terms of the drop selection means that
          we're still able to find our way back to the real node. -->
     <circle class="ghost-node"
-            :r="ghostRadiusEm"
+            :r="ghostRadiusPx"
             ref="ghostNodeSvgCircle"
             :cx="cx"
             :cy="cy"
@@ -46,7 +46,7 @@ export default Vue.extend({
             cy: 0,
             ghostOpacity: 0.0,
             isPointerEventsEnabled: true,
-            ghostRadius: 2,
+            ghostRadius: 32,
             realNodeFill: "black"
         };
     },
@@ -75,7 +75,7 @@ export default Vue.extend({
             this.isPointerEventsEnabled = false;
 
             // Shrink the ghost
-            this.ghostRadius = 1;
+            this.ghostRadius = 16;
         },
         dragEnded(d) {
             console.log("end");
@@ -85,7 +85,7 @@ export default Vue.extend({
             // Return the ghost node to its 'home'
             this.cx = 0;
             this.cy = 0;
-            this.ghostRadius = 2;
+            this.ghostRadius = 32;
             this.ghostOpacity = 0.0;
 
 
@@ -144,8 +144,8 @@ export default Vue.extend({
         isDropCandidate(this: any) {
             return this.$store.getters['isDropCandidate'];
         },
-        ghostRadiusEm(this: any) {
-            return this.ghostRadius + "em";
+        ghostRadiusPx(this: any) {
+            return this.ghostRadius;
         }
     }
 });

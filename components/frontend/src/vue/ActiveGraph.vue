@@ -21,10 +21,6 @@
 
   <svg :width="width" :height="height">
     <g :transform="rootTranslation">
-      <path v-for="node in allButRoot"
-            class="link"
-            :d="getPathDescription(node)"/>
-      
       <!-- The group for nodes and their associated labels -->
       <!-- The funny thing is that it's totally possible to rewrite these as
            a group of computed properties derived from the state. -->
@@ -38,6 +34,11 @@
               :text-anchor="getTextAnchor(node)"
               :x="getTextXOffset(node)">{{getNodeTextContent(node)}}</text>
       </g>
+
+
+      <path v-for="node in allButRoot"
+            class="link"
+            :d="getPathDescription(node)"/>
     </g>
   </svg>
 </div>
@@ -52,6 +53,7 @@ import graph from '../graph';
 import bus from '../event-bus';
 import events from '../events';
 import axios from 'axios';
+import {Point} from '../interfaces';
 
 export default Vue.extend({
     props: ['width', 'height', 'yMargin', 'depthOffset', 'textOffset', 'breadth', 'zoomDepth'],
@@ -135,10 +137,26 @@ export default Vue.extend({
         },
         getPathDescription(node) {
             const d = node;
-            return "M" + layoutFunctions.project(d.x, d.y)
-                + "C" + layoutFunctions.project(d.x, (d.y + d.parent.y) / 2)
-                + " " + layoutFunctions.project(d.parent.x, (d.y + d.parent.y) / 2)
-                + " " + layoutFunctions.project(d.parent.x, d.parent.y);
+
+            const sourcePoint: Point = {
+                x: d.parent.x,
+                y: d.parent.y
+            };
+
+            const targetPoint: Point = {
+                x: d.x,
+                y: d.y
+            };
+
+            const sourceRadius = 16;
+
+            return layoutFunctions.getPathDescriptionForEdge(sourcePoint, sourceRadius, targetPoint)
+
+            // return "M" + layoutFunctions.project(d.x, d.y)
+            //     + "C" + layoutFunctions.project(d.x, (d.y + d.parent.y) / 2)
+            //     + " " + layoutFunctions.project(d.parent.x, (d.y + d.parent.y) / 2)
+            //     + " " + layoutFunctions.project(d.parent.x, d.parent.y);
+
         },
         getNodeGroupTransformation(d) {
             return "translate(" + layoutFunctions.project(d.x, d.y) + ")";
@@ -228,10 +246,10 @@ export default Vue.extend({
 }
 
 .link {
-  fill: none;
-  stroke: #555;
-  stroke-opacity: 0.4;
-  stroke-width: 1.5px;
+      fill: none;
+      stroke: cyan;
+      stroke-opacity: 1.0;
+      stroke-width: 1.5px;
 }
 
 svg {
