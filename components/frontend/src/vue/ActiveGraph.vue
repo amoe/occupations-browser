@@ -54,6 +54,7 @@ import bus from '../event-bus';
 import events from '../events';
 import axios from 'axios';
 import {Point} from '../interfaces';
+import {sprintf} from 'sprintf-js';
 
 export default Vue.extend({
     props: ['width', 'height', 'yMargin', 'depthOffset', 'textOffset', 'breadth', 'zoomDepth'],
@@ -148,6 +149,10 @@ export default Vue.extend({
                 y: d.y
             };
 
+            console.log("source point is %o", sourcePoint);
+            console.log("target point is %o", targetPoint);
+            console.log("text associated with target point is %o", d.data.id);
+
             const sourceRadius = 16;
 
             return layoutFunctions.getPathDescriptionForEdge(sourcePoint, sourceRadius, targetPoint)
@@ -172,7 +177,11 @@ export default Vue.extend({
 //            console.log("text content requested, %o", d.data);
 
             // data goes here, whereas it's on id when using the stratified set from csv
-            return d.data.id;
+
+            const cutDownX = sprintf("%.02f", d.x);
+            const cutDownY = sprintf("%.02f", d.y);
+
+            return `${d.data.id} (${cutDownX}, ${cutDownY})`;
         },
     },
     computed: {

@@ -48,6 +48,8 @@ function getOptimalCircumferencePoint(
 ): Point {
     const angle = (Math.PI * 1.5) + bearing(sourcePoint, targetPoint);
 
+    console.log("angle was found as %o", angle);
+
     const x = sourcePoint.x + sourceRadius * Math.cos(angle);
     const y = sourcePoint.y + sourceRadius * Math.sin(angle);
 
@@ -56,9 +58,6 @@ function getOptimalCircumferencePoint(
 
 
 function getPathDescriptionForEdge(sourcePoint: Point, sourceRadius: number, targetPoint: Point) {
-    console.log("source point is %o", sourcePoint);
-    console.log("target point is %o", targetPoint);
-
     const circumferencePoint = getOptimalCircumferencePoint(sourcePoint, sourceRadius, targetPoint);
 
     console.log("found circumference point as %o", circumferencePoint);
