@@ -53,7 +53,7 @@ import graph from '../graph';
 import bus from '../event-bus';
 import events from '../events';
 import axios from 'axios';
-import {Point} from '../interfaces';
+import { PolarPoint, CartesianPoint } from '../interfaces';
 import {sprintf} from 'sprintf-js';
 
 export default Vue.extend({
@@ -139,32 +139,33 @@ export default Vue.extend({
         getPathDescription(node) {
             const d = node;
 
-            const sourcePoint: Point = {
-                x: d.parent.x,
-                y: d.parent.y
+            const sourcePoint: PolarPoint = {
+                angle: d.parent.x,
+                radius: d.parent.y
             };
 
-            const targetPoint: Point = {
-                x: d.x,
-                y: d.y
+            const targetPoint: PolarPoint = {
+                angle: d.x,
+                radius: d.y
             };
 
-            console.log("source point is %o", sourcePoint);
-            console.log("target point is %o", targetPoint);
-            console.log("text associated with target point is %o", d.data.id);
+            // console.log("source point is %o", sourcePoint);
+            // console.log("target point is %o", targetPoint);
+            // console.log("text associated with target point is %o", d.data.id);
 
             const sourceRadius = 16;
 
             return layoutFunctions.getPathDescriptionForEdge(sourcePoint, sourceRadius, targetPoint)
-
-            // return "M" + layoutFunctions.project(d.x, d.y)
-            //     + "C" + layoutFunctions.project(d.x, (d.y + d.parent.y) / 2)
-            //     + " " + layoutFunctions.project(d.parent.x, (d.y + d.parent.y) / 2)
-            //     + " " + layoutFunctions.project(d.parent.x, d.parent.y);
-
         },
         getNodeGroupTransformation(d) {
-            return "translate(" + layoutFunctions.project(d.x, d.y) + ")";
+            const p1: PolarPoint = {
+                angle: d.x,
+                radius: d.y
+            };
+
+            const p2 = layoutFunctions.polarToCartesian(p1);
+
+            return `translate(${p2.x}, ${p2.y})`;
         },
         getNodeGroupClass(d) {
             if (d.children) {
@@ -174,14 +175,7 @@ export default Vue.extend({
             }
         },
         getNodeTextContent(d) {
-//            console.log("text content requested, %o", d.data);
-
-            // data goes here, whereas it's on id when using the stratified set from csv
-
-            const cutDownX = sprintf("%.02f", d.x);
-            const cutDownY = sprintf("%.02f", d.y);
-
-            return `${d.data.id} (${cutDownX}, ${cutDownY})`;
+            return `${d.data.id}`;
         },
     },
     computed: {

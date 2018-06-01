@@ -1,4 +1,4 @@
-import { Point } from './interfaces';
+import { PolarPoint, CartesianPoint } from './interfaces';
 
 function getParentId(d) {
     return d.id.substring(0, d.id.lastIndexOf("."));
@@ -9,20 +9,6 @@ function ourCompare(a, b) {
     return a.height - b.height || a.id.localeCompare(b.id);
 }
 
-// Projection function
-function project(x, y) {
-    var angle = (x - 90) / 180 * Math.PI, radius = y;
-    return [radius * Math.cos(angle), radius * Math.sin(angle)];
-}
-
-function projectPoint(p: Point) {
-    var angle = (p.x - 90) / 180 * Math.PI, radius = p.y;
-    return {
-        x: radius * Math.cos(angle),
-        y: radius * Math.sin(angle)
-    };
-}
-
 function isOnRightSide(node) {
     const isInFirstHalf = node.x < 180;
     const isLeafNode = !node.children;
@@ -30,25 +16,36 @@ function isOnRightSide(node) {
     return isInFirstHalf == isLeafNode;
 }
 
-function formatPoint(point: Point) {
-    const projected = projectPoint(point);
 
-    return `${projected.x} ${projected.y}`;
+// Projection function
+function polarToCartesian(p: PolarPoint): CartesianPoint {
+    const angleRadians = (p.angle - 90) / 180 * Math.PI;
+    const radius = p.radius;
+
+    return {
+        x: radius * Math.cos(angleRadians),
+        y: radius * Math.sin(angleRadians)
+    }
 }
 
-// returns optimal bearing in radians
-function bearing(point1: Point, point2: Point): number {
+function cartesianToPolar(p: CartesianPoint): PolarPoint {
+    return {
+        angle: Math.atan2(p.y, p.x),
+        radius: Math.sqrt(Math.pow(p.x, 2) + Math.pow(p.y, 2))
+    };
+}
+
+function bearing(point1: CartesianPoint, point2: CartesianPoint): number {
     var theta = Math.atan2(point2.x - point1.x, point1.y - point2.y);
     return theta;
 }
 
-// choose a concrete point that is on the optimal bearing of a source point
 function getOptimalCircumferencePoint(
-    sourcePoint: Point, sourceRadius: number, targetPoint: Point
-): Point {
+    sourcePoint: CartesianPoint,
+    sourceRadius: number,
+    targetPoint: CartesianPoint
+): CartesianPoint {
     const angle = (Math.PI * 1.5) + bearing(sourcePoint, targetPoint);
-
-    console.log("angle was found as %o", angle);
 
     const x = sourcePoint.x + sourceRadius * Math.cos(angle);
     const y = sourcePoint.y + sourceRadius * Math.sin(angle);
@@ -57,8 +54,21 @@ function getOptimalCircumferencePoint(
 }
 
 
-function getPathDescriptionForEdge(sourcePoint: Point, sourceRadius: number, targetPoint: Point) {
-    const circumferencePoint = getOptimalCircumferencePoint(sourcePoint, sourceRadius, targetPoint);
+
+function formatPoint(point: CartesianPoint): string {
+    return `${point.x} ${point.y}`;
+}
+
+
+function getPathDescriptionForEdge(arche: PolarPoint, sourceRadius: number, telos: PolarPoint): string {
+    const sourcePoint = polarToCartesian(arche);
+    const targetPoint = polarToCartesian(telos)
+
+    const circumferencePoint = getOptimalCircumferencePoint(
+        sourcePoint,
+        sourceRadius,
+        targetPoint
+    );
 
     console.log("found circumference point as %o", circumferencePoint);
 
@@ -82,7 +92,7 @@ function getPathDescriptionForEdge(sourcePoint: Point, sourceRadius: number, tar
     return fullDescription;
 }
 
-
 export default {
-    getParentId, ourCompare, project, isOnRightSide, getPathDescriptionForEdge
+    getParentId, ourCompare, isOnRightSide, getPathDescriptionForEdge,
+    polarToCartesian
 };

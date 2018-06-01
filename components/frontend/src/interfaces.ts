@@ -5,7 +5,14 @@ export interface DragAndDropOperation {
     target: NodeIdentifier
 };
 
-export interface Point {
-    x: number,
-    y: number
+// This is a regular polar point but with the caveat that the angle is 
+// represented in degrees.
+export interface PolarPoint {
+    angle: number;
+    radius: number;
+};
+
+export interface CartesianPoint {
+    x: number;
+    y: number;
 };
