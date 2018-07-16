@@ -13,6 +13,12 @@ Run the frontend:
 These will both run in auto-reloading modes so that you can make changes to the
 code.
 
+## Connect to a Cypher shell
+
+    cypher-shell -u neo4j -p password
+
+If you get connection refused, you need to actually start neo4j.  `systemctl start neo4j`.
+
 ## Load the data
 
 Run the Python script `scripts/import_data.py` to load the data.
