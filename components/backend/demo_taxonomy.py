@@ -31,4 +31,18 @@ g.add_edge(GENUS1, SPECIES2)
 g.add_edge(GENUS2, SPECIES3)
 g.add_edge(GENUS2, SPECIES4)
 
-misc.quickplot(g)
+
+MERGE_TAXON_QUERY = """
+    MERGE (t1:Taxon {name: {name}})
+"""
+
+LINK_TAXA_QUERY = """
+    MATCH (t1:Taxon {name: {u_name}}), (t2:Taxon {name: {v_name}})
+    CREATE (t1)-[:CONTAINS]->(t2)
+"""
+
+for edge in networkx.bfs_edges(g, FAMILY):
+    u, v = edge
+    misc.run_some_query(MERGE_TAXON_QUERY, {'name': u})
+    misc.run_some_query(MERGE_TAXON_QUERY, {'name': v})
+    misc.run_some_query(LINK_TAXA_QUERY, {'u_name': u, 'v_name': v})
