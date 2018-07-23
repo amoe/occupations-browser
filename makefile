@@ -13,4 +13,4 @@ gather_dependencies:
 
 reset_database:
 	sh scripts/clear_neo4j.sh
-	cypher-shell -u neo4j -p password < $(backend_dir)/sample_data/taxonomy_tagged_data.cypher
+	python3 components/backend/add_sample_data.py
