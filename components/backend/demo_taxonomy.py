@@ -38,7 +38,7 @@ MERGE_TAXON_QUERY = """
 
 LINK_TAXA_QUERY = """
     MATCH (t1:Taxon {name: {u_name}}), (t2:Taxon {name: {v_name}})
-    CREATE (t1)-[:CONTAINS]->(t2)
+    CREATE (t1)-[:SUPERCATEGORY_OF]->(t2)
 """
 
 for edge in networkx.bfs_edges(g, FAMILY):
