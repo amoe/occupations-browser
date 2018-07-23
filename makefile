@@ -1,3 +1,5 @@
+backend_dir = components/backend
+
 .PHONY: run_frontend run_backend gather_dependencies
 
 run_frontend:
@@ -8,3 +10,7 @@ run_backend:
 
 gather_dependencies:
 	yarn --cwd components/frontend install
+
+reset_database:
+	sh scripts/clear_neo4j.sh
+	cypher-shell -u neo4j -p password < $(backend_dir)/sample_data/taxonomy_tagged_data.cypher
