@@ -3,14 +3,18 @@ import logging
 import demo_taxonomy
 import misc
 
+BOLT_DRIVER_LOGGER_NAME = 'neo4j.bolt'
+
 logging.basicConfig(
     level=logging.DEBUG,
     format="%(asctime)s - %(levelname)8s - %(name)s - %(message)s"
 )
 
+logging.getLogger(BOLT_DRIVER_LOGGER_NAME).setLevel(logging.WARNING)
+
 @pytest.fixture(scope='function')
 def load_demo_taxonomy():
-    logging.debug("hi there")
+    demo_taxonomy.load_demo_taxonomy()
     yield None
     print("unloading demo taxonomy")
     misc.close_connection()
