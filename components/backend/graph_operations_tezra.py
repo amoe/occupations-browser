@@ -55,6 +55,7 @@ def pull_graph():
 
     return graph
 
+# This is the endpoint that's currently used
 def get_tree_by_root(root, depth_limit):
     g = pull_graph()
     tree = networkx.dfs_tree(g, root, depth_limit=depth_limit)
