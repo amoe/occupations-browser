@@ -49,5 +49,4 @@ def load_demo_taxonomy():
         misc.run_some_query(MERGE_TAXON_QUERY, {'name': v})
         misc.run_some_query(LINK_TAXA_QUERY, {'u_name': u, 'v_name': v})
 
-
-if __name__ == __main__: load_demo_taxonomy()
+if __name__ == '__main__': load_demo_taxonomy()

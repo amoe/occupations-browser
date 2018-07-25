@@ -19,3 +19,7 @@ def run_some_query(query, parameters):
         with session.begin_transaction() as tx:
             results = tx.run(query, parameters)
             return results
+
+
+def close_connection():
+    driver.close()
