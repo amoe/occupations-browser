@@ -4,3 +4,4 @@ components/frontend/dist
 components/frontend/yarn-error.log
 data/
 components/backend/.cache
+.cache
