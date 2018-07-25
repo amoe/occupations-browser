@@ -41,8 +41,13 @@ LINK_TAXA_QUERY = """
     CREATE (t1)-[:SUPERCATEGORY_OF]->(t2)
 """
 
-for edge in networkx.bfs_edges(g, FAMILY):
-    u, v = edge
-    misc.run_some_query(MERGE_TAXON_QUERY, {'name': u})
-    misc.run_some_query(MERGE_TAXON_QUERY, {'name': v})
-    misc.run_some_query(LINK_TAXA_QUERY, {'u_name': u, 'v_name': v})
+
+def load_demo_taxonomy():
+    for edge in networkx.bfs_edges(g, FAMILY):
+        u, v = edge
+        misc.run_some_query(MERGE_TAXON_QUERY, {'name': u})
+        misc.run_some_query(MERGE_TAXON_QUERY, {'name': v})
+        misc.run_some_query(LINK_TAXA_QUERY, {'u_name': u, 'v_name': v})
+
+
+if __name__ == __main__: load_demo_taxonomy()
