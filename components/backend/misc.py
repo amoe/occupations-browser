@@ -14,7 +14,6 @@ def quickplot(g):
     networkx.draw_networkx(g)
     matplotlib.pyplot.show()
 
-
 def run_some_query(query, parameters):
     with driver.session() as session:
         with session.begin_transaction() as tx:
