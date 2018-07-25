@@ -1,5 +1,8 @@
 backend_dir = components/backend
 
+pytest = py.test-3
+
+
 .PHONY: run_frontend run_backend gather_dependencies
 
 run_frontend:
@@ -14,3 +17,6 @@ gather_dependencies:
 reset_database:
 	sh scripts/clear_neo4j.sh
 	python3 components/backend/add_sample_data.py
+
+test_backend:
+	$(pytest) components/backend/test.py
