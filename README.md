@@ -25,4 +25,4 @@ Run the Python script `scripts/import_data.py` to load the data.
 
     python3 scripts/import_data.py data/1-obo1674-1834_occupations_20180104.csv
 
-Yow! x1
+Yow! x2
