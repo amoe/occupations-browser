@@ -19,4 +19,4 @@ reset_database:
 	python3 components/backend/add_sample_data.py
 
 test_backend:
-	$(pytest) components/backend/test.py
+	$(pytest) components/backend/test.py components/backend/integration_test.py
