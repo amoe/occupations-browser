@@ -55,13 +55,14 @@ import events from '../events';
 import axios from 'axios';
 import { PolarPoint, CartesianPoint } from '../interfaces';
 import {sprintf} from 'sprintf-js';
+import mc from '../mutation-constants';
+import {mapGetters} from 'vuex';
 
 export default Vue.extend({
     props: ['width', 'height', 'yMargin', 'depthOffset', 'textOffset', 'breadth', 'zoomDepth'],
     components: {NodeCircle},
     data() {
         return {
-            data: null,
             data3: graph.stratifySentence(["the", "big", "red", "dog"]),
             possibleRoots: [],
             currentRoot: 'Oyl'
@@ -88,7 +89,7 @@ export default Vue.extend({
         },
         updateFromBackend() {
             axios.get("/api/tezra/tree?root=" + this.currentRoot + "&zoom_depth=" + this.zoomDepth).then(response => {
-                this.data = response.data;
+                this.$store.commit(mc.SET_GRAPH_DATA, response.data);
             }).catch(error => {
                 this.$message.error('Failed to query data from API');
             });
@@ -100,9 +101,12 @@ export default Vue.extend({
             this.data.children[1].name +=  "\u00b7" + removedChildren[0].name;
         },
         removeNode() {
+            console.log("disabled");
+            /*
             console.log("remove node %o", true);
             const removedElt = this.data.children.shift();
             console.log("removed element: %o", removedElt);
+            */
         },
         handleMousedown() {
             console.log("got mousedown %o", arguments);
@@ -200,7 +204,7 @@ export default Vue.extend({
             return "translate(" + xOffset + "," + yOffset + ")";
         },
         root: function(this: any) {
-            if (this.data === null)  return null;
+            if (this.graphData === null)  return null;
 
             const depth = (this.width / 2) - this.depthOffset;    // This is a radius
 
@@ -212,7 +216,7 @@ export default Vue.extend({
            // const root = stratify(this.data).sort(ourCompare);
 
             // This is another option
-            let root = d3.hierarchy(this.data, d => d.children);
+            let root = d3.hierarchy(this.graphData, d => d.children);
 
             return cluster(root);
         },
@@ -221,7 +225,7 @@ export default Vue.extend({
         },
         isDragInProgress: function(this: any) {
             return this.$store.getters.isDragInProgress;
-        }
+        }, ...mapGetters(['graphData'])
     }
 });
 </script>
@@ -238,7 +242,7 @@ export default Vue.extend({
 .node text {
     font-size: 0.8em;
 }
-
+p
 .node--internal circle {
 
 /*  fill: #555;*/
