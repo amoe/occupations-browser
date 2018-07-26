@@ -30,7 +30,9 @@ const store = new Vuex.Store({
         widgetOrder: [
             'alpha', 'beta', 'gamma'
         ],
-        graphData: []
+        // needs to be initialized to null, not an empty array, otherwise you
+        // see a strange intermediate state
+        graphData: null
     },
     mutations: {
         increment(state) {
