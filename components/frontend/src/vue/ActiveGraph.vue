@@ -63,7 +63,6 @@ export default Vue.extend({
     components: {NodeCircle},
     data() {
         return {
-            data3: graph.stratifySentence(["the", "big", "red", "dog"]),
             possibleRoots: [],
             currentRoot: 'Oyl'
         };
