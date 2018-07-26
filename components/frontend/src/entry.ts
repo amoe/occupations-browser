@@ -33,7 +33,8 @@ const store = new Vuex.Store({
         // needs to be initialized to null, not an empty array, otherwise you
         // see a strange intermediate state
         graphData: null,
-        possibleRoots: []
+        possibleRoots: [],
+        selectedRoot: 'Oyl'
     },
     mutations: {
         increment(state) {
@@ -92,6 +93,9 @@ const store = new Vuex.Store({
         },
         [mc.SET_POSSIBLE_ROOTS]: (state, possibleRoots) => {
             state.possibleRoots = possibleRoots;
+        },
+        [mc.SELECT_ROOT]: (state, newRoot) => {
+            state.selectedRoot = newRoot;
         }
     },
     actions

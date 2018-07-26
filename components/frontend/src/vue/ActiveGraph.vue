@@ -7,11 +7,11 @@
 
     <el-select filterable
                remote
-               v-model="currentRoot"
                :remote-method="searchRoots"
                v-on:change="changed"
                loading-text="Loading"
-               placeholder="Root">
+               placeholder="Root"
+               :value="selectedRoot">
       <el-option v-for="item in possibleRoots"
                  :key="item.value"
                  :label="item.label"
@@ -63,7 +63,6 @@ export default Vue.extend({
     components: {NodeCircle},
     data() {
         return {
-            currentRoot: 'Oyl'
         };
     },
     created() {
@@ -83,10 +82,11 @@ export default Vue.extend({
         },
         changed(val) {
             console.log("changed was called with value %o", val);
+            this.$store.commit(mc.SELECT_ROOT, val);
             this.updateFromBackend();
         },
-        updateFromBackend() {
-            axios.get("/api/tezra/tree?root=" + this.currentRoot + "&zoom_depth=" + this.zoomDepth).then(response => {
+        updateFromBackend(this: any) {
+            axios.get("/api/tezra/tree?root=" + this.selectedRoot + "&zoom_depth=" + this.zoomDepth).then(response => {
                 this.$store.commit(mc.SET_GRAPH_DATA, response.data);
             }).catch(error => {
                 this.$message.error('Failed to query data from API');
@@ -223,7 +223,7 @@ export default Vue.extend({
         },
         isDragInProgress: function(this: any) {
             return this.$store.getters.isDragInProgress;
-        }, ...mapGetters(['graphData', 'possibleRoots'])
+        }, ...mapGetters(['graphData', 'possibleRoots', 'selectedRoot'])
     }
 });
 </script>

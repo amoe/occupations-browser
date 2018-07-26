@@ -16,5 +16,8 @@ export default {
     },
     possibleRoots(state, getters) {
         return state.possibleRoots;
+    },
+    selectedRoot(state, getters) {
+        return state.selectedRoot;
     }
 };
