@@ -63,7 +63,6 @@ export default Vue.extend({
     components: {NodeCircle},
     data() {
         return {
-            possibleRoots: [],
             currentRoot: 'Oyl'
         };
     },
@@ -77,7 +76,7 @@ export default Vue.extend({
         searchRoots(query) {
             console.log("remote method called with argument %o", query);
             axios.get("/api/tezra/roots?q=" + query).then(response => {
-                this.possibleRoots = response.data.map(x => ({value: x, label: x}));
+                this.$store.commit(mc.SET_POSSIBLE_ROOTS, response.data.map(x => ({value: x, label: x})));
             }).catch(error => {
                 this.$message.error('Failed to query data from API');
             });
@@ -224,7 +223,7 @@ export default Vue.extend({
         },
         isDragInProgress: function(this: any) {
             return this.$store.getters.isDragInProgress;
-        }, ...mapGetters(['graphData'])
+        }, ...mapGetters(['graphData', 'possibleRoots'])
     }
 });
 </script>

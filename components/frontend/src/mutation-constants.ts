@@ -9,5 +9,6 @@ export default {
     SHUFFLE: 'shuffle',
     ADD_WIDGET: 'addWidget',
     REMOVE_WIDGET: 'removeWidget',
-    SET_GRAPH_DATA: 'setGraphData'
+    SET_GRAPH_DATA: 'setGraphData',
+    SET_POSSIBLE_ROOTS: 'setPossibleRoots',
 };

@@ -13,5 +13,8 @@ export default {
     },
     graphData(state, getters) {
         return state.graphData;
+    },
+    possibleRoots(state, getters) {
+        return state.possibleRoots;
     }
 };

@@ -32,7 +32,8 @@ const store = new Vuex.Store({
         ],
         // needs to be initialized to null, not an empty array, otherwise you
         // see a strange intermediate state
-        graphData: null
+        graphData: null,
+        possibleRoots: []
     },
     mutations: {
         increment(state) {
@@ -88,6 +89,9 @@ const store = new Vuex.Store({
         },
         [mc.SET_GRAPH_DATA]: (state, data) => {
             state.graphData = data;
+        },
+        [mc.SET_POSSIBLE_ROOTS]: (state, possibleRoots) => {
+            state.possibleRoots = possibleRoots;
         }
     },
     actions
