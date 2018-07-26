@@ -29,7 +29,8 @@ const store = new Vuex.Store({
         lastDrop: null,
         widgetOrder: [
             'alpha', 'beta', 'gamma'
-        ]
+        ],
+        graphData: []
     },
     mutations: {
         increment(state) {
@@ -82,6 +83,9 @@ const store = new Vuex.Store({
         },
         [mc.REMOVE_WIDGET]: (state, { name }) => {
             state.widgetOrder = _.filter(state.widgetOrder, w => w !== name);
+        },
+        [mc.SET_GRAPH_DATA]: (state, data) => {
+            state.graphData = data;
         }
     },
     actions

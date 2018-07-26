@@ -8,5 +8,6 @@ export default {
     SWAP_TAXONOMY_WIDGETS: 'swapTaxonomyWidgets',
     SHUFFLE: 'shuffle',
     ADD_WIDGET: 'addWidget',
-    REMOVE_WIDGET: 'removeWidget'
+    REMOVE_WIDGET: 'removeWidget',
+    SET_GRAPH_DATA: 'setGraphData'
 };
