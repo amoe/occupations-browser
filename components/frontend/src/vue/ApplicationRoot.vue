@@ -46,13 +46,13 @@
 
 
     <div class="graph">
-      <active-graph :width="width"
-                    :height="height"
-                    :y-margin="yMargin"
-                    :depth-offset="depthOffset"
-                    :text-offset="textOffset"
-                    :breadth="breadth"
-                    :zoom-depth="zoomDepth"></active-graph>
+      <graph-view :width="width"
+                  :height="height"
+                  :y-margin="yMargin"
+                  :depth-offset="depthOffset"
+                  :text-offset="textOffset"
+                  :breadth="breadth"
+                  :zoom-depth="zoomDepth"></graph-view>
     </div>
 
     <div class="text-view">
@@ -71,7 +71,7 @@ import utility from '../utility';
 import * as d3 from 'd3';
 import graph from '../graph';
 import * as dateFns from 'date-fns';
-import ActiveGraph from './ActiveGraph.vue';
+import GraphView from './GraphView.vue';
 import DNDDemo from './DNDDemo.vue';
 import Hexagon from './Hexagon.vue';
 import WidgetBar from './WidgetBar.vue';
@@ -82,7 +82,7 @@ import TextView from './TextView.vue';
 import TimelineRoot from './TimelineRoot.vue';
 
 export default Vue.extend({
-    components: {ActiveGraph, DNDDemo, Hexagon, WidgetBar, TextView, TimelineRoot},
+    components: {GraphView, DNDDemo, Hexagon, WidgetBar, TextView, TimelineRoot},
     data: function() {
         return {
             activeControls: [],
