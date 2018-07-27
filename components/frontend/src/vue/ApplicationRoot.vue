@@ -47,7 +47,7 @@
 
     <div class="graph">
       <graph-controls :zoom-depth="zoomDepth"></graph-controls>
-      <svg :width="width" :height="height">
+      <svg id="svg-frame" :width="width" :height="height">
         <graph-view :width="width"
                     :height="height"
                     :y-margin="yMargin"
@@ -178,5 +178,15 @@ div.timeline {
 
 .glyph {
     fill: red;
+}
+
+/* The svg frame is 'pinned', taken outside of the flow layout, and occupies 
+   the entire page. */
+#svg-frame {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100vw;
+    height: 100vh;
 }
 </style>
