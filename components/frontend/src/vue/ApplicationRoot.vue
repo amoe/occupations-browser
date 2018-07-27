@@ -46,13 +46,15 @@
 
 
     <div class="graph">
-      <graph-view :width="width"
-                  :height="height"
-                  :y-margin="yMargin"
-                  :depth-offset="depthOffset"
-                  :text-offset="textOffset"
-                  :breadth="breadth"
-                  :zoom-depth="zoomDepth"></graph-view>
+      <graph-controls :zoom-depth="zoomDepth"></graph-controls>
+      <svg :width="width" :height="height">
+        <graph-view :width="width"
+                    :height="height"
+                    :y-margin="yMargin"
+                    :depth-offset="depthOffset"
+                    :text-offset="textOffset"
+                    :breadth="breadth"></graph-view>
+      </svg>
     </div>
 
     <div class="text-view">
@@ -72,6 +74,7 @@ import * as d3 from 'd3';
 import graph from '../graph';
 import * as dateFns from 'date-fns';
 import GraphView from './GraphView.vue';
+import GraphControls from './GraphControls.vue';
 import DNDDemo from './DNDDemo.vue';
 import Hexagon from './Hexagon.vue';
 import WidgetBar from './WidgetBar.vue';
@@ -82,7 +85,7 @@ import TextView from './TextView.vue';
 import TimelineRoot from './TimelineRoot.vue';
 
 export default Vue.extend({
-    components: {GraphView, DNDDemo, Hexagon, WidgetBar, TextView, TimelineRoot},
+    components: {GraphControls, GraphView, DNDDemo, Hexagon, WidgetBar, TextView, TimelineRoot},
     data: function() {
         return {
             activeControls: [],
