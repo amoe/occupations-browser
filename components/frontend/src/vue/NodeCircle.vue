@@ -16,10 +16,7 @@
             ref="ghostNodeSvgCircle"
             :cx="cx"
             :cy="cy"
-            :opacity="ghostOpacity"
-            v-on:mouseover="handleMouseover"
-            v-on:mouseout="handleMouseout"
-            :pointer-events="pointerEvents">
+            :opacity="ghostOpacity">
       <title>This is a tooltip</title>
     </circle>
 
@@ -52,98 +49,9 @@ export default Vue.extend({
     },
     created() {
     },
-    mounted() {
-        this.$nextTick(() => {
-            const svg  = this.$refs.ghostNodeSvgCircle;
-            const selection = d3.select(svg);
-//            console.log("selection is %o", selection);
-            
-            const dragBehaviourAdder = d3.drag()
-                .on('start', this.dragStarted)
-                .on('drag', this.dragged)
-                .on('end', this.dragEnded);
-                                   
-            selection.call(dragBehaviourAdder);
-        })
-    },
     methods: {
-        dragStarted(d) {
-            this.ghostOpacity = 0.2;
-            console.log("start");
-            this.$store.commit(mc.SWITCH_DRAG_IN_PROGRESS_ON);
-            this.$store.commit(mc.SET_DRAG_SOURCE, this.identifier);
-            this.isPointerEventsEnabled = false;
-
-            // Shrink the ghost
-            this.ghostRadius = 16;
-        },
-        dragEnded(d) {
-            console.log("end");
-            this.$store.commit(mc.SWITCH_DRAG_IN_PROGRESS_OFF);
-            this.isPointerEventsEnabled = true;
-
-            // Return the ghost node to its 'home'
-            this.cx = 0;
-            this.cy = 0;
-            this.ghostRadius = 32;
-            this.ghostOpacity = 0.0;
-
-
-            if (this.isDropCandidate) {
-                console.log("successful drop");
-
-                this.$store.commit(mc.CONFIRM_DROP);
-
-                // Raise an event to communicate to parents
-                bus.$emit(events.DRAG_AND_DROP_OPERATION_CONFIRMED);
-            }
-
-            // It should be fine to leave the drag source as it was here
-        },
-        dragged(d) {
-            this.cx = d3.event.x;
-            this.cy = d3.event.y;
-        },
-        showTooltip() {
-            console.log("the tooltip is as such");
-        },
-        // These are handled by nodes when they are acting as 'target nodes'
-        handleMouseover() {
-            console.log("mouseover");
-            
-
-            this.showTooltip();
-
-            if (this.isDragInProgress) {
-                this.realNodeFill = "green";
-                this.$store.commit(mc.SET_DROP_INTERACTION_CANDIDATE, this.identifier);
-            } else {
-                // Just about to be dragged; 'draggable'
-                this.realNodeFill = "blue";
-            }
-        },
-        handleMouseout() {
-            console.log("mouseout");
-            
-            this.realNodeFill = "black";
-            
-            this.$store.commit(mc.CLEAR_DROP_INTERACTION_CANDIDATE);
-        }
     },
     computed: {
-        // When you are dragging an element it's always put to the front,
-        // but that means that it will automatically receive any 
-        // mouseover/mouseout events, so we need to temporarily disable them
-        // during the drag period.
-        pointerEvents(this: any) {
-            return this.isPointerEventsEnabled ? "auto" : "none";
-        },
-        isDragInProgress(this: any) {
-            return this.$store.getters['isDragInProgress'];
-        },
-        isDropCandidate(this: any) {
-            return this.$store.getters['isDropCandidate'];
-        },
         ghostRadiusPx(this: any) {
             return this.ghostRadius;
         }

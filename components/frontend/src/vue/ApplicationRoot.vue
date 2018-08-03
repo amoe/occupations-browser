@@ -141,8 +141,14 @@ div.timeline {
    the entire page. */
 #svg-frame {
     position: absolute;
-    top: 0px;
+    /* top: 0px; */
+
+    /* This is just a hack until a better layout mechanism somehow presents
+       itself */    
+    top: 24em;
+    right: 0px;
     left: 0px;
+    bottom: 0px;
     width: 100vw;
     height: 100vh;
 }

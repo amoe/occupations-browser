@@ -51,17 +51,20 @@ export default Vue.extend({
                 console.log("inside dom graph data callback");
 
                 const vars = {
+                    onDragStart: function(this: any) {
+                        console.log("drag started");
+                    },
                     onDragEnd: function(this: any) {
                         console.log("drag ended");
 
-                        if (this.hitTest('#dndtarget')) {
+                        if (this.hitTest('.dndtarget')) {
                             console.log("drop received");
                         }
                     }
                 };
 
 
-                const result = Draggable.create('circle.ghost-node');
+                const result = Draggable.create('circle.ghost-node', vars);
                 console.log("result of creating draggable was %o", result);
             })
         }
@@ -233,9 +236,5 @@ p
       stroke: cyan;
       stroke-opacity: 1.0;
       stroke-width: 1.5px;
-}
-
-svg {
-    border: 1px solid #a0a0a0;
 }
 </style>
