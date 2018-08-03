@@ -11,6 +11,7 @@
          in front of the real node.  Luckily the fact that the ghost node
          retains its real 'identity' in terms of the drop selection means that
          we're still able to find our way back to the real node. -->
+    <!--
     <circle class="ghost-node"
             :r="ghostRadiusPx"
             ref="ghostNodeSvgCircle"
@@ -19,7 +20,7 @@
             :opacity="ghostOpacity">
       <title>This is a tooltip</title>
     </circle>
-
+    -->
   </g>
 </template>
 

@@ -57,14 +57,17 @@ export default Vue.extend({
                     onDragEnd: function(this: any) {
                         console.log("drag ended");
 
+                        // hittest can't accept a class, only an id, and should really be element
                         if (this.hitTest('.dndtarget')) {
                             console.log("drop received");
+                        } else {
+                            console.log("hit NOT detected");
                         }
                     }
                 };
 
 
-                const result = Draggable.create('circle.ghost-node', vars);
+                const result = Draggable.create('circle.real-node', vars);
                 console.log("result of creating draggable was %o", result);
             })
         }

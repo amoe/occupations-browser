@@ -5,7 +5,7 @@
         v-on:dragover.prevent="dragOver"
         v-on:drop="drop"
         v-bind:style="calculateStyle()"
-        :class="category">
+        :class="[category, 'dndtarget']">
     <!-- Dragover must be preventDefaulted, because the default handler will
          disallow a drop. -->
     <el-button v-on:click="removeWidget"
