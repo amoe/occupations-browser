@@ -57,6 +57,6 @@ export default Vue.extend({
             });
         }
     },
-    computed: { ...mapGetters(['selectedRoot']) }
+    computed: { ...mapGetters(['selectedRoot', 'possibleRoots']) }
 });
 </script>
