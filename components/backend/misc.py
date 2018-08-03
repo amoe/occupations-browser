@@ -6,7 +6,7 @@ import matplotlib
 import matplotlib.pyplot
 
 credentials = ('neo4j', 'password')
-uri = "bolt://localhost:7687"
+uri = "bolt://localhost:7688"
 driver = neo4j.v1.GraphDatabase.driver(uri, auth=credentials)
 
 def quickplot(g):
