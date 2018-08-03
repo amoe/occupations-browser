@@ -39,6 +39,7 @@
     "date-fns": "^1.29.0",
     "element-ui": "^2.3.7",
     "file-loader": "^1.1.11",
+    "gsap": "^2.0.1",
     "postcss-loader": "^2.1.5",
     "sprintf-js": "^1.1.1",
     "style-loader": "^0.21.0",
