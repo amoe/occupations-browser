@@ -9,41 +9,6 @@
       </widget-bar>
     </div>
 
-    <div class="control-collapse">
-      <el-collapse v-model="activeControls" v-on:change="handleChange">
-        <el-collapse-item title="Visual options" name="1">
-          <div class="control">
-            <label for="width">Width</label>
-            <input id="width" v-model.number="width">
-
-            <label for="height">Height</label>
-            <input id="height" v-model.number="height">
-
-            <label for="yMargin">Y Margin</label>
-            <input id="yMargin" v-model.number="yMargin">
-
-            <label for="depthOffset">Depth Offset</label>
-            <input id="depthOffset" v-model.number="depthOffset">
-
-            <label for="textOffset">Text Offset</label>
-            <input id="textOffset" v-model.number="textOffset">
-
-            <label for="breadth">Breadth</label>
-            <input id="breadth" v-model.number="breadth">
-
-            <label for="zoomDepth">Zoom Depth</label>
-            <input id="zoomDepth" v-model.number="zoomDepth">
-          </div>
-        </el-collapse-item>
-
-        <el-collapse-item title="Developer" name="2">
-          <div>
-            <p>Drag in progress: {{isDragInProgress}}, last drop {{lastDrop}}</p>
-          </div>
-        </el-collapse-item>
-      </el-collapse>
-    </div>
-
 
     <div class="graph">
       <graph-controls :zoom-depth="zoomDepth"></graph-controls>
@@ -55,14 +20,6 @@
                     :text-offset="textOffset"
                     :breadth="breadth"></graph-view>
       </svg>
-    </div>
-
-    <div class="text-view">
-      <text-view/>
-    </div>
-
-    <div class="timeline">
-      <timeline-root/>
     </div>
   </div>
 </template>
