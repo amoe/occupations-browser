@@ -70,7 +70,7 @@ function getPathDescriptionForEdge(arche: PolarPoint, sourceRadius: number, telo
         targetPoint
     );
 
-    console.log("found circumference point as %o", circumferencePoint);
+    //console.log("found circumference point as %o", circumferencePoint);
 
     const moveInstruction = "M" + formatPoint(circumferencePoint);
 

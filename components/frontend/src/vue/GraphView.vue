@@ -34,6 +34,8 @@ import { PolarPoint, CartesianPoint } from '../interfaces';
 import {sprintf} from 'sprintf-js';
 import mc from '../mutation-constants';
 import {mapGetters} from 'vuex';
+import Draggable from 'gsap/Draggable';
+
 
 export default Vue.extend({
     props: ['width', 'height', 'yMargin', 'depthOffset', 'textOffset', 'breadth'],
@@ -41,6 +43,28 @@ export default Vue.extend({
     data() {
         return {
         };
+    },
+    watch: {
+        graphData(newData, oldData) {
+            console.log("graph data changed");
+            this.$nextTick(function() {
+                console.log("inside dom graph data callback");
+
+                const vars = {
+                    onDragEnd: function(this: any) {
+                        console.log("drag ended");
+
+                        if (this.hitTest('#dndtarget')) {
+                            console.log("drop received");
+                        }
+                    }
+                };
+
+
+                const result = Draggable.create('circle.ghost-node');
+                console.log("result of creating draggable was %o", result);
+            })
+        }
     },
     created() {
         bus.$on(events.DRAG_AND_DROP_OPERATION_CONFIRMED, () => this.handleDragAndDrop());

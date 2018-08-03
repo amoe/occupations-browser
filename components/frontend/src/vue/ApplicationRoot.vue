@@ -84,8 +84,6 @@ import events from '../events';
 import TextView from './TextView.vue';
 import TimelineRoot from './TimelineRoot.vue';
 
-import Draggable from 'gsap/Draggable';
-
 export default Vue.extend({
     components: {GraphControls, GraphView, DNDDemo, Hexagon, WidgetBar, TextView, TimelineRoot},
     data: function() {
@@ -105,25 +103,6 @@ export default Vue.extend({
         handleChange(val) {
             console.log("collapse was modified with value %o", val);
         }
-    },
-    mounted() {
-        this.$nextTick(function () {
-            console.log("inside mounted callback");
-
-            const vars = {
-                onDragEnd: function(this: any) {
-                    console.log("drag ended");
-
-                    if (this.hitTest('#dndtarget')) {
-                        console.log("drop received");
-                    }
-                }
-            };
-            
-
-            const result = Draggable.create('circle.ghost-node');
-            console.log("result of creating draggable was %o", result);
-        })
     },
     created: function() {
     },
