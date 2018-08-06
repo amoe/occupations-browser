@@ -11,5 +11,6 @@ export default {
     REMOVE_WIDGET: 'removeWidget',
     SET_GRAPH_DATA: 'setGraphData',
     SET_POSSIBLE_ROOTS: 'setPossibleRoots',
-    SELECT_ROOT: 'selectRoot'
+    SELECT_ROOT: 'selectRoot',
+    INCREMENT_RENDER_COUNT_BY_NAME: 'incrementRenderCountByName'
 };

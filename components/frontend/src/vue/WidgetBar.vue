@@ -3,11 +3,11 @@
     <div class="widget-hbar">
       <taxonomy-widget v-for="item in widgetOrder"
                        ref="widgets"
-                       :key="item"
-                       :name="item"
-                       :category="widgets[item].category"
-                       :content="widgets[item].content"
-                       :includedInWorkingSet="widgets[item].includedInWorkingSet">
+                       :key="getHashCode(item)"
+                       :name="item.name"
+                       :category="widgets[item.name].category"
+                       :content="widgets[item.name].content"
+                       :includedInWorkingSet="widgets[item.name].includedInWorkingSet">
       </taxonomy-widget>
     </div>
 
@@ -34,6 +34,8 @@ import TaxonomyWidget from './TaxonomyWidget.vue';
 import { v4 as uuidv4 } from 'uuid';
 import {VueConstructor} from 'vue';
 import Draggable from 'gsap/Draggable';
+import {WidgetDisplaySpecifier} from '../interfaces';
+import {sprintf} from 'sprintf-js';
 
 // This 
 
@@ -46,10 +48,6 @@ export default (Vue as MyRefExtensions).extend({
         return {
             widgetColSpan: 8,
             value: null,
-            options: [
-                {'label': 'Foo', 'value': 'foo'},
-                {'label': 'Bar', 'value': 'bar'}
-            ],
             widgets: {
                 alpha: {
                     content: "Alpha Widget",
@@ -103,8 +101,6 @@ export default (Vue as MyRefExtensions).extend({
 
                     // hittest can't accept a class, only an id, and should really be element
 
-                    // remove our element from the list
-
                     const droppedTargets = elements.filter(validTarget => this.hitTest(validTarget));
 
                     if (droppedTargets.length === 0) {
@@ -134,6 +130,8 @@ export default (Vue as MyRefExtensions).extend({
 
                         widgetBar.handleDrop(sourceName, targetName);
                     }
+
+                    widgetBar.$store.commit(mc.INCREMENT_RENDER_COUNT_BY_NAME, sourceName);
                 }
             };
 
@@ -176,6 +174,9 @@ export default (Vue as MyRefExtensions).extend({
 
             this.$store.commit(mc.ADD_WIDGET, {id});
         },
+        getHashCode(item: WidgetDisplaySpecifier): string {
+            return sprintf("%s-%s", item.name, item.renderCount)
+        }
     },
     // mapState doesn't work with typescript: "Property 'mapState' does not exist on type"
     // So we manually create the relevant computed properties.

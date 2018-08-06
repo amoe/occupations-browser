@@ -3,7 +3,7 @@ import actions from './actions';
 import mc from '../mutation-constants';
 import getters from './getters';
 import Vuex from 'vuex';
-import { DragAndDropOperation, NodeIdentifier } from '../interfaces';
+import { DragAndDropOperation, NodeIdentifier, WidgetDisplaySpecifier } from '../interfaces';
 
 const storeConfiguration = {
     getters,
@@ -14,7 +14,9 @@ const storeConfiguration = {
         isDragInProgress: false,
         lastDrop: null,
         widgetOrder: [
-            'alpha', 'beta', 'gamma'
+            { name: 'alpha', renderCount: 0 },
+            { name: 'beta', renderCount: 0 },
+            { name: 'gamma', renderCount: 0 }
         ],
         // needs to be initialized to null, not an empty array, otherwise you
         // see a strange intermediate state
@@ -29,6 +31,11 @@ const storeConfiguration = {
     mutations: {
         increment(state) {
             state.count++;
+        },
+        [mc.INCREMENT_RENDER_COUNT_BY_NAME]: (state, name: string) => {
+            const s: WidgetDisplaySpecifier = state.widgetOrder.find(x => x === name);
+
+            s.renderCount++;
         },
         [mc.SET_DROP_INTERACTION_CANDIDATE]: (state, chosen: NodeIdentifier) => {
             state.dropInteractionCandidate = chosen;
@@ -73,7 +80,12 @@ const storeConfiguration = {
             console.log("widget order is now %o", state.widgetOrder);
         },
         [mc.ADD_WIDGET]: (state, { id }) => {
-            state.widgetOrder.push(id);
+            state.widgetOrder.push(
+                {
+                    name: id,
+                    renderCount: 0
+                }
+            );
         },
         [mc.REMOVE_WIDGET]: (state, { name }) => {
             state.widgetOrder = _.filter(state.widgetOrder, w => w !== name);

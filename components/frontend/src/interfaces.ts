@@ -16,3 +16,8 @@ export interface CartesianPoint {
     x: number;
     y: number;
 };
+
+export interface WidgetDisplaySpecifier {
+    name: string;
+    renderCount: number;
+};
