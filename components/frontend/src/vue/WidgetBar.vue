@@ -103,10 +103,13 @@ export default (Vue as MyRefExtensions).extend({
 
                     // hittest can't accept a class, only an id, and should really be element
 
+                    // remove our element from the list
+
                     const droppedTargets = elements.filter(validTarget => this.hitTest(validTarget));
 
                     if (droppedTargets.length === 0) {
                         console.log("taxonomywidget: hit NOT detected");
+                        widgetBar.addWidget();
                     } else {
                         console.log("taxonomywidget: drop received");
 
@@ -115,6 +118,9 @@ export default (Vue as MyRefExtensions).extend({
                         if (droppedTargets.length !== 1) {
                             throw new Error("found a weird number of dropped targets");
                         }
+
+                        // To successfully handle the drop, we have to be able to figure out from the element
+                        // The key is that widgetOrder can be used to look up the thing
 
                         // TODO: EXTRACT FUNCTION
                         
@@ -126,7 +132,7 @@ export default (Vue as MyRefExtensions).extend({
                         
                         // END
 
-                        widgetBar.handleDrop(droppedTargets[0]);
+                        widgetBar.handleDrop(sourceName, targetName);
                     }
                 }
             };
@@ -150,18 +156,8 @@ export default (Vue as MyRefExtensions).extend({
                 console.log("taxonomywidget: result of creating draggable was %o", result);
             }
         },
-        handleDrop(dropTarget) {
-            console.log("handling drop for element %o", dropTarget);
-
-            // To successfully handle the drop, we have to be able to figure out from the element
-            // The key is that widgetOrder can be used to look up the thing
-            // 
-
-            // const source = e.dataTransfer.getData(DND_DATA_CONTENT_TYPE);
-            // const target = this.name;
-            // console.log("drop occurred, drop data was %o", source);
-
-            // this.$store.commit(mc.SWAP_TAXONOMY_WIDGETS, {source, target});
+        handleDrop(source: string, target: string) {
+            this.$store.commit(mc.SWAP_TAXONOMY_WIDGETS, {source, target});
         },
         handleWidgetRemoved(name) {
             console.log("received widget removed event, name was %o", name);
