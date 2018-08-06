@@ -93,12 +93,13 @@ export default (Vue as MyRefExtensions).extend({
 
             console.log("refs list is now %o", elements);
 
-            const draggableOptions = {
+            const baseOptions = {
                 onDragStart: function(this: any) {
                     console.log("taxonomywidget: drag started");
                 },
-                onDragEnd: function(this: any) {
+                onDragEnd: function(this: any, sourceName: string) {
                     console.log("taxonomywidget: drag ended");
+                    console.log("sourceName is %o", sourceName);
 
                     // hittest can't accept a class, only an id, and should really be element
 
@@ -111,17 +112,50 @@ export default (Vue as MyRefExtensions).extend({
 
                         console.log("droppedTargets is %o", droppedTargets);
 
-                        widgetBar.handleDrop();
+                        if (droppedTargets.length !== 1) {
+                            throw new Error("found a weird number of dropped targets");
+                        }
+
+                        // TODO: EXTRACT FUNCTION
+                        
+                        const dropTarget = droppedTargets[0];
+                        const nameIndex = elements.indexOf(dropTarget);
+                        const targetName = widgetBar.widgetOrder[nameIndex]
+
+                        console.log("target name was %o", targetName);
+                        
+                        // END
+
+                        widgetBar.handleDrop(droppedTargets[0]);
                     }
                 }
             };
 
+            // We actually need to set these up as a loop.
+            // Because each one needs to get a different value for the onDragEndParams.
 
-            const result = Draggable.create(elements, draggableOptions);
-            console.log("taxonomywidget: result of creating draggable was %o", result);
+            for (var i = 0; i < elements.length; i++) {
+                const element = elements[i];
+                const name = this.widgetOrder[i];
+                
+                const draggableOptions = Object.assign(
+                    {}, baseOptions, {
+                        onDragEndParams: [name]   // Pass name into the onDragEnd callback
+                    }
+                );
+
+                const result = Draggable.create(
+                    element, draggableOptions
+                );
+                console.log("taxonomywidget: result of creating draggable was %o", result);
+            }
         },
-        handleDrop() {
-            console.log("handling drop");
+        handleDrop(dropTarget) {
+            console.log("handling drop for element %o", dropTarget);
+
+            // To successfully handle the drop, we have to be able to figure out from the element
+            // The key is that widgetOrder can be used to look up the thing
+            // 
 
             // const source = e.dataTransfer.getData(DND_DATA_CONTENT_TYPE);
             // const target = this.name;
