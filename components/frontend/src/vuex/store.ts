@@ -33,9 +33,20 @@ const storeConfiguration = {
             state.count++;
         },
         [mc.INCREMENT_RENDER_COUNT_BY_NAME]: (state, name: string) => {
-            const s: WidgetDisplaySpecifier = state.widgetOrder.find(x => x === name);
+            console.log("checking for render count for %o", name);
+
+            /*
+            const s: WidgetDisplaySpecifier = state.widgetOrder.find(x => x.name === name);
+
+            console.log("s was %o", s);
 
             s.renderCount++;
+            */
+
+            // We just try to re-render all of them, cargo cultishly
+            // This is not as smooth as before, but it gets around some layout bugs
+
+            state.widgetOrder.forEach(w => w.renderCount++)
         },
         [mc.SET_DROP_INTERACTION_CANDIDATE]: (state, chosen: NodeIdentifier) => {
             state.dropInteractionCandidate = chosen;
@@ -66,14 +77,20 @@ const storeConfiguration = {
             state.widgetOrder = _.shuffle(state.widgetOrder);
         },
         [mc.SWAP_TAXONOMY_WIDGETS]: (state, { source, target }) => {
+            console.log("will try to swap source %o and target %o", source, target);
             const copy = _.clone(state.widgetOrder);
 
-            const sourceIndex = _.findIndex(state.widgetOrder, w => w === source);
-            const targetIndex = _.findIndex(state.widgetOrder, w => w === target);
+            const sourceIndex = _.findIndex(state.widgetOrder, w => w.name === source);
+            const targetIndex = _.findIndex(state.widgetOrder, w => w.name === target);
+
+            console.log("sourceindex is %o", sourceIndex);
+            console.log("targetindex is %o", targetIndex);
+
+            if (targetIndex === -1) throw new Error("target not found, can't happen");
 
             // Not sure if this will work because of vue/vuex array
-            copy[targetIndex] = source;
-            copy[sourceIndex] = target;
+            copy[targetIndex] = state.widgetOrder[sourceIndex];
+            copy[sourceIndex] = state.widgetOrder[targetIndex];
 
             state.widgetOrder = copy;
 
@@ -88,7 +105,7 @@ const storeConfiguration = {
             );
         },
         [mc.REMOVE_WIDGET]: (state, { name }) => {
-            state.widgetOrder = _.filter(state.widgetOrder, w => w !== name);
+            state.widgetOrder = _.filter(state.widgetOrder, w => w.name !== name);
         },
         [mc.SET_GRAPH_DATA]: (state, data) => {
             state.graphData = data;

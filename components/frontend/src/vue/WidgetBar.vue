@@ -64,7 +64,7 @@ export default (Vue as MyRefExtensions).extend({
                     category: 'object',
                     includedInWorkingSet: true
                 }
-            },
+            }
         };
     },
     watch: {
@@ -101,11 +101,10 @@ export default (Vue as MyRefExtensions).extend({
 
                     // hittest can't accept a class, only an id, and should really be element
 
-                    const droppedTargets = elements.filter(validTarget => this.hitTest(validTarget));
+                    const droppedTargets = elements.filter(validTarget => this.hitTest(validTarget, '50%'));
 
                     if (droppedTargets.length === 0) {
                         console.log("taxonomywidget: hit NOT detected");
-                        widgetBar.addWidget();
                     } else {
                         console.log("taxonomywidget: drop received");
 
@@ -122,7 +121,7 @@ export default (Vue as MyRefExtensions).extend({
                         
                         const dropTarget = droppedTargets[0];
                         const nameIndex = elements.indexOf(dropTarget);
-                        const targetName = widgetBar.widgetOrder[nameIndex]
+                        const targetName = widgetBar.widgetOrder[nameIndex].name;
 
                         console.log("target name was %o", targetName);
                         
@@ -140,7 +139,7 @@ export default (Vue as MyRefExtensions).extend({
 
             for (var i = 0; i < elements.length; i++) {
                 const element = elements[i];
-                const name = this.widgetOrder[i];
+                const name = this.widgetOrder[i].name;
                 
                 const draggableOptions = Object.assign(
                     {}, baseOptions, {
@@ -148,6 +147,9 @@ export default (Vue as MyRefExtensions).extend({
                     }
                 );
 
+                console.log("name is %o", name);
+
+                // After vue re-renders the list, the draggable needs to be re-applied.
                 const result = Draggable.create(
                     element, draggableOptions
                 );
