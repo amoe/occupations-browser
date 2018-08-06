@@ -85,6 +85,8 @@ export default (Vue as MyRefExtensions).extend({
     },
     methods: {
         configureDraggables() {
+            const widgetBar = this;
+
             console.log("about to configure draggables");
 
             const elements = this.$refs.widgets.map(x => x.$el);
@@ -108,6 +110,8 @@ export default (Vue as MyRefExtensions).extend({
                         console.log("taxonomywidget: drop received");
 
                         console.log("droppedTargets is %o", droppedTargets);
+
+                        widgetBar.handleDrop();
                     }
                 }
             };
@@ -115,6 +119,15 @@ export default (Vue as MyRefExtensions).extend({
 
             const result = Draggable.create(elements, draggableOptions);
             console.log("taxonomywidget: result of creating draggable was %o", result);
+        },
+        handleDrop() {
+            console.log("handling drop");
+
+            // const source = e.dataTransfer.getData(DND_DATA_CONTENT_TYPE);
+            // const target = this.name;
+            // console.log("drop occurred, drop data was %o", source);
+
+            // this.$store.commit(mc.SWAP_TAXONOMY_WIDGETS, {source, target});
         },
         handleWidgetRemoved(name) {
             console.log("received widget removed event, name was %o", name);
