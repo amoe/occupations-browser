@@ -35,6 +35,7 @@ import {mapGetters} from 'vuex';
 import mc from '../mutation-constants';
 import events from '../events';
 import bus from '../event-bus';
+import Draggable from 'gsap/Draggable';
 
 const DND_DATA_CONTENT_TYPE = 'text/plain';
 

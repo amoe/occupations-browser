@@ -33,10 +33,11 @@ import mc from '../mutation-constants';
 import TaxonomyWidget from './TaxonomyWidget.vue';
 import { v4 as uuidv4 } from 'uuid';
 import {VueConstructor} from 'vue';
+import Draggable from 'gsap/Draggable';
 
 // This 
 
-type MyRefExtensions = VueConstructor<Vue & { $refs: { widgets: HTMLElement[] } }>
+type MyRefExtensions = VueConstructor<Vue & { $refs: { widgets: Vue[] } }>
 
 export default (Vue as MyRefExtensions).extend({
     components: {TaxonomyWidget},
@@ -69,15 +70,47 @@ export default (Vue as MyRefExtensions).extend({
         };
     },
     watch: {
-        widgetOrder(newValue, oldValue) {
+        widgetOrder(this: any, newValue, oldValue) {
             console.log("widget order changed");
+            this.$nextTick(() => this.configureDraggables())
         }
     },
     created: function() {
         // Set up all of our events
         bus.$on(events.WIDGET_REMOVED, (name) => this.handleWidgetRemoved(name));
     },
+    mounted: function() {
+        console.log("inside mounted callback");
+        this.$nextTick(() => this.configureDraggables())
+    },
     methods: {
+        configureDraggables() {
+            console.log("inside dom graph data callback");
+
+            const elements = this.$refs.widgets.map(x => x.$el);
+
+            console.log("refs list is now %o", elements);
+
+            const draggableOptions = {
+                onDragStart: function(this: any) {
+                    console.log("taxonomywidget: drag started");
+                },
+                onDragEnd: function(this: any) {
+                    console.log("taxonomywidget: drag ended");
+
+                    // hittest can't accept a class, only an id, and should really be element
+                    if (this.hitTest('.dndtarget')) {
+                        console.log("taxonomywidget: drop received");
+                    } else {
+                        console.log("taxonomywidget: hit NOT detected");
+                    }
+                }
+            };
+
+
+            const result = Draggable.create(elements, draggableOptions);
+            console.log("taxonomywidget: result of creating draggable was %o", result);
+        },
         handleWidgetRemoved(name) {
             console.log("received widget removed event, name was %o", name);
             this.$store.commit(mc.REMOVE_WIDGET, {name});
