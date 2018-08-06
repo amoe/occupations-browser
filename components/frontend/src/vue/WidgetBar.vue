@@ -68,12 +68,14 @@ export default (Vue as MyRefExtensions).extend({
             },
         };
     },
+    watch: {
+        widgetOrder(newValue, oldValue) {
+            console.log("widget order changed");
+        }
+    },
     created: function() {
         // Set up all of our events
         bus.$on(events.WIDGET_REMOVED, (name) => this.handleWidgetRemoved(name));
-    },
-    mounted() {
-        console.log(this.$refs.widgets);
     },
     methods: {
         handleWidgetRemoved(name) {
