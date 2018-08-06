@@ -1,11 +1,11 @@
 <template>
   <div class="taxonomy-widget"
-        draggable="true"
-        v-on:dragstart="dragStart"
-        v-on:dragover.prevent="dragOver"
-        v-on:drop="drop"
-        v-bind:style="calculateStyle()"
-        :class="[category, 'dndtarget']">
+       draggable="true"
+       v-on:dragstart="dragStart"
+       v-on:dragover.prevent="dragOver"
+       v-on:drop="drop"
+       v-bind:style="calculateStyle()"
+       :class="[category, 'dndtarget']">
     <!-- Dragover must be preventDefaulted, because the default handler will
          disallow a drop. -->
     <el-button v-on:click="removeWidget"
@@ -50,6 +50,10 @@ export default Vue.extend({
             ],
             taxonomyType: null
         };
+    },
+    mounted() {
+        // I think it's ok to not use nextTick here.
+        console.log("element value is %o", this.$el);
     },
     methods: {
         removeWidget() {

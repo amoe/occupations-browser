@@ -20,7 +20,11 @@ const storeConfiguration = {
         // see a strange intermediate state
         graphData: null,
         possibleRoots: [],
-        selectedRoot: 'Oyl'
+        selectedRoot: 'Oyl',
+        // Stores a reference to the DOM elements that get populated by the
+        // taxonomy widgets; this is needed to allow registering them as
+        // potential hit areas for draggable.
+        taxonomyWidgetElements: []
     },
     mutations: {
         increment(state) {

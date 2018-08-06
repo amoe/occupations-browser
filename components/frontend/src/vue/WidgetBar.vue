@@ -2,6 +2,7 @@
   <div class="widget-panel">
     <div class="widget-hbar">
       <taxonomy-widget v-for="item in widgetOrder"
+                       ref="widgets"
                        :key="item"
                        :name="item"
                        :category="widgets[item].category"
@@ -31,9 +32,15 @@ import events from '../events';
 import mc from '../mutation-constants';
 import TaxonomyWidget from './TaxonomyWidget.vue';
 import { v4 as uuidv4 } from 'uuid';
+import {VueConstructor} from 'vue';
 
-export default Vue.extend({
+// This 
+
+type MyRefExtensions = VueConstructor<Vue & { $refs: { widgets: HTMLElement[] } }>
+
+export default (Vue as MyRefExtensions).extend({
     components: {TaxonomyWidget},
+    // this.$refs.widgets will store list of dom nodes
     data: function() {
         return {
             widgetColSpan: 8,
@@ -64,6 +71,9 @@ export default Vue.extend({
     created: function() {
         // Set up all of our events
         bus.$on(events.WIDGET_REMOVED, (name) => this.handleWidgetRemoved(name));
+    },
+    mounted() {
+        console.log(this.$refs.widgets);
     },
     methods: {
         handleWidgetRemoved(name) {
