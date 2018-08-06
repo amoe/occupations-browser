@@ -1,9 +1,5 @@
 <template>
   <div class="taxonomy-widget"
-       draggable="true"
-       v-on:dragstart="dragStart"
-       v-on:dragover.prevent="dragOver"
-       v-on:drop="drop"
        v-bind:style="calculateStyle()"
        :class="[category, 'dndtarget']">
     <!-- Dragover must be preventDefaulted, because the default handler will
@@ -61,21 +57,6 @@ export default Vue.extend({
             console.log("about to broadcast event");
             // This should be broacasting an event on the bus.
             bus.$emit(events.WIDGET_REMOVED, this.name);
-        },
-        dragOver(e) {
-            console.log("drag over event happened, event was %o");
-        },
-        dragStart(e) {
-            console.log("drag started, event was %o", e);
-            e.dataTransfer.setData(DND_DATA_CONTENT_TYPE, this.name);
-            e.dataTransfer.dropEffect = 'move';
-        },
-        drop(e) {
-            const source = e.dataTransfer.getData(DND_DATA_CONTENT_TYPE);
-            const target = this.name;
-            console.log("drop occurred, drop data was %o", source);
-
-            this.$store.commit(mc.SWAP_TAXONOMY_WIDGETS, {source, target});
         },
         getClass() {
             return {

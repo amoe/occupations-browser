@@ -85,7 +85,7 @@ export default (Vue as MyRefExtensions).extend({
     },
     methods: {
         configureDraggables() {
-            console.log("inside dom graph data callback");
+            console.log("about to configure draggables");
 
             const elements = this.$refs.widgets.map(x => x.$el);
 
@@ -99,10 +99,15 @@ export default (Vue as MyRefExtensions).extend({
                     console.log("taxonomywidget: drag ended");
 
                     // hittest can't accept a class, only an id, and should really be element
-                    if (this.hitTest('.dndtarget')) {
-                        console.log("taxonomywidget: drop received");
-                    } else {
+
+                    const droppedTargets = elements.filter(validTarget => this.hitTest(validTarget));
+
+                    if (droppedTargets.length === 0) {
                         console.log("taxonomywidget: hit NOT detected");
+                    } else {
+                        console.log("taxonomywidget: drop received");
+
+                        console.log("droppedTargets is %o", droppedTargets);
                     }
                 }
             };
@@ -128,12 +133,6 @@ export default (Vue as MyRefExtensions).extend({
 
             this.$store.commit(mc.ADD_WIDGET, {id});
         },
-        dragStart(e) {
-            console.log("drag started, event was %o", e);
-        },
-        drop(e) {
-            console.log("drop occurred, event was %o", e);
-        }
     },
     // mapState doesn't work with typescript: "Property 'mapState' does not exist on type"
     // So we manually create the relevant computed properties.
