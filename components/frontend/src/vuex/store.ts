@@ -34,14 +34,6 @@ const storeConfiguration = {
         [mc.INCREMENT_RENDER_COUNT_BY_NAME]: (state, name: string) => {
             console.log("checking for render count for %o", name);
 
-            /*
-            const s: WidgetDisplaySpecifier = state.widgetOrder.find(x => x.name === name);
-
-            console.log("s was %o", s);
-
-            s.renderCount++;
-            */
-
             // We just try to re-render all of them, cargo cultishly
             // This is not as smooth as before, but it gets around some layout bugs
 
