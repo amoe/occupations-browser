@@ -9,7 +9,6 @@
       </widget-bar>
     </div>
 
-    <!--
     <div class="graph">
       <graph-controls :zoom-depth="zoomDepth"></graph-controls>
       <svg id="svg-frame" :width="width" :height="height">
@@ -21,7 +20,6 @@
                     :breadth="breadth"></graph-view>
       </svg>
     </div>
-    -->
   </div>
 </template>
 

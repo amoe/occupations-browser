@@ -12,5 +12,6 @@ export default {
     SET_GRAPH_DATA: 'setGraphData',
     SET_POSSIBLE_ROOTS: 'setPossibleRoots',
     SELECT_ROOT: 'selectRoot',
-    INCREMENT_RENDER_COUNT_BY_NAME: 'incrementRenderCountByName'
+    INCREMENT_RENDER_COUNT_BY_NAME: 'incrementRenderCountByName',
+    SET_WIDGET_DROP_TARGETS: 'setWidgetDropTargets'
 };

@@ -26,11 +26,14 @@ const storeConfiguration = {
         // Stores a reference to the DOM elements that get populated by the
         // taxonomy widgets; this is needed to allow registering them as
         // potential hit areas for draggable.
-        taxonomyWidgetElements: []
+        widgetDropTargets: []
     },
     mutations: {
         increment(state) {
             state.count++;
+        },
+        [mc.SET_WIDGET_DROP_TARGETS]: (state, elements: HTMLElement[]) => {
+            state.widgetDropTargets = elements;
         },
         [mc.INCREMENT_RENDER_COUNT_BY_NAME]: (state, name: string) => {
             console.log("checking for render count for %o", name);

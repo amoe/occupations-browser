@@ -19,5 +19,8 @@ export default {
     },
     selectedRoot(state, getters) {
         return state.selectedRoot;
+    },
+    widgetDropTargets(state, getters) {
+        return state.widgetDropTargets;
     }
 };

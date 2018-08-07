@@ -46,6 +46,8 @@ export default Vue.extend({
     },
     watch: {
         graphData(newData, oldData) {
+            const graphDataInstance = this;
+
             console.log("graph data changed");
             this.$nextTick(function() {
                 console.log("inside dom graph data callback");
@@ -58,11 +60,13 @@ export default Vue.extend({
                         console.log("drag ended");
 
                         // hittest can't accept a class, only an id, and should really be element
-                        if (this.hitTest('.dndtarget')) {
-                            console.log("drop received");
-                        } else {
-                            console.log("hit NOT detected");
-                        }
+
+                        const targetsHit = graphDataInstance.widgetDropTargets.filter(
+                            e => this.hitTest(e)
+                        );
+
+                        
+                        console.log("hit targets were %o", targetsHit);
                     }
                 };
 
@@ -204,6 +208,9 @@ export default Vue.extend({
         },
         lastDrop: function(this: any) {
             return this.$store.getters.lastDrop;
+        },
+        widgetDropTargets: function(this: any) {
+            return this.$store.getters.widgetDropTargets;
         },
         isDragInProgress: function(this: any) {
             return this.$store.getters.isDragInProgress;

@@ -70,7 +70,7 @@ export default (Vue as MyRefExtensions).extend({
     watch: {
         widgetOrder(this: any, newValue, oldValue) {
             console.log("widget order changed");
-            this.$nextTick(() => this.configureDraggables())
+            this.$nextTick(() => this.updateDraggables())
         }
     },
     created: function() {
@@ -78,18 +78,21 @@ export default (Vue as MyRefExtensions).extend({
         bus.$on(events.WIDGET_REMOVED, (name) => this.handleWidgetRemoved(name));
     },
     mounted: function() {
-        console.log("inside mounted callback");
-        this.$nextTick(() => this.configureDraggables())
+        console.log("setting up initial draggables");
+        this.$nextTick(() => this.updateDraggables())
     },
     methods: {
-        configureDraggables() {
-            const widgetBar = this;
-
-            console.log("about to configure draggables");
-
+        updateDraggables() {
             const elements = this.$refs.widgets.map(x => x.$el);
 
-            console.log("refs list is now %o", elements);
+            this.configureDraggables(elements);
+            this.storeElementsForHitTesting(elements);
+        },
+        configureDraggables(elements) {
+            const widgetBar = this;    // self reference
+
+            console.log("about to configure draggables");
+            console.log("element list is now %o", elements);
 
             const baseOptions = {
                 onDragStart: function(this: any) {
@@ -100,7 +103,6 @@ export default (Vue as MyRefExtensions).extend({
                     console.log("sourceName is %o", sourceName);
 
                     // hittest can't accept a class, only an id, and should really be element
-
                     const droppedTargets = elements.filter(validTarget => this.hitTest(validTarget, '50%'));
 
                     if (droppedTargets.length === 0) {
@@ -150,11 +152,15 @@ export default (Vue as MyRefExtensions).extend({
                 console.log("name is %o", name);
 
                 // After vue re-renders the list, the draggable needs to be re-applied.
+                // Hope the rest of them will be GCed in short order.
                 const result = Draggable.create(
                     element, draggableOptions
                 );
                 console.log("taxonomywidget: result of creating draggable was %o", result);
             }
+        },
+        storeElementsForHitTesting(elements) {
+            this.$store.commit(mc.SET_WIDGET_DROP_TARGETS, elements);
         },
         handleDrop(source: string, target: string) {
             this.$store.commit(mc.SWAP_TAXONOMY_WIDGETS, {source, target});
