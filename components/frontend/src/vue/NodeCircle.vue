@@ -30,6 +30,7 @@ import mc from '../mutation-constants';
 import {mapGetters} from 'vuex';
 import bus from '../event-bus';
 import events from '../events';
+import Draggable from 'gsap/Draggable';
 
 export default Vue.extend({
     props: ['identifier', 'source'],
@@ -45,12 +46,47 @@ export default Vue.extend({
     },
     created() {
     },
+    mounted() {
+        const instance = this;
+
+        this.$nextTick(function() {
+            const ghostCircle = instance.$refs.ghostNodeSvgCircle;
+
+            console.log("inside circle node callback");
+
+            const vars = {
+                onDragStart: function(this: any) {
+                    console.log("drag started");
+                    instance.ghostOpacity = 0.2;
+                    instance.ghostRadius = 16;
+                },
+                onDragEnd: function(this: any) {
+                    console.log("drag ended");
+
+                    // hittest can't accept a class, only an id, and should really be element
+
+                    const targetsHit = instance.widgetDropTargets.filter(
+                        e => this.hitTest(e)
+                    );
+
+                    console.log("hit targets were %o", targetsHit);
+                }
+            };
+
+
+            const result = Draggable.create(ghostCircle, vars);
+            console.log("result of creating draggable was %o", result);
+        })
+    },
     methods: {
     },
     computed: {
         // Just a utility method to convert between the units.
         ghostRadiusPx(this: any) {
             return this.ghostRadius;
+        },
+        widgetDropTargets: function(this: any) {
+            return this.$store.getters.widgetDropTargets;
         }
     }
 });

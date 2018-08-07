@@ -46,33 +46,7 @@ export default Vue.extend({
     },
     watch: {
         graphData(newData, oldData) {
-            const graphDataInstance = this;
-
-            console.log("graph data changed");
-            this.$nextTick(function() {
-                console.log("inside dom graph data callback");
-
-                const vars = {
-                    onDragStart: function(this: any) {
-                        console.log("drag started");
-                    },
-                    onDragEnd: function(this: any) {
-                        console.log("drag ended");
-
-                        // hittest can't accept a class, only an id, and should really be element
-
-                        const targetsHit = graphDataInstance.widgetDropTargets.filter(
-                            e => this.hitTest(e)
-                        );
-                        
-                        console.log("hit targets were %o", targetsHit);
-                    }
-                };
-
-
-                const result = Draggable.create('circle.ghost-node', vars);
-                console.log("result of creating draggable was %o", result);
-            })
+            console.log("GraphView: inside graph data watcher");
         }
     },
     created() {
