@@ -22,11 +22,15 @@ const storeConfiguration = {
         // Stores a reference to the DOM elements that get populated by the
         // taxonomy widgets; this is needed to allow registering them as
         // potential hit areas for draggable.
-        widgetDropTargets: []
+        widgetDropTargets: [],
+        nodeDropTargets: []
     },
     mutations: {
         increment(state) {
             state.count++;
+        },
+        [mc.SET_NODE_DND_TARGETS]: (state, targets: HTMLElement[]) => {
+            state.nodeDropTargets = targets;
         },
         [mc.SET_WIDGET_DROP_TARGETS]: (state, elements: HTMLElement[]) => {
             state.widgetDropTargets = elements;

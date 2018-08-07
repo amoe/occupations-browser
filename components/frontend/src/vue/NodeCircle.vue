@@ -64,6 +64,21 @@ export default Vue.extend({
                     instance.ghostRadius = 16;
                     bus.$emit(events.DRAG_OPERATION_STARTED);
                 },
+                onDrag: function(this: any) {
+                    // The problem here is that the nodeDropTargets becomes of type g.
+                    // Whereas node.target is registered on the circle itself.
+                    console.log("drop target length is %o", instance.nodeDropTargets.length);
+                    console.log("typeof this.target = %o", this.target);
+                    console.log("typeof first item = %o", instance.nodeDropTargets[0]);
+
+                    const withoutMe = instance.nodeDropTargets.filter(x => x !== this.target);
+          
+                    console.log("withoutMe length is %o", withoutMe.length);
+
+                    const targetsHit = withoutMe.filter(e => this.hitTest(e));
+ 
+                    console.log("targets hit = %o", targetsHit)
+                },
                 onDragEnd: function(this: any) {
                     console.log("drag ended");
 
@@ -98,7 +113,11 @@ export default Vue.extend({
         },
         widgetDropTargets: function(this: any) {
             return this.$store.getters.widgetDropTargets;
+        },
+        nodeDropTargets: function(this: any) {
+            return this.$store.getters.nodeDropTargets;
         }
+
     }
 });
 </script>

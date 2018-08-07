@@ -5,6 +5,7 @@
            a group of computed properties derived from the state. -->
       <!-- We just do it in this d3-ish way as a first pass. -->
       <g v-for="node in allIncludingRoot"
+         ref="nodes"
          :class="getNodeGroupClass(node)"
          :transform="getNodeGroupTransformation(node)">
         <node-circle :identifier="getNodeTextContent(node)"/>
@@ -36,7 +37,6 @@ import mc from '../mutation-constants';
 import {mapGetters} from 'vuex';
 import Draggable from 'gsap/Draggable';
 
-
 export default Vue.extend({
     props: ['width', 'height', 'yMargin', 'depthOffset', 'textOffset', 'breadth'],
     components: {NodeCircle},
@@ -47,12 +47,17 @@ export default Vue.extend({
     watch: {
         graphData(newData, oldData) {
             console.log("GraphView: inside graph data watcher");
+            this.$nextTick(() => this.saveNodes());
         }
     },
     created() {
         bus.$on(events.DRAG_AND_DROP_OPERATION_CONFIRMED, () => this.handleDragAndDrop());
     },
     methods: {
+        saveNodes() {
+            console.log("saving nodes");
+            this.$store.commit(mc.SET_NODE_DND_TARGETS, this.$refs.nodes);
+        },
         handleDragAndDrop(this: any) {
             console.log("detected a drag and drop");
             console.log("lastDrop was %o => %o", this.lastDrop.source, this.lastDrop.target);

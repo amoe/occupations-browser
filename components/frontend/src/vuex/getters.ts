@@ -13,5 +13,8 @@ export default {
     },
     widgetDropTargets(state, getters) {
         return state.widgetDropTargets;
+    },
+    nodeDropTargets(state, getters) {
+        return state.nodeDropTargets;
     }
 };
