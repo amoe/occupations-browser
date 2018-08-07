@@ -31,6 +31,7 @@ import {mapGetters} from 'vuex';
 import bus from '../event-bus';
 import events from '../events';
 import Draggable from 'gsap/Draggable';
+import TweenLite from 'gsap/TweenLite';
 
 export default Vue.extend({
     props: ['identifier', 'source'],
@@ -70,6 +71,10 @@ export default Vue.extend({
                     );
 
                     console.log("hit targets were %o", targetsHit);
+
+                    TweenLite.to(
+                        this.target, 1, { x: 0, y: 0 }
+                    );
                 }
             };
 
