@@ -32,6 +32,7 @@ import bus from '../event-bus';
 import events from '../events';
 import Draggable from 'gsap/Draggable';
 import TweenLite from 'gsap/TweenLite';
+import constants from '../constants';
 
 export default Vue.extend({
     props: ['identifier', 'source'],
@@ -46,6 +47,7 @@ export default Vue.extend({
         };
     },
     created() {
+        bus.$on(events.DRAG_OPERATION_STARTED, () => this.globalDragStartHandler());
     },
     mounted() {
         const instance = this;
@@ -60,6 +62,7 @@ export default Vue.extend({
                     console.log("drag started");
                     instance.ghostOpacity = 0.2;
                     instance.ghostRadius = 16;
+                    bus.$emit(events.DRAG_OPERATION_STARTED);
                 },
                 onDragEnd: function(this: any) {
                     console.log("drag ended");
@@ -73,7 +76,7 @@ export default Vue.extend({
                     console.log("hit targets were %o", targetsHit);
 
                     TweenLite.to(
-                        this.target, 1, { x: 0, y: 0 }
+                        this.target, constants.TWEEN_GHOST_RETURN_TIME_SECONDS, { x: 0, y: 0 }
                     );
                 }
             };
@@ -84,6 +87,9 @@ export default Vue.extend({
         })
     },
     methods: {
+        globalDragStartHandler() {
+            console.log("registered start of drag");
+        }
     },
     computed: {
         // Just a utility method to convert between the units.
