@@ -32,10 +32,6 @@ import {mapGetters} from 'vuex';
 import bus from '../event-bus';
 import events from '../events';
 
-// We use d3's drag behaviour here because programmatically dealing with drag
-// of SVG elements is a huge pain.  It's easier to just delegate than to deal
-// with the various corner cases.
-
 export default Vue.extend({
     props: ['identifier', 'source'],
     data() {
