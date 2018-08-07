@@ -64,14 +64,13 @@ export default Vue.extend({
                         const targetsHit = graphDataInstance.widgetDropTargets.filter(
                             e => this.hitTest(e)
                         );
-
                         
                         console.log("hit targets were %o", targetsHit);
                     }
                 };
 
 
-                const result = Draggable.create('circle.real-node', vars);
+                const result = Draggable.create('circle.ghost-node', vars);
                 console.log("result of creating draggable was %o", result);
             })
         }
@@ -206,14 +205,8 @@ export default Vue.extend({
 
             return cluster(root);
         },
-        lastDrop: function(this: any) {
-            return this.$store.getters.lastDrop;
-        },
         widgetDropTargets: function(this: any) {
             return this.$store.getters.widgetDropTargets;
-        },
-        isDragInProgress: function(this: any) {
-            return this.$store.getters.isDragInProgress;
         }, ...mapGetters(['graphData', 'possibleRoots', 'selectedRoot'])
     }
 });

@@ -9,10 +9,6 @@ const storeConfiguration = {
     getters,
     state: {
         count: 0,
-        dragSource: null,
-        dropInteractionCandidate: null,
-        isDragInProgress: false,
-        lastDrop: null,
         widgetOrder: [
             { name: 'alpha', renderCount: 0 },
             { name: 'beta', renderCount: 0 },
@@ -50,31 +46,6 @@ const storeConfiguration = {
             // This is not as smooth as before, but it gets around some layout bugs
 
             state.widgetOrder.forEach(w => w.renderCount++)
-        },
-        [mc.SET_DROP_INTERACTION_CANDIDATE]: (state, chosen: NodeIdentifier) => {
-            state.dropInteractionCandidate = chosen;
-        },
-        [mc.CLEAR_DROP_INTERACTION_CANDIDATE]: (state) => {
-            state.dropInteractionCandidate = null;
-        },
-        [mc.SWITCH_DRAG_IN_PROGRESS_OFF]: (state, chosen) => {
-            state.isDragInProgress = false;
-        },
-        [mc.SWITCH_DRAG_IN_PROGRESS_ON]: (state, chosen) => {
-            state.isDragInProgress = true;
-        },
-        [mc.SET_DRAG_SOURCE]: (state, source: NodeIdentifier) => {
-            state.dragSource = source;
-        },
-        [mc.CONFIRM_DROP]: (state) => {
-            const theDrop: DragAndDropOperation = {
-                source: state.dragSource,
-                target: state.dropInteractionCandidate
-            };
-
-            state.lastDrop = theDrop;
-            state.dropInteractionCandidate = null;
-            state.dragSource = null;
         },
         [mc.SHUFFLE]: (state) => {
             state.widgetOrder = _.shuffle(state.widgetOrder);
