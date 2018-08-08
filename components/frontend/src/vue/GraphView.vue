@@ -4,8 +4,9 @@
       <!-- The funny thing is that it's totally possible to rewrite these as
            a group of computed properties derived from the state. -->
       <!-- We just do it in this d3-ish way as a first pass. -->
-      <g v-for="node in allIncludingRoot"
+      <g v-for="(node, index) in allIncludingRoot"
          ref="nodes"
+         :key="index"
          :class="getNodeGroupClass(node)"
          :transform="getNodeGroupTransformation(node)">
         <node-circle :identifier="getNodeTextContent(node)"/>
