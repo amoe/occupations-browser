@@ -8,5 +8,6 @@ export default {
     SELECT_ROOT: 'selectRoot',
     INCREMENT_RENDER_COUNT_BY_NAME: 'incrementRenderCountByName',
     SET_WIDGET_DROP_TARGETS: 'setWidgetDropTargets',
-    SET_NODE_DND_TARGETS: 'setNodeDndTargets'
+    SET_NODE_DND_TARGETS: 'setNodeDndTargets',
+    SET_HOVERED_NODE_INDICES: 'setHoveredNodeIndices'
 };

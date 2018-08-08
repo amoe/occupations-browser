@@ -31,6 +31,13 @@ const storeConfiguration = {
         increment(state) {
             state.count++;
         },
+        [mc.SET_HOVERED_NODE_INDICES]: (state, hovered: number[]) => {
+            state.nodeFill = {};
+
+            for (let i of hovered) {
+                state.nodeFill[i] = 'green';
+            }
+        },
         [mc.SET_NODE_DND_TARGETS]: (state, targets: Vue[]) => {
             state.nodeDropTargets = targets;
         },

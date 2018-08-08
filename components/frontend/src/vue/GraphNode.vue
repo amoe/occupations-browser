@@ -4,7 +4,7 @@
        of the containing Vue component. -->
     <circle class="real-node"
             r="16"
-            :fill="currentFill"
+            :fill="nodeFill[index]"
             ref="realNodeSvgCircle"/>
 
     <!-- The ghost node has to handle all of the events, because it's always
@@ -77,7 +77,11 @@ export default Vue.extend({
 
                     const targetsHit = withoutMe.filter(n => this.hitTest(n.$el));
 
-                    console.log("targetsHit = %o", targetsHit);
+                    const hoveredIndices: number[] = targetsHit.map(n => n.index);
+
+                    log.trace("hovered indices are %o", hoveredIndices);
+
+                    instance.$store.commit(mc.SET_HOVERED_NODE_INDICES, hoveredIndices);
                 },
                 onDragEnd: function(this: any) {
                     console.log("drag ended");
@@ -116,12 +120,7 @@ export default Vue.extend({
         },
         nodeDropTargets: function(this: any) {
             return this.$store.getters.nodeDropTargets;
-        },
-        currentFill: function(this: any) {
-            // nodeFill is a sparse object consisting of hovered nodes
-            return this.$store.getters.nodeFill[this.index] || 'black';
-        }
-
+        }, ... mapGetters(['nodeFill'])
     }
 });
 </script>
