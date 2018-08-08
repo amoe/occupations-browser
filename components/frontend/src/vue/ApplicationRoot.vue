@@ -14,7 +14,7 @@
       <svg id="svg-frame" :width="width" :height="height">
         <graph-view :width="width"
                     :height="height"
-                    :y-margin="yMargin"
+                    :y-margin="yMarginPx"
                     :depth-offset="depthOffset"
                     :text-offset="textOffset"
                     :breadth="breadth"></graph-view>
@@ -48,12 +48,18 @@ export default Vue.extend({
             date: dateFns.format(new Date(), 'YYYY-MM-DD'),
             width: 600,
             height: 600,
-            yMargin: 20,
+            yMarginVh: 0.4,
             depthOffset: 120,
             textOffset: 22,   // depends on circle radius
             breadth: 360,
             zoomDepth: 2
         };
+    },
+    mounted() {
+        this.$nextTick(function() {
+            // const vhInPx = document.documentElement.clientHeight * 0.4;
+            // this.yMargin = vhInPx;
+        });
     },
     methods: {
         handleChange(val) {
@@ -65,6 +71,9 @@ export default Vue.extend({
     // mapState doesn't work with typescript: "Property 'mapState' does not exist on type"
     // So we manually create the relevant computed properties.
     computed: {
+        yMarginPx: function (this: any) {
+            return document.documentElement.clientHeight * this.yMarginVh;
+        },
         count: function (this: any) {
             return this.$store.state.count;
         }, ...mapGetters(['isDragInProgress', 'lastDrop'])
@@ -141,15 +150,15 @@ div.timeline {
 #svg-frame {
     position: absolute;
     top: 0px;
-
-    /* This is just a hack until a better layout mechanism somehow presents
-       itself */    
-       /*    top: 24em;*/
     right: 0px;
     left: 0px;
     bottom: 0px;
     width: 100vw;
     height: 100vh;
+
+    /* It's gotta have such a z-index, otherwise it will block HTML items from
+       being interacted with. */
+    z-index: -1;
 }
 
 </style>
