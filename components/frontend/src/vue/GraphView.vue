@@ -56,6 +56,7 @@ export default Vue.extend({
     methods: {
         saveNodes() {
             console.log("saving nodes");
+            console.log("node set was found as %o", this.$refs.nodes);
             this.$store.commit(mc.SET_NODE_DND_TARGETS, this.$refs.nodes);
         },
         handleDragAndDrop(this: any) {
@@ -192,25 +193,12 @@ export default Vue.extend({
 </script>
 
 <style>
-/* All of the fill stuff here has been superseded by the stuff in the nodecircle
-   component */
-
 .node circle {
-/*    fill: #999;*/
     cursor: move;
 }
 
 .node text {
     font-size: 0.8em;
-}
-p
-.node--internal circle {
-
-/*  fill: #555;*/
-}
-
-.node--internal text {
-  text-shadow: 0 1px 0 #fff, 0 -1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff;
 }
 
 .link {
