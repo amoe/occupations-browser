@@ -184,7 +184,7 @@ export default Vue.extend({
 
 .link {
       fill: none;
-      stroke: cyan;
+      stroke: #ff5f00;
       stroke-opacity: 1.0;
       stroke-width: 1.5px;
 }

@@ -4,7 +4,7 @@
        of the containing Vue component. -->
     <circle class="real-node"
             r="16"
-            :fill="nodeFill[index]"
+            :fill="nodeFill[index] || '#1a1110'"
             ref="realNodeSvgCircle"/>
 
     <!-- The ghost node has to handle all of the events, because it's always
@@ -48,8 +48,7 @@ export default Vue.extend({
             cy: 0,
             ghostOpacity: 0.0,
             isPointerEventsEnabled: true,
-            ghostRadius: 32,
-            realNodeFill: "black"
+            ghostRadius: 16
         };
     },
     created() {
@@ -59,7 +58,7 @@ export default Vue.extend({
         const instance = this;
 
         this.$nextTick(function() {
-            const ghostCircle = instance.$refs.ghostNodeSvgCircle;
+            const ghostCircle = instance.getGhostNodeCircle();
 
             log.trace("inside circle node callback");
 
@@ -75,7 +74,7 @@ export default Vue.extend({
                         n => n.index !== instance.index
                     );
 
-                    const targetsHit = withoutMe.filter(n => this.hitTest(n.$el));
+                    const targetsHit = withoutMe.filter(n => this.hitTest(n.getGhostNodeCircle()));
 
                     const hoveredIndices: number[] = targetsHit.map(n => n.index);
 
@@ -109,6 +108,9 @@ export default Vue.extend({
         globalDragStartHandler() {
             log.trace("registered start of drag");
         },
+        getGhostNodeCircle(): HTMLElement {
+            return this.$refs.ghostNodeSvgCircle as HTMLElement;
+        }
     },
     computed: {
         // Just a utility method to convert between the units.
