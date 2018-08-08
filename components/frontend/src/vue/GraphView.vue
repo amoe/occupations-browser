@@ -8,6 +8,7 @@
       <graph-node v-for="(node, index) in allIncludingRoot"
                   ref="nodes"
                   :key="index"
+                  :index="index"
                   :group-class="getNodeGroupClass(node)"
                   :group-transform="getNodeGroupTransformation(node)"
                   :text-transform="getTextRotation(node)"

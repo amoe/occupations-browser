@@ -40,7 +40,7 @@ import * as log from 'loglevel';
 export default Vue.extend({
     props: [
         'source', 'text-transform', 'text-anchor', 'text-x-offset', 'text-content',
-        'group-transform', 'group-class'
+        'group-transform', 'group-class', 'index'
     ],
     data() {
         return {
@@ -110,7 +110,7 @@ export default Vue.extend({
     methods: {
         globalDragStartHandler() {
             console.log("registered start of drag");
-        }
+        },
     },
     computed: {
         // Just a utility method to convert between the units.
