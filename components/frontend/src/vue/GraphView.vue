@@ -115,10 +115,12 @@ export default Vue.extend({
             return `translate(${p2.x}, ${p2.y})`;
         },
         getNodeGroupClass(d) {
+            // These classes can be helpful to allow styling the internal and 
+            // leaf nodes differently.
             if (d.children) {
-                return "node node--internal";
+                return "node internal-node";
             } else {
-                return "node node--leaf";
+                return "node leaf-node";
             }
         },
         getNodeTextContent(d) {
