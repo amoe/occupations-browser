@@ -16,5 +16,8 @@ export default {
     },
     nodeDropTargets(state, getters) {
         return state.nodeDropTargets;
+    },
+    nodeFill(state, getters) {
+        return state.nodeFill;
     }
 };

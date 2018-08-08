@@ -24,7 +24,8 @@ const storeConfiguration = {
         // taxonomy widgets; this is needed to allow registering them as
         // potential hit areas for draggable.
         widgetDropTargets: [],
-        nodeDropTargets: []
+        nodeDropTargets: [],
+        nodeFill: {}
     },
     mutations: {
         increment(state) {

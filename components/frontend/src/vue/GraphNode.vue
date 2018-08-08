@@ -4,7 +4,7 @@
        of the containing Vue component. -->
     <circle class="real-node"
             r="16"
-            :fill="realNodeFill"
+            :fill="currentFill"
             ref="realNodeSvgCircle"/>
 
     <!-- The ghost node has to handle all of the events, because it's always
@@ -116,6 +116,10 @@ export default Vue.extend({
         },
         nodeDropTargets: function(this: any) {
             return this.$store.getters.nodeDropTargets;
+        },
+        currentFill: function(this: any) {
+            // nodeFill is a sparse object consisting of hovered nodes
+            return this.$store.getters.nodeFill[this.index] || 'black';
         }
 
     }
