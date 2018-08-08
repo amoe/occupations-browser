@@ -93,6 +93,11 @@ export default Vue.extend({
 
                     console.log("hit targets were %o", targetsHit);
 
+
+                    if (targetsHit.length !== 0) {
+                        window.alert("widget hit detected");
+                    }
+
                     TweenLite.to(
                         this.target, constants.TWEEN_GHOST_RETURN_TIME_SECONDS, { x: 0, y: 0 }
                     );
