@@ -1,7 +1,7 @@
 <template>
+  <g :class="groupClass" :transform="groupTransform">
   <!-- The starting position is given by a containing <g></g> in the scope
        of the containing Vue component. -->
-  <g class="node-circle-container">
     <circle class="real-node"
             r="16"
             :fill="realNodeFill"
@@ -17,6 +17,11 @@
             :opacity="ghostOpacity">
       <title>This is a tooltip</title>
     </circle>
+
+    <text dy="0.31em"
+          :transform="textTransform"
+          :text-anchor="textAnchor"
+          :x="textXOffset">{{textContent}}</text>
   </g>
 </template>
 
@@ -32,7 +37,10 @@ import TweenLite from 'gsap/TweenLite';
 import constants from '../constants';
 
 export default Vue.extend({
-    props: ['source'],
+    props: [
+        'source', 'text-transform', 'text-anchor', 'text-x-offset', 'text-content',
+        'group-transform', 'group-class'
+    ],
     data() {
         return {
             cx: 0,

@@ -4,18 +4,17 @@
       <!-- The funny thing is that it's totally possible to rewrite these as
            a group of computed properties derived from the state. -->
       <!-- We just do it in this d3-ish way as a first pass. -->
-      <g v-for="(node, index) in allIncludingRoot"
-         ref="nodes"
-         :key="index"
-         :class="getNodeGroupClass(node)"
-         :transform="getNodeGroupTransformation(node)">
-        <graph-node/>
-        <text dy="0.31em"
-              :transform="getTextRotation(node)"
-              :text-anchor="getTextAnchor(node)"
-              :x="getTextXOffset(node)">{{getNodeTextContent(node)}}</text>
-      </g>
 
+      <graph-node v-for="(node, index) in allIncludingRoot"
+                  ref="nodes"
+                  :key="index"
+                  :group-class="getNodeGroupClass(node)"
+                  :group-transform="getNodeGroupTransformation(node)"
+                  :text-transform="getTextRotation(node)"
+                  :text-anchor="getTextAnchor(node)"
+                  :text-x-offset="getTextXOffset(node)"
+                  :text-content="getNodeTextContent(node)">
+      </graph-node>
 
       <path v-for="node in allButRoot"
             class="link"
