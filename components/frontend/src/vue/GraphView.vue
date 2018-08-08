@@ -9,7 +9,7 @@
          :key="index"
          :class="getNodeGroupClass(node)"
          :transform="getNodeGroupTransformation(node)">
-        <graph-node :identifier="getNodeTextContent(node)"/>
+        <graph-node/>
         <text dy="0.31em"
               :transform="getTextRotation(node)"
               :text-anchor="getTextAnchor(node)"
