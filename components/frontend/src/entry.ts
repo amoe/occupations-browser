@@ -19,7 +19,6 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store(storeConfiguration);
 
-
 log.setLevel('debug');
 
 function getRenderingMode() {

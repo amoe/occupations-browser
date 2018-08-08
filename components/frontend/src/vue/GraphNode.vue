@@ -35,6 +35,7 @@ import events from '../events';
 import Draggable from 'gsap/Draggable';
 import TweenLite from 'gsap/TweenLite';
 import constants from '../constants';
+import * as log from 'loglevel';
 
 export default Vue.extend({
     props: [
@@ -60,7 +61,7 @@ export default Vue.extend({
         this.$nextTick(function() {
             const ghostCircle = instance.$refs.ghostNodeSvgCircle;
 
-            console.log("inside circle node callback");
+            log.trace("inside circle node callback");
 
             const vars = {
                 onDragStart: function(this: any) {
@@ -103,7 +104,7 @@ export default Vue.extend({
 
 
             const result = Draggable.create(ghostCircle, vars);
-            console.log("result of creating draggable was %o", result);
+            log.trace("result of creating draggable was %o", result);
         })
     },
     methods: {
