@@ -3,6 +3,7 @@ import actions from './actions';
 import mc from '../mutation-constants';
 import getters from './getters';
 import Vuex from 'vuex';
+import Vue from 'vue';
 import { DragAndDropOperation, NodeIdentifier, WidgetDisplaySpecifier } from '../interfaces';
 
 const storeConfiguration = {
@@ -29,7 +30,7 @@ const storeConfiguration = {
         increment(state) {
             state.count++;
         },
-        [mc.SET_NODE_DND_TARGETS]: (state, targets: HTMLElement[]) => {
+        [mc.SET_NODE_DND_TARGETS]: (state, targets: Vue[]) => {
             state.nodeDropTargets = targets;
         },
         [mc.SET_WIDGET_DROP_TARGETS]: (state, elements: HTMLElement[]) => {

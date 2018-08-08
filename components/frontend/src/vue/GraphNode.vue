@@ -71,19 +71,13 @@ export default Vue.extend({
                     bus.$emit(events.DRAG_OPERATION_STARTED);
                 },
                 onDrag: function(this: any) {
-                    // The problem here is that the nodeDropTargets becomes of type g.
-                    // Whereas node.target is registered on the circle itself.
-                    console.log("drop target length is %o", instance.nodeDropTargets.length);
-                    console.log("typeof this.target = %o", this.target);
-                    console.log("typeof first item = %o", instance.nodeDropTargets[0]);
+                    const withoutMe = instance.nodeDropTargets.filter(
+                        n => n.index !== instance.index
+                    );
 
-                    const withoutMe = instance.nodeDropTargets.filter(x => x !== this.target);
-          
-                    console.log("withoutMe length is %o", withoutMe.length);
+                    const targetsHit = withoutMe.filter(n => this.hitTest(n.$el));
 
-                    const targetsHit = withoutMe.filter(e => this.hitTest(e));
- 
-                    console.log("targets hit = %o", targetsHit)
+                    console.log("targetsHit = %o", targetsHit);
                 },
                 onDragEnd: function(this: any) {
                     console.log("drag ended");
@@ -109,7 +103,7 @@ export default Vue.extend({
     },
     methods: {
         globalDragStartHandler() {
-            console.log("registered start of drag");
+            log.trace("registered start of drag");
         },
     },
     computed: {
