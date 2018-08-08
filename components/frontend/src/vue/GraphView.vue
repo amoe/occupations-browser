@@ -9,7 +9,7 @@
          :key="index"
          :class="getNodeGroupClass(node)"
          :transform="getNodeGroupTransformation(node)">
-        <node-circle :identifier="getNodeTextContent(node)"/>
+        <graph-node :identifier="getNodeTextContent(node)"/>
         <text dy="0.31em"
               :transform="getTextRotation(node)"
               :text-anchor="getTextAnchor(node)"
@@ -25,7 +25,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import NodeCircle from './NodeCircle.vue';
+import GraphNode from './GraphNode.vue';
 import * as d3 from 'd3';
 import layoutFunctions from '../layout-functions';
 import graph from '../graph';
@@ -40,7 +40,7 @@ import Draggable from 'gsap/Draggable';
 
 export default Vue.extend({
     props: ['width', 'height', 'yMargin', 'depthOffset', 'textOffset', 'breadth'],
-    components: {NodeCircle},
+    components: {GraphNode},
     data() {
         return {
         };

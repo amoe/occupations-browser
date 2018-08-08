@@ -1,17 +1,14 @@
 <template>
   <!-- The starting position is given by a containing <g></g> in the scope
        of the containing Vue component. -->
-  <g>
+  <g class="node-circle-container">
     <circle class="real-node"
             r="16"
             :fill="realNodeFill"
             ref="realNodeSvgCircle"/>
 
     <!-- The ghost node has to handle all of the events, because it's always
-         in front of the real node.  Luckily the fact that the ghost node
-         retains its real 'identity' in terms of the drop selection means that
-         we're still able to find our way back to the real node. -->
-
+         in front of the real node.  -->
     <circle class="ghost-node"
             :r="ghostRadiusPx"
             ref="ghostNodeSvgCircle"
@@ -35,7 +32,7 @@ import TweenLite from 'gsap/TweenLite';
 import constants from '../constants';
 
 export default Vue.extend({
-    props: ['identifier', 'source'],
+    props: ['source'],
     data() {
         return {
             cx: 0,
