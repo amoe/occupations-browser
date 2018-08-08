@@ -50,34 +50,11 @@ export default Vue.extend({
             this.$nextTick(() => this.saveNodes());
         }
     },
-    created() {
-        bus.$on(events.DRAG_AND_DROP_OPERATION_CONFIRMED, () => this.handleDragAndDrop());
-    },
     methods: {
         saveNodes() {
             console.log("saving nodes");
             console.log("node set was found as %o", this.$refs.nodes);
             this.$store.commit(mc.SET_NODE_DND_TARGETS, this.$refs.nodes);
-        },
-        handleDragAndDrop(this: any) {
-            console.log("detected a drag and drop");
-            console.log("lastDrop was %o => %o", this.lastDrop.source, this.lastDrop.target);
-            const removedChildren = this.data2.children[1].children.splice(0, 1);
-            this.data.children[1].name +=  "\u00b7" + removedChildren[0].name;
-        },
-        removeNode() {
-            console.log("disabled");
-            /*
-            console.log("remove node %o", true);
-            const removedElt = this.data.children.shift();
-            console.log("removed element: %o", removedElt);
-            */
-        },
-        handleMousedown() {
-            console.log("got mousedown %o", arguments);
-        },
-        handleMousemove() {
-            console.log("got mousemove");
         },
         getTextRotation(node) {
             let rotation;
