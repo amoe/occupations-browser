@@ -129,10 +129,6 @@ export default Vue.extend({
 </script>
 
 <style>
-/*
-circle:hover {
-    fill: red;
-}
-*/
+/* No styling yet */
 </style>
 

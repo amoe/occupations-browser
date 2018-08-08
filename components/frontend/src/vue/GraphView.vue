@@ -37,6 +37,7 @@ import {sprintf} from 'sprintf-js';
 import mc from '../mutation-constants';
 import {mapGetters} from 'vuex';
 import Draggable from 'gsap/Draggable';
+import * as log from 'loglevel';
 
 export default Vue.extend({
     props: ['width', 'height', 'yMargin', 'depthOffset', 'textOffset', 'breadth'],
@@ -96,9 +97,9 @@ export default Vue.extend({
                 radius: d.y
             };
 
-            // console.log("source point is %o", sourcePoint);
-            // console.log("target point is %o", targetPoint);
-            // console.log("text associated with target point is %o", d.data.id);
+            log.trace("source point is %o", sourcePoint);
+            log.trace("target point is %o", targetPoint);
+            log.trace("text associated with target point is %o", d.data.id);
 
             const sourceRadius = 16;
 
