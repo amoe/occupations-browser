@@ -20,3 +20,6 @@ reset_database:
 
 test_backend:
 	$(pytest) components/backend/test.py components/backend/integration_test.py
+
+build_frontend:
+	yarn --cwd components/frontend build

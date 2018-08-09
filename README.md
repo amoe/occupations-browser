@@ -1,5 +1,11 @@
 # occupations-browser
 
+## Install front end dependencies
+
+    $ make gather_dependencies
+
+This needs Yarn to work.
+
 ## Running
 
 Run the backend:
@@ -28,6 +34,15 @@ The neo4j server is expected to ru on port 7688 for Bolt connections.
 
 Run the Python script `scripts/import_data.py` to load the data.
 
-    python3 scripts/import_data.py data/1-obo1674-1834_occupations_20180104.csv
+    python3 scripts/import_data.py sample.csv
+
+This will import the sample data.  You should now be able to view the sample
+data token graph by logging into the Neo4j browser at localhost:7475.
+
+### Deploy the Flask server code
+
+This requires Fabric 2.2.1+.
+
+
 
 Yow! x2

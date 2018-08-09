@@ -8,7 +8,7 @@ dist_path = dist
 
 dist: bundle.js
 	mkdir -p dist
-	cp -a index.xhtml bundle.js static $(dist_path)
+	cp -a index.html bundle.js static $(dist_path)
 
 .PHONY: dist
 
