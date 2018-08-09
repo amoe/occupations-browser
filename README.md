@@ -6,6 +6,10 @@
 
 This needs Yarn to work.
 
+## Back end dependencies
+
+Notably: networkx (latest in pip), nltk (punkt tokenizer)
+
 ## Running
 
 Run the backend:
