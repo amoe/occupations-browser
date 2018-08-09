@@ -8,6 +8,10 @@ import hashlib
 FRONTEND_LOCAL_DIRECTORY = "./components/frontend/dist"
 DEPLOYMENT_TARGET_DIRECTORY = '/srv/http/occubrow'
 
+BACKEND_LOCAL_DIRECTORY = "./components/backend"
+BACKEND_TARGET_DIRECTORY = '/usr/local/lib/occubrow'
+
+
 # because we can't combine rsync and sudo, we have to do this fairly silly
 # rigmarole        
 def deploy(context, source, target):
@@ -28,6 +32,14 @@ def deploy_frontend(context):
         raise Exception('need to specify a host please')
 
     deploy(context, FRONTEND_LOCAL_DIRECTORY, DEPLOYMENT_TARGET_DIRECTORY)
+
+@invoke.task
+def deploy_backend(context):
+    if not hasattr(context, 'host'):
+        raise Exception('need to specify a host please')
+
+    deploy(context, BACKEND_LOCAL_DIRECTORY, BACKEND_TARGET_DIRECTORY)
+
 
 # algorithm copied from fabric core code for 'put' with 'use_sudo' kwargs
 def generate_temporary_directory(context, remote_path):

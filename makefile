@@ -28,3 +28,6 @@ build_frontend:
 
 deploy_frontend:
 	fab --prompt-for-sudo-password -H $(deploy_server) deploy-frontend
+
+deploy_backend:
+	fab --prompt-for-sudo-password -H $(deploy_server) deploy-backend
