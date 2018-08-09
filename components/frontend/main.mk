@@ -6,11 +6,11 @@
 WEBPACK = ./node_modules/.bin/webpack
 dist_path = dist
 
-dist: bundle.js
+dist: dist/bundle.js
 	mkdir -p dist
-	cp -a index.html bundle.js static $(dist_path)
+	cp -a index.html static $(dist_path)
 
 .PHONY: dist
 
-bundle.js: src
+dist/bundle.js: src
 	$(WEBPACK)
