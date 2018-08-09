@@ -19,7 +19,12 @@ code.
 
 If you get connection refused, you need to actually start neo4j.  `systemctl start neo4j`.
 
-## Load the data
+## Deployment
+
+OCCUBROW requires a Neo4j server present on the host system.
+The neo4j server is expected to ru on port 7688 for Bolt connections.
+
+### Load the data
 
 Run the Python script `scripts/import_data.py` to load the data.
 
