@@ -2,6 +2,8 @@ backend_dir = components/backend
 
 pytest = py.test-3
 
+deploy_server = visarend.solasistim.net
+
 
 .PHONY: run_frontend run_backend gather_dependencies
 
@@ -23,3 +25,6 @@ test_backend:
 
 build_frontend:
 	yarn --cwd components/frontend build
+
+deploy_frontend:
+	fab --prompt-for-sudo-password -H $(deploy_server) deploy-frontend

@@ -5,7 +5,8 @@ import fabric
 import time
 import hashlib
 
-DEPLOYMENT_TARGET_DIRECTORY = '/srv/http/solasistim/shl/occupations-browser'
+FRONTEND_LOCAL_DIRECTORY = "./components/frontend/dist"
+DEPLOYMENT_TARGET_DIRECTORY = '/srv/http/occubrow'
 
 # because we can't combine rsync and sudo, we have to do this fairly silly
 # rigmarole        
@@ -13,7 +14,7 @@ def deploy(context, source, target):
     temporary_path = generate_temporary_directory(context, target)
     print("About to run rsync")
     context.local(
-        "rsync -a --delete --exclude-from=exclude.rsf %s/ %s:%s/" \
+        "rsync -avv --delete --exclude-from=exclude.rsf %s/ %s:%s/" \
         % (source, context.host, temporary_path)
     )
     print("Finished rsync")
@@ -26,7 +27,7 @@ def deploy_frontend(context):
     if not hasattr(context, 'host'):
         raise Exception('need to specify a host please')
 
-    deploy(context, './dist', DEPLOYMENT_TARGET_DIRECTORY)
+    deploy(context, FRONTEND_LOCAL_DIRECTORY, DEPLOYMENT_TARGET_DIRECTORY)
 
 # algorithm copied from fabric core code for 'put' with 'use_sudo' kwargs
 def generate_temporary_directory(context, remote_path):
