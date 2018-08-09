@@ -1,10 +1,12 @@
 // webpack configuration file
 
 const webpack = require('webpack');
+const path = require('path');
 
 module.exports = {
     entry: ["./src/entry.ts"],
     output: {
+        path: path.join(__dirname, 'dist'),
         filename: "bundle.js"
     },
     resolve: {
@@ -31,9 +33,8 @@ module.exports = {
             {
                 test: /\.(png|jpg|jpeg|gif|eot|ttf|woff|woff2|svg|svgz)(\?.+)?$/,
                 use: [{
-                    loader: 'url-loader',
+                    loader: 'file-loader',
                     options: {
-                        limit: 10000
                     }
                 }]
             }
