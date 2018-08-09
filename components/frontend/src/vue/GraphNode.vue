@@ -4,7 +4,7 @@
        of the containing Vue component. -->
     <circle class="real-node"
             r="16"
-            :fill="nodeFill[index] || '#1a1110'"
+            :fill="nodeFill[index] || '#303133'"
             ref="realNodeSvgCircle"/>
 
     <!-- The ghost node has to handle all of the events, because it's always
@@ -95,7 +95,7 @@ export default Vue.extend({
 
 
                     if (targetsHit.length !== 0) {
-                        window.alert("widget hit detected");
+                        instance.$message('Widget hit detected');
                     }
 
                     TweenLite.to(

@@ -40,7 +40,7 @@ import Draggable from 'gsap/Draggable';
 import * as log from 'loglevel';
 
 export default Vue.extend({
-    props: ['width', 'height', 'yMargin', 'depthOffset', 'textOffset', 'breadth'],
+    props: ['width', 'height', 'xMargin', 'yMargin', 'depthOffset', 'textOffset', 'breadth'],
     components: {GraphNode},
     data() {
         return {
@@ -144,7 +144,7 @@ export default Vue.extend({
             }
         },
         rootTranslation: function(this: any) {
-            const xOffset = this.width / 2;
+            const xOffset = (this.width / 2) + this.xMargin;
             const yOffset = (this.height / 2) + this.yMargin;
             
             return "translate(" + xOffset + "," + yOffset + ")";
@@ -184,7 +184,7 @@ export default Vue.extend({
 
 .link {
       fill: none;
-      stroke: #ff5f00;
+      stroke: #409EFF;
       stroke-opacity: 1.0;
       stroke-width: 1.5px;
 }

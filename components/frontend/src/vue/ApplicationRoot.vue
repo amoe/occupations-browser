@@ -14,6 +14,7 @@
       <svg id="svg-frame" :width="width" :height="height">
         <graph-view :width="width"
                     :height="height"
+                    :x-margin="xMarginPx"
                     :y-margin="yMarginPx"
                     :depth-offset="depthOffset"
                     :text-offset="textOffset"
@@ -49,6 +50,7 @@ export default Vue.extend({
             width: 600,
             height: 600,
             yMarginVh: 0.4,
+            xMarginVh: 0.15,
             depthOffset: 120,
             textOffset: 22,   // depends on circle radius
             breadth: 360,
@@ -56,10 +58,6 @@ export default Vue.extend({
         };
     },
     mounted() {
-        this.$nextTick(function() {
-            // const vhInPx = document.documentElement.clientHeight * 0.4;
-            // this.yMargin = vhInPx;
-        });
     },
     methods: {
         handleChange(val) {
@@ -73,6 +71,9 @@ export default Vue.extend({
     computed: {
         yMarginPx: function (this: any) {
             return document.documentElement.clientHeight * this.yMarginVh;
+        },
+        xMarginPx: function (this: any) {
+            return document.documentElement.clientHeight * this.xMarginVh;
         },
         count: function (this: any) {
             return this.$store.state.count;
