@@ -37,7 +37,7 @@ def declare_group(synonym, master):
     
 
 def result_to_token(record):
-    return record['t'].properties['content']
+    return record['t'].get('content')
 
 def add_linear_nodes(g, token_seq):
     for index, token in enumerate(token_seq):
@@ -51,8 +51,7 @@ def gather_token_seq(result_seq):
     ret = []
     
     for node in result_seq:
-        log.info(pprint.pformat(node))
-        ret.append(node.properties['content'])
+        ret.append(node.get('content'))
 
     return ret
 
@@ -77,7 +76,7 @@ def get_tree_by_root(root, depth_limit):
 
 def get_roots_with_substring_match(substring):
     return [
-        record['root'].properties['content']
+        record['root'].get('content')
         for record in misc.run_some_query(GET_ROOTS_WITH_SUBSTRING_MATCH, {'substring': substring})
     ]
     

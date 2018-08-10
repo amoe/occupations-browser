@@ -8,7 +8,7 @@ This needs Yarn to work.
 
 ## Back end dependencies
 
-Notably: networkx (latest in pip), nltk (punkt tokenizer)
+Notably: networkx (latest in pip), nltk (punkt tokenizer), neo4j-driver (1.6+)
 
 ## Running
 
