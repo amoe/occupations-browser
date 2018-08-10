@@ -57,8 +57,6 @@ export default Vue.extend({
             zoomDepth: 2
         };
     },
-    mounted() {
-    },
     methods: {
         handleChange(val) {
             console.log("collapse was modified with value %o", val);
