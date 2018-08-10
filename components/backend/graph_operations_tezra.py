@@ -2,6 +2,10 @@
 
 import misc
 import networkx
+import pprint
+import logging
+
+log = logging.getLogger('occubrow')
 
 DECLARE_GROUP_QUERY = """
     MATCH (s:Token {content: {synonym}}), (m:Token {content: {master}})
@@ -43,6 +47,15 @@ def add_linear_nodes(g, token_seq):
             start_node = token_seq[index - 1]
             g.add_edge(start_node, token)
 
+def gather_token_seq(result_seq):
+    ret = []
+    
+    for node in result_seq:
+        log.info(pprint.pformat(node))
+        ret.append(node.properties['content'])
+
+    return ret
+
 # This is going to pull in the entire graph
 # Because we are using DiGraph and not MultiDiGraph it's going to automatically
 # remove duplicate edges for us.
@@ -51,7 +64,8 @@ def pull_graph():
     results = misc.run_some_query(PULL_ALL_TOKEN_SEQUENCES, {})
 
     for result in results:
-        add_linear_nodes(graph, [node.properties['content'] for node in result['seq']])
+        token_seq = gather_token_seq(result['seq'])
+        add_linear_nodes(graph, token_seq)
 
     return graph
 

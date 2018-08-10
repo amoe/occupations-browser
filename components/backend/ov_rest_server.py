@@ -1,10 +1,41 @@
 import flask
+import flask.logging
 import graph_operations
 import graph_operations_tezra
+import logging
+import logging.config
+
+# logging.config.dictConfig({
+#     'version': 1,
+#     'formatters': {'default': {
+#         'format': '[%(asctime)s] %(levelname)s in %(module)s: %(message)s',
+#     }},
+#     'handlers': {'wsgi': {
+#         'class': 'logging.StreamHandler',
+#         'stream': 'ext://flask.logging.wsgi_errors_stream',
+#         'formatter': 'default'
+#     }},
+#     'root': {
+#         'level': 'INFO',
+#         'handlers': ['console']
+#     }
+#})
+
 
 def create_app():
+    logging.basicConfig(level=logging.DEBUG)
     app = flask.Flask(__name__)
+    for logger in (
+        app.logger,
+        logging.getLogger('sqlalchemy'),
+        logging.getLogger('occubrow'),
+    ):
+        logger.addHandler(flask.logging.default_handler)
+
     return app
+
+
+
 
 app = create_app()
 
