@@ -15,7 +15,6 @@
                   title="Title"
                   width="200"
                   trigger="manual"
-                  content="this is content, this is content, this is content"
                   v-model="popoverActive">
         <el-button>Link</el-button>
       </el-popover>
