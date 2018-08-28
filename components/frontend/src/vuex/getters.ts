@@ -19,5 +19,8 @@ export default {
     },
     nodeFill(state, getters) {
         return state.nodeFill;
+    },
+    popoverActive(state, getters) {
+        return state.popoverActive;
     }
 };

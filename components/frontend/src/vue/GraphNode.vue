@@ -85,6 +85,8 @@ export default Vue.extend({
                 onDragEnd: function(this: any) {
                     console.log("drag ended");
 
+                    instance.$store.commit(mc.ACTIVATE_POPOVER);
+
                     // hittest can't accept a class, only an id, and should really be element
 
                     const targetsHit = instance.widgetDropTargets.filter(
