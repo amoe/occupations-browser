@@ -11,7 +11,7 @@ uri = "bolt://localhost:7688"
 driver = neo4j.v1.GraphDatabase.driver(uri, auth=credentials)
 
 QUERY_FOR_ALL_NODES = """
-   MATCH (to:Token) RETURN to;
+   MATCH (to:Token) RETURN to.content AS content;
 """
 
 RANDOM_TAXON_QUERY = """
@@ -38,10 +38,10 @@ class TaxonomyAssigner(object):
         
     def run(self, tx):
         rs1 = tx.run(QUERY_FOR_ALL_NODES, {})
-        for it in rs1:
+        for token_content in rs1.value():
             taxon = self.pick_taxon(tx)
-            print(taxon)
-
+            self.assign_token_to_taxon(tx, token_content, taxon)
+            
 
 obj = TaxonomyAssigner()
 with driver.session() as session:
