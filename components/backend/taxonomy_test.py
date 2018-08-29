@@ -33,13 +33,18 @@ EXPECTED_TAXONOMY_RESULT = {'_type': 'Taxon',
 @pytest.fixture(scope='function')
 def neo4j_fixture():
     debug("setting up neo4j")
+    neo4j_test_utility.clear_all()
     return 42
-
 
 def test_taxonomy_1(neo4j_fixture):
     debug("neo4j_fixture = %s", repr(neo4j_fixture))
     dg = neo4j_apoc_tree.get_tree(neo4j_apoc_tree.TAXONOMY_TREE_QUERY, 'supercategory_of')
-    root = next(networkx.topological_sort(dg))
+
+    # This essentially gets the (assumed to be single!) root of the tree.
+    try:
+        root = next(networkx.topological_sort(dg))
+    except StopIteration as e:
+        raise Exception("empty taxonomy?") from e
 
     # This is just the default tree-json format, but we prefer to be explicit 
     # about it
@@ -51,3 +56,5 @@ def test_taxonomy_1(neo4j_fixture):
         dg, root=root, attrs=attrs
     )
     assert dg_formatted_as_tree == EXPECTED_TAXONOMY_RESULT
+
+

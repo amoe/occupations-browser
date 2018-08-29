@@ -33,7 +33,7 @@ def get_tree(query, relationship_name):
     result = misc.run_some_query(query, {})
     paths = result.value()
     get_graph = lambda p: tree_to_graph(p, relationship_name)
-    return functools.reduce(networkx.compose, map(get_graph, paths))
+    return functools.reduce(networkx.compose, map(get_graph, paths), networkx.DiGraph())
 
 if __name__ == '__main__':
     tree = get_taxonomy_tree()

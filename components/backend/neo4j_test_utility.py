@@ -10,3 +10,5 @@ def clear_all():
                 tx.run("MATCH (n) DETACH DELETE n", {})
 
     
+
+#def add_taxonomy():
