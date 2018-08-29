@@ -25,7 +25,6 @@ ASSIGN_TO_TAXON = """
     CREATE (to)-[:MEMBER_OF]->(ta);
 """
 
-
 class TaxonomyAssigner(object):
     def pick_taxon(self, tx):
         rs2 = tx.run(RANDOM_TAXON_QUERY, {})
@@ -41,7 +40,6 @@ class TaxonomyAssigner(object):
         for token_content in rs1.value():
             taxon = self.pick_taxon(tx)
             self.assign_token_to_taxon(tx, token_content, taxon)
-            
 
 obj = TaxonomyAssigner()
 with driver.session() as session:

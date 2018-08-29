@@ -14,7 +14,9 @@
             ref="ghostNodeSvgCircle"
             :cx="cx"
             :cy="cy"
-            :opacity="ghostOpacity">
+            :opacity="ghostOpacity"
+            v-on:mouseover="handleMouseover"
+            v-on:mouseout="handleMouseout">
       <title>This is a tooltip</title>
     </circle>
 
@@ -48,7 +50,8 @@ export default Vue.extend({
             cy: 0,
             ghostOpacity: 0.0,
             isPointerEventsEnabled: true,
-            ghostRadius: 16
+            ghostRadius: 16,
+            hoverTimeout: null
         };
     },
     created() {
@@ -117,7 +120,18 @@ export default Vue.extend({
         },
         getGhostNodeCircle(): HTMLElement {
             return this.$refs.ghostNodeSvgCircle as HTMLElement;
-        }
+        },
+        handleMouseover(e) {
+             this.hoverTimeout = window.setTimeout(
+                 function() {
+                     console.log("hover event");
+                 },
+                 constants.HOVER_RECENTER_ACTION_TIME_MS
+             );
+        },
+        handleMouseout(e) {
+            window.clearTimeout(this.hoverTimeout)
+        },
     },
     computed: {
         // Just a utility method to convert between the units.
