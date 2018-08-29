@@ -2,6 +2,8 @@ matrix:
   include:
     - language: python
       python: 3.5
+      env:
+        - OCCUBROW_ENVIRONMENT=test
       before_install:
         - sudo apt-get install -y python-software-properties debconf-utils
         - sudo add-apt-repository -y ppa:webupd8team/java
