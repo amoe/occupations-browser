@@ -2,5 +2,7 @@ matrix:
   include:
     - language: python
       python: 3.5
+      install:
+        - pip install -r requirements.txt
       script:
         - pytest components/backend/test.py components/backend/taxonomy_test.py
