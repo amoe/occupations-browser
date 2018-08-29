@@ -11,6 +11,14 @@
 
     <div class="graph">
       <graph-controls :zoom-depth="zoomDepth"></graph-controls>
+      <el-popover placement="bottom"
+                  title="Title"
+                  width="200"
+                  trigger="manual"
+                  v-model="popoverActive">
+        <el-button>Link</el-button>
+      </el-popover>
+
       <svg id="svg-frame" :width="width" :height="height">
         <graph-view :width="width"
                     :height="height"
@@ -45,6 +53,7 @@ export default Vue.extend({
     components: {GraphControls, GraphView, DNDDemo, Hexagon, WidgetBar, TextView, TimelineRoot},
     data: function() {
         return {
+            visible: false,
             activeControls: [],
             date: dateFns.format(new Date(), 'YYYY-MM-DD'),
             width: 600,
@@ -75,7 +84,7 @@ export default Vue.extend({
         },
         count: function (this: any) {
             return this.$store.state.count;
-        }, ...mapGetters(['isDragInProgress', 'lastDrop'])
+        }, ...mapGetters(['isDragInProgress', 'lastDrop', 'popoverActive'])
     }
 });
 </script>

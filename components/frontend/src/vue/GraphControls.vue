@@ -30,13 +30,18 @@ import {mapGetters} from 'vuex';
 export default Vue.extend({
     props: ['zoomDepth'],
     created() {
-        this.updateFromBackend();
+//        this.updateFromBackend();
+        this.searchRoots('');
     },
     methods: {
         searchRoots(query) {
             console.log("remote method called with argument %o", query);
             axios.get("/api/tezra/roots?q=" + query).then(response => {
                 this.$store.commit(mc.SET_POSSIBLE_ROOTS, response.data.map(x => ({value: x, label: x})));
+                this.$store.commit(
+                    mc.SELECT_ROOT,
+                    response.data.includes('Oyl') ? 'Oyl' : response.data[0]
+                );
             }).catch(error => {
                 // Need to fix this
                 this.$message.error('Failed to query data from API');
@@ -57,6 +62,7 @@ export default Vue.extend({
                 loading.close();
             }).catch(error => {
                 this.$message.error('Failed to query data from API');
+                loading.close();
             });
         }
     },

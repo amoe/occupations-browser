@@ -25,9 +25,10 @@ code.
 
 ## Connect to a Cypher shell
 
-    cypher-shell -u neo4j -p password
+    cypher-shell -a localhost:7688
 
-If you get connection refused, you need to actually start neo4j.  `systemctl start neo4j`.
+If you get connection refused, you need to actually start neo4j.  `systemctl
+start neo4j`.
 
 ## Deployment
 

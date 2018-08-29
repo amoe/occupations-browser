@@ -4,6 +4,8 @@ pytest = py.test-3
 
 deploy_server = visarend.solasistim.net
 
+NEO4J_PORT = 7688
+
 
 .PHONY: run_frontend run_backend gather_dependencies
 
@@ -31,3 +33,6 @@ deploy_frontend:
 
 deploy_backend:
 	fab --prompt-for-sudo-password -H $(deploy_server) deploy-backend
+
+cypher_shell:
+	cypher-shell -a localhost:$(NEO4J_PORT)

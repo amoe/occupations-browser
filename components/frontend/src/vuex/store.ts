@@ -25,11 +25,15 @@ const storeConfiguration = {
         // potential hit areas for draggable.
         widgetDropTargets: [],
         nodeDropTargets: [],
-        nodeFill: {}
+        nodeFill: {},
+        popoverActive: false
     },
     mutations: {
         increment(state) {
             state.count++;
+        },
+        [mc.ACTIVATE_POPOVER]: (state) => {
+            state.popoverActive = true;
         },
         [mc.SET_HOVERED_NODE_INDICES]: (state, hovered: number[]) => {
             state.nodeFill = {};
