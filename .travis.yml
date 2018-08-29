@@ -3,4 +3,4 @@ matrix:
     - language: python
       python: 3.5
       script:
-        - pytest components/backend/test.py
+        - pytest components/backend/test.py components/backend/taxonomy_test.py
