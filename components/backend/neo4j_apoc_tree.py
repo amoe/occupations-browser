@@ -29,8 +29,10 @@ def tree_to_graph(tree, relationship_name):
     return networkx.tree_graph(tree, object_format)
 
 class Neo4jRepository(object):
-    def __init__(self):
-        pass
+    port = None
+
+    def __init__(self, port=7876):
+        self.port = port
 
     def get_tree(self, query, relationship_name):
         result = misc.run_some_query(query, {})
