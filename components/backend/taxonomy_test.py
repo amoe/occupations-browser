@@ -5,6 +5,9 @@ import json
 import pytest
 from logging import debug
 import neo4j_test_utility
+import os
+import subprocess
+import yaml
 
 EXPECTED_TAXONOMY_RESULT = {'_type': 'Taxon',
  'children': [{'_type': 'Taxon',
@@ -28,8 +31,25 @@ EXPECTED_TAXONOMY_RESULT = {'_type': 'Taxon',
  'id': 20714,
  'name': 'Ulmaridae'}
 
+def get_repo_toplevel():
+    output = subprocess.check_output(['git', 'rev-parse', '--show-toplevel'])
+    return output.rstrip().decode('utf-8')
+
+DEFAULT_ENVIRONMENT = 'default'
+
+def get_environment():
+    env = os.environ.get('OCCUBROW_ENVIRONMENT', DEFAULT_ENVIRONMENT)
+    debug("using environment %s", env)
+
+    config_path = os.path.join(get_repo_toplevel(), 'environments', "%s.yml" % env)
+
+    with open(config_path, 'r') as f:
+        data = yaml.load(f, Loader=yaml.Loader)
+
+    return data
+
 def get_neo4j_port():
-    return 7688
+    return get_environment()['neo4j_port']
 
 @pytest.fixture(scope='function')
 def neo4j():
