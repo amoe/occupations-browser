@@ -5,9 +5,6 @@ import networkx
 import matplotlib
 import matplotlib.pyplot
 
-credentials = ('neo4j', 'password')
-uri = "bolt://localhost:7688"
-driver = neo4j.v1.GraphDatabase.driver(uri, auth=credentials)
 
 def quickplot(g):
     matplotlib.pyplot.clf()
@@ -19,7 +16,6 @@ def run_some_query(query, parameters):
         with session.begin_transaction() as tx:
             results = tx.run(query, parameters)
             return results
-
 
 def close_connection():
     driver.close()

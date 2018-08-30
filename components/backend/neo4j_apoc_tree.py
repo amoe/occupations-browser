@@ -4,7 +4,6 @@ import networkx
 import matplotlib
 import matplotlib.pyplot
 import functools
-import misc
 import pprint
 
 # relationship_name here is 'precedes'
@@ -34,8 +33,17 @@ class Neo4jRepository(object):
     def __init__(self, port=7876):
         self.port = port
 
+    def query(self, query, parameters):
+        uri = "bolt://localhost:%d" % self.port
+
+        with neo4j.v1.GraphDatabase.driver(uri) as driver:
+            with driver.session() as session:
+                with session.begin_transaction() as tx:
+                    results = tx.run(query, parameters)
+                    return results
+
     def get_tree(self, query, relationship_name):
-        result = misc.run_some_query(query, {})
+        result = self.query(query, {})
         paths = result.value()
         get_graph = lambda p: tree_to_graph(p, relationship_name)
         return functools.reduce(networkx.compose, map(get_graph, paths), networkx.DiGraph())
