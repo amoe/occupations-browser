@@ -1,5 +1,4 @@
 import networkx
-import misc
 
 g = networkx.DiGraph()
 
