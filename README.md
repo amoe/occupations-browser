@@ -50,4 +50,4 @@ This requires Fabric 2.2.1+.
 
 
 
-Yow! x2
+Yow! x3
