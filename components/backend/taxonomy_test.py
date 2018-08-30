@@ -28,20 +28,21 @@ EXPECTED_TAXONOMY_RESULT = {'_type': 'Taxon',
  'id': 20714,
  'name': 'Ulmaridae'}
 
-
+def get_neo4j_port():
+    return 7688
 
 @pytest.fixture(scope='function')
-def neo4j_fixture():
+def neo4j():
     debug("setting up neo4j")
-    neo4j_test_utility.clear_all()
-    neo4j_test_utility.add_taxonomy()
-    return 42
+    obj = neo4j_apoc_tree.Neo4jRepository(port=get_neo4j_port())
+    obj.clear_all()
+    obj.add_taxonomy()
+    return obj
 
-def test_taxonomy_1(neo4j_fixture):
-    debug("neo4j_fixture = %s", repr(neo4j_fixture))
+def test_taxonomy_1(neo4j):
+    debug("neo4j_fixture = %s", repr(neo4j))
 
-    obj = neo4j_apoc_tree.Neo4jRepository(port=7688)
-    dg = obj.get_tree(neo4j_apoc_tree.TAXONOMY_TREE_QUERY, 'supercategory_of')
+    dg = neo4j.get_tree(neo4j_apoc_tree.TAXONOMY_TREE_QUERY, 'supercategory_of')
 
     # This essentially gets the (assumed to be single!) root of the tree.
     try:

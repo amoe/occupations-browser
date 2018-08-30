@@ -5,6 +5,7 @@ import matplotlib
 import matplotlib.pyplot
 import functools
 import pprint
+import demo_taxonomy
 
 # relationship_name here is 'precedes'
 APOC_TREE_GENERATOR_QUERY = """
@@ -47,3 +48,10 @@ class Neo4jRepository(object):
         paths = result.value()
         get_graph = lambda p: tree_to_graph(p, relationship_name)
         return functools.reduce(networkx.compose, map(get_graph, paths), networkx.DiGraph())
+
+    def clear_all(self):
+        self.query("MATCH (n) DETACH DELETE n", {})
+
+    def add_taxonomy(self):
+        demo_taxonomy.load_demo_taxonomy(self)
+        

@@ -42,10 +42,10 @@ LINK_TAXA_QUERY = """
 """
 
 
-def load_demo_taxonomy():
+def load_demo_taxonomy(n4j):
     for edge in networkx.bfs_edges(g, FAMILY):
         u, v = edge
-        misc.run_some_query(MERGE_TAXON_QUERY, {'name': u})
-        misc.run_some_query(MERGE_TAXON_QUERY, {'name': v})
-        misc.run_some_query(LINK_TAXA_QUERY, {'u_name': u, 'v_name': v})
+        n4j.query(MERGE_TAXON_QUERY, {'name': u})
+        n4j.query(MERGE_TAXON_QUERY, {'name': v})
+        n4j.query(LINK_TAXA_QUERY, {'u_name': u, 'v_name': v})
 
