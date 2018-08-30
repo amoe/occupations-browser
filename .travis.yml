@@ -6,6 +6,8 @@ matrix:
         - OCCUBROW_ENVIRONMENT=test
       services:
         - neo4j
+      before_install:
+        - sudo service neo4j restart
       install:
         - pip install -r requirements.txt
       script:
