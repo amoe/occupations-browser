@@ -62,7 +62,7 @@ def neo4j():
 def test_taxonomy_1(neo4j):
     debug("neo4j_fixture = %s", repr(neo4j))
 
-    dg = neo4j.get_tree(neo4j_apoc_tree.TAXONOMY_TREE_QUERY, 'supercategory_of')
+    dg = neo4j.get_tree(neo4j_repository.TAXONOMY_TREE_QUERY, 'supercategory_of')
 
     # This essentially gets the (assumed to be single!) root of the tree.
     try:
