@@ -3,6 +3,7 @@ import pprint
 import json
 import pytest
 from logging import debug
+import neo4j_repository
 import neo4j_test_utility
 import os
 import subprocess
