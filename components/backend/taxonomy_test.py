@@ -1,5 +1,4 @@
 import networkx
-import neo4j_apoc_tree
 import pprint
 import json
 import pytest
@@ -54,7 +53,7 @@ def get_neo4j_port():
 @pytest.fixture(scope='function')
 def neo4j():
     debug("setting up neo4j")
-    obj = neo4j_apoc_tree.Neo4jRepository(port=get_neo4j_port())
+    obj = neo4j_repository.Neo4jRepository(port=get_neo4j_port())
     obj.clear_all()
     obj.add_taxonomy()
     return obj
