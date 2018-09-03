@@ -29,6 +29,12 @@ GET_ROOTS_WITH_SUBSTRING_MATCH = """
     RETURN DISTINCT t1 AS root
 """
 
+GET_ALL_ROOTS_QUERY = """
+    MATCH (t1:Token)<-[r:CONTAINS]-(s1:Sentence)
+    WHERE r.index = 0
+    RETURN DISTINCT t1 AS root
+"""
+
 PULL_ALL_TOKEN_SEQUENCES = """
     MATCH (s1:Sentence)-[r:CONTAINS]->(t)
     WITH s1, t
@@ -36,11 +42,31 @@ PULL_ALL_TOKEN_SEQUENCES = """
     RETURN s1, COLLECT(t) AS seq;
 """
 
+DECLARE_GROUP_QUERY = """
+    MATCH (s:Token {content: {synonym}}), (m:Token {content: {master}})
+    CREATE (s)-[:SYNONYMOUS]->(m)
+"""
 
 def tree_to_graph(tree, relationship_name):
     # defined by apoc, precedes is based on the relationship label
     object_format = dict(id='_id', children=relationship_name)
     return networkx.tree_graph(tree, object_format)
+
+def add_linear_nodes(g, token_seq):
+    for index, token in enumerate(token_seq):
+        g.add_node(token)
+
+        if index != 0:
+            start_node = token_seq[index - 1]
+            g.add_edge(start_node, token)
+
+def gather_token_seq(result_seq):
+    ret = []
+    
+    for node in result_seq:
+        ret.append(node.get('content'))
+
+    return ret
 
 class Neo4jRepository(object):
     port = None
@@ -92,3 +118,7 @@ class Neo4jRepository(object):
         g = self.pull_graph()
         tree = networkx.dfs_tree(g, root, depth_limit=depth_limit)
         return networkx.tree_data(tree, root)
+
+    def declare_group(self, synonym, master):
+        results = self.query(DECLARE_GROUP_QUERY, {'synonym': synonym, 'master': master})
+
