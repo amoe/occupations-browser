@@ -15,7 +15,7 @@
                   title="Title"
                   width="200"
                   trigger="manual"
-                  v-model="popoverActive">
+                  :value="popoverActive">
         <el-button>Link</el-button>
       </el-popover>
 
