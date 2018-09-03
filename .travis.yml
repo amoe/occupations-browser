@@ -12,5 +12,5 @@ matrix:
       install:
         - pip install -r requirements.txt
       script:
-        - python -m pytest -m unit test
-        - python -m pytest test
+        - python -m pytest -m 'unit' test
+        - python -m pytest -m 'not unit' test
