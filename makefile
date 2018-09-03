@@ -12,7 +12,7 @@ NEO4J_PORT = 7688
 .PHONY: run_frontend run_backend gather_dependencies
 
 run_frontend:
-	yarn --cwd components/frontend run dev
+	yarn run dev
 
 run_backend:
 	FLASK_APP=occubrow.ov_rest_server FLASK_DEBUG=1 flask run
