@@ -25,12 +25,6 @@ GET_ALL_ROOTS_QUERY = """
     RETURN DISTINCT t1 AS root
 """
 
-GET_ROOTS_WITH_SUBSTRING_MATCH = """
-    MATCH (t1:Token)<-[r:CONTAINS]-(s1:Sentence)
-    WHERE r.index = 0 AND t1.content CONTAINS {substring}
-    RETURN DISTINCT t1 AS root
-"""   
-
 def declare_group(synonym, master):
     results = misc.run_some_query(DECLARE_GROUP_QUERY, {'synonym': synonym, 'master': master})
     print(results)
@@ -74,9 +68,3 @@ def get_tree_by_root(root, depth_limit):
     tree = networkx.dfs_tree(g, root, depth_limit=depth_limit)
     return networkx.tree_data(tree, root)
 
-def get_roots_with_substring_match(substring):
-    return [
-        record['root'].get('content')
-        for record in misc.run_some_query(GET_ROOTS_WITH_SUBSTRING_MATCH, {'substring': substring})
-    ]
-    

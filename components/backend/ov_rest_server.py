@@ -3,6 +3,7 @@ import flask.logging
 import graph_operations
 import graph_operations_tezra
 import logging
+import neo4j_repository
 
 def create_app():
     # Enable this to get logging output
@@ -15,10 +16,11 @@ def create_app():
     ):
         logger.addHandler(flask.logging.default_handler)
 
+
+    # Should come from config
+    app.neo4j = neo4j_repository.Neo4jRepository(port=7688)
+
     return app
-
-
-
 
 app = create_app()
 
@@ -56,7 +58,8 @@ def tezra_get_tree():
 @app.route('/tezra/roots', methods=['GET'])
 def tezra_get_roots():
     q = flask.request.args.get('q')
-    return flask.jsonify(graph_operations_tezra.get_roots_with_substring_match(q))
+    result = flask.current_app.neo4j.get_roots_with_substring_match(q)
+    return flask.jsonify(result)
 
 # what does it mean to ask for the source?
 # We can only ask for a source by node.

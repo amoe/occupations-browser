@@ -23,6 +23,12 @@ TAXONOMY_TREE_QUERY = """
     RETURN value;
 """
 
+GET_ROOTS_WITH_SUBSTRING_MATCH = """
+    MATCH (t1:Token)<-[r:CONTAINS]-(s1:Sentence)
+    WHERE r.index = 0 AND t1.content CONTAINS {substring}
+    RETURN DISTINCT t1 AS root
+"""
+
 def tree_to_graph(tree, relationship_name):
     # defined by apoc, precedes is based on the relationship label
     object_format = dict(id='_id', children=relationship_name)
@@ -54,4 +60,9 @@ class Neo4jRepository(object):
 
     def add_taxonomy(self):
         demo_taxonomy.load_demo_taxonomy(self)
-        
+
+    def get_roots_with_substring_match(self, substring):
+        return [
+            record['root'].get('content')
+            for record in self.query(GET_ROOTS_WITH_SUBSTRING_MATCH, {'substring': substring})
+        ]
