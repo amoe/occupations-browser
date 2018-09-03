@@ -1,5 +1,5 @@
 import neo4j.v1
-import demo_taxonomy
+import occubrow.demo_taxonomy
 
 credentials = ('neo4j', 'password')
 uri = "bolt://localhost:7688"

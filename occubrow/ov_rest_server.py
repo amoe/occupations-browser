@@ -33,3 +33,9 @@ def tezra_get_roots():
     q = flask.request.args.get('q')
     result = flask.current_app.neo4j.get_roots_with_substring_match(q)
     return flask.jsonify(result)
+
+
+# This endpoint just used for smoke testing the flask file on travis
+@app.route('/my-endpoint', methods=['GET'])
+def get_corpus():
+    return flask.jsonify({'foo': 42})

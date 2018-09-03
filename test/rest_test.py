@@ -1,9 +1,9 @@
-import ov_rest_server
+import occubrow.ov_rest_server
 import pytest
 import json
 
 def test_foo():
-    client = ov_rest_server.app.test_client()
+    client = occubrow.ov_rest_server.app.test_client()
     result = client.get(
         path="/my-endpoint",
     )

@@ -3,11 +3,12 @@ import pprint
 import json
 import pytest
 from logging import debug
-import neo4j_repository
-import neo4j_test_utility
 import os
 import subprocess
 import yaml
+
+import occubrow.neo4j_repository
+import occubrow.neo4j_test_utility
 
 EXPECTED_TAXONOMY_RESULT = {'_type': 'Taxon',
  'children': [{'_type': 'Taxon',
@@ -54,7 +55,7 @@ def get_neo4j_port():
 @pytest.fixture(scope='function')
 def neo4j():
     debug("setting up neo4j")
-    obj = neo4j_repository.Neo4jRepository(port=get_neo4j_port())
+    obj = occubrow.neo4j_repository.Neo4jRepository(port=get_neo4j_port())
     obj.clear_all()
     obj.add_taxonomy()
     return obj
@@ -62,7 +63,7 @@ def neo4j():
 def test_taxonomy_1(neo4j):
     debug("neo4j_fixture = %s", repr(neo4j))
 
-    dg = neo4j.get_tree(neo4j_repository.TAXONOMY_TREE_QUERY, 'supercategory_of')
+    dg = neo4j.get_tree(occubrow.neo4j_repository.TAXONOMY_TREE_QUERY, 'supercategory_of')
 
     # This essentially gets the (assumed to be single!) root of the tree.
     try:

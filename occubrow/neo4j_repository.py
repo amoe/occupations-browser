@@ -93,7 +93,7 @@ class Neo4jRepository(object):
         self.query("MATCH (n) DETACH DELETE n", {})
 
     def add_taxonomy(self):
-        demo_taxonomy.load_demo_taxonomy(self)
+        occubrow.demo_taxonomy.load_demo_taxonomy(self)
 
     def get_roots_with_substring_match(self, substring):
         return [
