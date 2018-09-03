@@ -12,8 +12,11 @@ Assertions:
 
 * Load the taxonomy,
 
-    python3 components/backend/demo_taxonomy.py
+    python3 -m scripts.load_demo_taxonomy
 
-    amoe@cslp019129 $ python3 scripts/randomly_assign_taxonomy_elements.py
+It's important that you run it with the `-m` syntax because this will set up
+the PATH correctly.
 
+* Randomly assign the taxonomy elements
 
+    python3 -m scripts.randomly_assign_taxonomy_elements

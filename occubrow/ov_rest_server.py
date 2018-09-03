@@ -34,8 +34,13 @@ def tezra_get_roots():
     result = flask.current_app.neo4j.get_roots_with_substring_match(q)
     return flask.jsonify(result)
 
+@app.route('/taxonomy', methods=['GET'])
+def get_taxonomy():
+    result = flask.current_app.neo4j.get_taxonomy_as_json()
+    return flask.jsonify(result)
 
 # This endpoint just used for smoke testing the flask file on travis
 @app.route('/my-endpoint', methods=['GET'])
 def get_corpus():
     return flask.jsonify({'foo': 42})
+

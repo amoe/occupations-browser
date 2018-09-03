@@ -122,3 +122,24 @@ class Neo4jRepository(object):
     def declare_group(self, synonym, master):
         results = self.query(DECLARE_GROUP_QUERY, {'synonym': synonym, 'master': master})
 
+    def get_taxonomy_as_json(self):
+        dg = self.get_tree(TAXONOMY_TREE_QUERY, 'supercategory_of')
+
+        # This essentially gets the (assumed to be single!) root of the tree.
+        try:
+            root = next(networkx.topological_sort(dg))
+        except StopIteration as e:
+            raise Exception("empty taxonomy?") from e
+
+        # This is just the default tree-json format, but we prefer to be explicit 
+        # about it
+        attrs = {
+            'children': 'children',
+            'id': 'id'
+        }
+        dg_formatted_as_tree = networkx.tree_data(
+            dg, root=root, attrs=attrs
+        )
+
+        return dg_formatted_as_tree
+        

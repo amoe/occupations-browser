@@ -63,23 +63,7 @@ def neo4j():
 def test_taxonomy_1(neo4j):
     debug("neo4j_fixture = %s", repr(neo4j))
 
-    dg = neo4j.get_tree(occubrow.neo4j_repository.TAXONOMY_TREE_QUERY, 'supercategory_of')
-
-    # This essentially gets the (assumed to be single!) root of the tree.
-    try:
-        root = next(networkx.topological_sort(dg))
-    except StopIteration as e:
-        raise Exception("empty taxonomy?") from e
-
-    # This is just the default tree-json format, but we prefer to be explicit 
-    # about it
-    attrs = {
-        'children': 'children',
-        'id': 'id'
-    }
-    dg_formatted_as_tree = networkx.tree_data(
-        dg, root=root, attrs=attrs
-    )
+    dg_formatted_as_tree = neo4j.get_taxonomy_as_json()
 
     expected_graph = networkx.tree_graph(EXPECTED_TAXONOMY_RESULT, dict(id='id', children='children'))
     reparsed_graph = networkx.tree_graph(dg_formatted_as_tree, dict(id='id', children='children'))

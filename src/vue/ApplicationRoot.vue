@@ -4,13 +4,18 @@
       <h1>OV {{date}}</h1>
     </div>
 
+
     <div class="widget-bar">
       <widget-bar>
       </widget-bar>
     </div>
 
+
     <div class="graph">
       <graph-controls :zoom-depth="zoomDepth"></graph-controls>
+
+      <textarea>{{taxonomyData}}</textarea>
+
       <el-popover placement="bottom"
                   title="Title"
                   width="200"
@@ -48,11 +53,14 @@ import bus from '../event-bus';
 import events from '../events';
 import TextView from './TextView.vue';
 import TimelineRoot from './TimelineRoot.vue';
+import axios from 'axios';
+import * as log from 'loglevel';
 
 export default Vue.extend({
     components: {GraphControls, GraphView, DNDDemo, Hexagon, WidgetBar, TextView, TimelineRoot},
     data: function() {
         return {
+            taxonomyData: [],
             visible: false,
             activeControls: [],
             date: dateFns.format(new Date(), 'YYYY-MM-DD'),
@@ -68,10 +76,14 @@ export default Vue.extend({
     },
     methods: {
         handleChange(val) {
-            console.log("collapse was modified with value %o", val);
+            log.trace("collapse was modified with value %o", val);
         }
     },
     created: function() {
+        axios.get('/api/taxonomy').then(r => {
+            console.log("taxonomy data result was %o", r.data);
+            this.taxonomyData = r.data;
+        });
     },
     // mapState doesn't work with typescript: "Property 'mapState' does not exist on type"
     // So we manually create the relevant computed properties.
