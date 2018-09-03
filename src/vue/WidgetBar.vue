@@ -36,6 +36,9 @@ import {VueConstructor} from 'vue';
 import Draggable from 'gsap/Draggable';
 import {WidgetDisplaySpecifier} from '../interfaces';
 import {sprintf} from 'sprintf-js';
+import * as log from 'loglevel';
+import * as TreeModel from 'tree-model';
+import axios from 'axios';
 
 // This 
 
@@ -76,6 +79,20 @@ export default (Vue as MyRefExtensions).extend({
     created: function() {
         // Set up all of our events
         bus.$on(events.WIDGET_REMOVED, (name) => this.handleWidgetRemoved(name));
+
+        // It makes a vague amount of sense for taxonomy data to be handled by the widgets.
+        axios.get('/api/taxonomy').then(r => {
+            console.log("taxonomy data result was %o", r.data);
+             const treeModelConfig = {
+                 childrenPropertyName: 'children',
+                 // you can also use modelcomparatorfn here to auto sort the tree
+             };
+
+             const apiTree = new TreeModel(treeModelConfig);
+             const apiRoot = apiTree.parse(r.data);
+
+            this.$store.commit(mc.SET_TAXONOMY_MODEL, apiRoot);
+        });
     },
     mounted: function() {
         console.log("setting up initial draggables");

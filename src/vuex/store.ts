@@ -26,11 +26,15 @@ const storeConfiguration = {
         widgetDropTargets: [],
         nodeDropTargets: [],
         nodeFill: {},
-        popoverActive: false
+        popoverActive: false,
+        taxonomyModel: null
     },
     mutations: {
         increment(state) {
             state.count++;
+        },
+        [mc.SET_TAXONOMY_MODEL]: (state, taxonomyModel) => {
+            state.taxonomyModel = taxonomyModel;
         },
         [mc.ACTIVATE_POPOVER]: (state) => {
             state.popoverActive = true;

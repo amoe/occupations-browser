@@ -4,7 +4,6 @@
       <h1>OV {{date}}</h1>
     </div>
 
-
     <div class="widget-bar">
       <widget-bar>
       </widget-bar>
@@ -13,8 +12,6 @@
 
     <div class="graph">
       <graph-controls :zoom-depth="zoomDepth"></graph-controls>
-
-      <textarea>{{taxonomyData}}</textarea>
 
       <el-popover placement="bottom"
                   title="Title"
@@ -53,15 +50,12 @@ import bus from '../event-bus';
 import events from '../events';
 import TextView from './TextView.vue';
 import TimelineRoot from './TimelineRoot.vue';
-import axios from 'axios';
 import * as log from 'loglevel';
-import * as TreeModel from 'tree-model';
 
 export default Vue.extend({
     components: {GraphControls, GraphView, DNDDemo, Hexagon, WidgetBar, TextView, TimelineRoot},
     data: function() {
         return {
-            taxonomyData: [],
             visible: false,
             activeControls: [],
             date: dateFns.format(new Date(), 'YYYY-MM-DD'),
@@ -81,21 +75,6 @@ export default Vue.extend({
         }
     },
     created: function() {
-        axios.get('/api/taxonomy').then(r => {
-            console.log("taxonomy data result was %o", r.data);
-            this.taxonomyData = r.data;
-
-             const treeModelConfig = {
-                 childrenPropertyName: 'children',
-                 // you can also use modelcomparatorfn here to auto sort the tree
-             };
-
-
-             const apiTree = new TreeModel(treeModelConfig);
-             const apiRoot = apiTree.parse(r.data);
-
-             console.log("new api root is %o", apiRoot);
-        });
     },
     // mapState doesn't work with typescript: "Property 'mapState' does not exist on type"
     // So we manually create the relevant computed properties.
