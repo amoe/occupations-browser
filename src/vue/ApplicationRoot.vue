@@ -55,6 +55,7 @@ import TextView from './TextView.vue';
 import TimelineRoot from './TimelineRoot.vue';
 import axios from 'axios';
 import * as log from 'loglevel';
+import * as TreeModel from 'tree-model';
 
 export default Vue.extend({
     components: {GraphControls, GraphView, DNDDemo, Hexagon, WidgetBar, TextView, TimelineRoot},
@@ -83,6 +84,17 @@ export default Vue.extend({
         axios.get('/api/taxonomy').then(r => {
             console.log("taxonomy data result was %o", r.data);
             this.taxonomyData = r.data;
+
+             const treeModelConfig = {
+                 childrenPropertyName: 'children',
+                 // you can also use modelcomparatorfn here to auto sort the tree
+             };
+
+
+             const apiTree = new TreeModel(treeModelConfig);
+             const apiRoot = apiTree.parse(r.data);
+
+             console.log("new api root is %o", apiRoot);
         });
     },
     // mapState doesn't work with typescript: "Property 'mapState' does not exist on type"
@@ -94,6 +106,7 @@ export default Vue.extend({
         xMarginPx: function (this: any) {
             return document.documentElement.clientHeight * this.xMarginVh;
         },
+
         count: function (this: any) {
             return this.$store.state.count;
         }, ...mapGetters(['isDragInProgress', 'lastDrop', 'popoverActive'])
