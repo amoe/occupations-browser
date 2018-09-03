@@ -2,6 +2,7 @@
 
 const webpack = require('webpack');
 const path = require('path');
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
 module.exports = {
     entry: ["./src/entry.ts"],
@@ -52,5 +53,9 @@ module.exports = {
                 pathRewrite: {"^/api": ""}
             }
         }
-    }
+    },
+    plugins: [
+        // make sure to include the plugin!
+        new VueLoaderPlugin()
+    ]
 };
