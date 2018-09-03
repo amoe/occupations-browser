@@ -1,3 +1,5 @@
+PYTHON = python3
+
 backend_dir = components/backend
 
 pytest = py.test-3
@@ -19,8 +21,8 @@ gather_dependencies:
 	yarn --cwd components/frontend install
 
 reset_database:
-	sh scripts/clear_neo4j.sh
-	python3 components/backend/add_sample_data.py
+	$(PYTHON) scripts/clear_neo4j.py
+	$(PYTHON) components/backend/add_sample_data.py
 
 test_backend:
 	$(pytest) components/backend/test.py components/backend/integration_test.py

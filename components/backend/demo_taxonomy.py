@@ -47,4 +47,3 @@ def load_demo_taxonomy(n4j):
         n4j.query(MERGE_TAXON_QUERY, {'name': u})
         n4j.query(MERGE_TAXON_QUERY, {'name': v})
         n4j.query(LINK_TAXA_QUERY, {'u_name': u, 'v_name': v})
-

@@ -1,3 +1,4 @@
+import pytest
 import unittest.mock
 import os
 from logging import debug
@@ -15,6 +16,7 @@ def get_repo_toplevel():
     output = subprocess.check_output(['git', 'rev-parse', '--show-toplevel'])
     return output.rstrip().decode('utf-8')
 
+@pytest.mark.unit
 def test_query():
     result = thing.query("MATCH (n) RETURN n")
     assert result == 'goodbye'   
