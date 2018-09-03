@@ -12,12 +12,6 @@ DECLARE_GROUP_QUERY = """
     CREATE (s)-[:SYNONYMOUS]->(m)
 """
 
-PULL_ALL_TOKEN_SEQUENCES = """
-    MATCH (s1:Sentence)-[r:CONTAINS]->(t)
-    WITH s1, t
-    ORDER BY r.index
-    RETURN s1, COLLECT(t) AS seq;
-"""
 
 GET_ALL_ROOTS_QUERY = """
     MATCH (t1:Token)<-[r:CONTAINS]-(s1:Sentence)
@@ -48,23 +42,3 @@ def gather_token_seq(result_seq):
         ret.append(node.get('content'))
 
     return ret
-
-# This is going to pull in the entire graph
-# Because we are using DiGraph and not MultiDiGraph it's going to automatically
-# remove duplicate edges for us.
-def pull_graph():
-    graph = networkx.DiGraph()
-    results = misc.run_some_query(PULL_ALL_TOKEN_SEQUENCES, {})
-
-    for result in results:
-        token_seq = gather_token_seq(result['seq'])
-        add_linear_nodes(graph, token_seq)
-
-    return graph
-
-# This is the endpoint that's currently used
-def get_tree_by_root(root, depth_limit):
-    g = pull_graph()
-    tree = networkx.dfs_tree(g, root, depth_limit=depth_limit)
-    return networkx.tree_data(tree, root)
-

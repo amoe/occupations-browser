@@ -29,6 +29,14 @@ GET_ROOTS_WITH_SUBSTRING_MATCH = """
     RETURN DISTINCT t1 AS root
 """
 
+PULL_ALL_TOKEN_SEQUENCES = """
+    MATCH (s1:Sentence)-[r:CONTAINS]->(t)
+    WITH s1, t
+    ORDER BY r.index
+    RETURN s1, COLLECT(t) AS seq;
+"""
+
+
 def tree_to_graph(tree, relationship_name):
     # defined by apoc, precedes is based on the relationship label
     object_format = dict(id='_id', children=relationship_name)
@@ -66,3 +74,21 @@ class Neo4jRepository(object):
             record['root'].get('content')
             for record in self.query(GET_ROOTS_WITH_SUBSTRING_MATCH, {'substring': substring})
         ]
+
+    # This is going to pull in the entire graph
+    # Because we are using DiGraph and not MultiDiGraph it's going to automatically
+    # remove duplicate edges for us.
+    def pull_graph(self):
+        graph = networkx.DiGraph()
+        results = self.query(PULL_ALL_TOKEN_SEQUENCES, {})
+
+        for result in results:
+            token_seq = gather_token_seq(result['seq'])
+            add_linear_nodes(graph, token_seq)
+
+        return graph
+
+    def get_tree_by_root(self, root, depth_limit):
+        g = self.pull_graph()
+        tree = networkx.dfs_tree(g, root, depth_limit=depth_limit)
+        return networkx.tree_data(tree, root)

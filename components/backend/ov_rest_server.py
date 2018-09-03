@@ -28,11 +28,6 @@ app = create_app()
 def get_corpus():
     return flask.jsonify({'foo': 42})
 
-@app.route('/tree', methods=['GET'])
-def get_tree_by_root():
-    root = flask.request.args.get('root')
-    return flask.jsonify(graph_operations.get_tree_by_root(root))
-
 @app.route('/delete_some_node', methods=['POST'])
 def delete_some_node():
     graph_operations.delete_node('fox');
@@ -53,7 +48,7 @@ def get_all_roots():
 def tezra_get_tree():
     root = flask.request.args.get('root')
     zoom_depth = int(flask.request.args.get('zoom_depth'))
-    return flask.jsonify(graph_operations_tezra.get_tree_by_root(root, zoom_depth))
+    return flask.jsonify(flask.current_app.neo4j.get_tree_by_root(root, zoom_depth))
 
 @app.route('/tezra/roots', methods=['GET'])
 def tezra_get_roots():
