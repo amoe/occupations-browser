@@ -5,7 +5,7 @@ import matplotlib
 import matplotlib.pyplot
 import functools
 import pprint
-import demo_taxonomy
+import occubrow.demo_taxonomy
 
 # relationship_name here is 'precedes'
 APOC_TREE_GENERATOR_QUERY = """

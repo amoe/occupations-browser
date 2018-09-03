@@ -1,7 +1,7 @@
 import flask
 import flask.logging
 import logging
-import neo4j_repository
+import occubrow.neo4j_repository
 
 def create_app():
     # Enable this to get logging output
@@ -16,7 +16,7 @@ def create_app():
 
 
     # Should come from config
-    app.neo4j = neo4j_repository.Neo4jRepository(port=7688)
+    app.neo4j = occubrow.neo4j_repository.Neo4jRepository(port=7688)
 
     return app
 
