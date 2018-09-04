@@ -56,6 +56,8 @@ DECLARE_GROUP_QUERY = """
     CREATE (s)-[:SYNONYMOUS]->(m)
 """
 
+IDENTITY_FIELD_NAME = 'content'
+
 
 def tree_to_graph(tree, relationship_name):
     # defined by apoc, precedes is based on the relationship label
@@ -64,12 +66,17 @@ def tree_to_graph(tree, relationship_name):
 
 def add_linear_nodes(g, token_seq):
     for index, token in enumerate(token_seq):
-        g.add_node(token)
+        node_identity = token[IDENTITY_FIELD_NAME]
+
+        g.add_node(node_identity)
 
         if index != 0:
-            start_node = token_seq[index - 1]
-            g.add_edge(start_node, token)
+            previous_node = token_seq[index - 1][IDENTITY_FIELD_NAME]
+            g.add_edge(previous_node, node_identity)
 
+
+# Flatten the nodes into a narrowed representation which is appropriate for the
+# tree conversion
 def gather_token_seq(result_seq):
     ret = []
     
@@ -80,7 +87,13 @@ def gather_token_seq(result_seq):
         token_node = datum['token']
         taxon_node = datum['taxon']
 
-        ret.append(token_node.get('content'))
+        # Destructure and flatten the list
+        ret.append(
+            {
+                'content': token_node.get('content'),
+                'taxon': taxon_node.get('name')
+            }
+        )
 
     return ret
 
