@@ -133,15 +133,20 @@ export default Vue.extend({
             if (this.root === null) {
                 return [];
             } else {
-                return this.root.descendants().slice(1);
+                return this.filteredDescendants.slice(1);
             }
         },
         allIncludingRoot: function(this: any) {
             if (this.root === null) {
                 return [];
             } else {
-                return this.root.descendants();
+                const value = this.filteredDescendants;
+                log.debug("allincludingroot = %o", value);
+                return value;
             }
+        },
+        filteredDescendants: function (this: any) {
+            return this.root.descendants();
         },
         rootTranslation: function(this: any) {
             const xOffset = (this.width / 2) + this.xMargin;
