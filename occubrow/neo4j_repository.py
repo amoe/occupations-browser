@@ -77,7 +77,7 @@ def add_linear_nodes(g, token_seq):
 # Version of dfs_tree that copies node attributes (as the dfs_tree in networkx
 # will strip them).
 def dfs_tree_with_node_attributes(g, source, depth_limit):
-    edges = networkx.dfs_edges(g, source='foo', depth_limit=1)
+    edges = networkx.dfs_edges(g, source=source, depth_limit=depth_limit)
     result = networkx.DiGraph()
 
     for u, v in edges:
