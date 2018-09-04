@@ -5,12 +5,19 @@ import pytest
 STUB_TREE_DATA = [
    {
        'seq': [
-           {'content': 'foo', '_type': 'Token'},
-           {'content': 'bar', '_type': 'Token'}
+           {
+               'token': {'content': 'foo', '_type': 'Token'},
+               'taxon': {'content': 'Ulmaridae', '_type': 'Taxon'}
+           },
+           {
+               'token': {'content': 'bar', '_type': 'Token'},
+               'taxon': {'content': 'Deepstaria', '_type': 'Taxon'}
+           }
        ],
        's1': {'_type': 'Sentence', 'content': ['foo', 'bar']}
    }
 ]
+
 
 
 @pytest.mark.unit
@@ -24,4 +31,3 @@ def test_get_tree():
             {'id': 'bar'}
         ]
     }
-

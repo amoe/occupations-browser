@@ -35,17 +35,27 @@ GET_ALL_ROOTS_QUERY = """
     RETURN DISTINCT t1 AS root
 """
 
-PULL_ALL_TOKEN_SEQUENCES = """
+## XXX: REMOVE -- START
+___PULL_ALL_TOKEN_SEQUENCES = """
     MATCH (s1:Sentence)-[r:CONTAINS]->(t)
     WITH s1, t
     ORDER BY r.index
     RETURN s1, COLLECT(t) AS seq;
+"""
+### XXX: REMOVE -- END 
+
+PULL_ALL_TOKEN_SEQUENCES = """
+    MATCH (s1:Sentence)-[r:CONTAINS]->(t)-[r2:MEMBER_OF]->(ta:Taxon)
+    WITH s1, t, ta
+    ORDER BY r.index
+    RETURN s1, COLLECT({token: t, taxon: ta}) AS seq
 """
 
 DECLARE_GROUP_QUERY = """
     MATCH (s:Token {content: {synonym}}), (m:Token {content: {master}})
     CREATE (s)-[:SYNONYMOUS]->(m)
 """
+
 
 def tree_to_graph(tree, relationship_name):
     # defined by apoc, precedes is based on the relationship label
@@ -63,8 +73,14 @@ def add_linear_nodes(g, token_seq):
 def gather_token_seq(result_seq):
     ret = []
     
-    for node in result_seq:
-        ret.append(node.get('content'))
+    for datum in result_seq:
+        # Each datum is a map with keys 'token' and 'taxon' containing
+        # node-interface objects.
+        
+        token_node = datum['token']
+        taxon_node = datum['taxon']
+
+        ret.append(token_node.get('content'))
 
     return ret
 
