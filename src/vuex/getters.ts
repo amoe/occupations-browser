@@ -22,5 +22,8 @@ export default {
     },
     popoverActive(state, getters) {
         return state.popoverActive;
+    },
+    taxonomyModel(state, getters) {
+        return state.taxonomyModel;
     }
 };

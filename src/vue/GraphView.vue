@@ -147,10 +147,29 @@ export default Vue.extend({
             }
         },
         filteredDescendants: function (this: any) {
-            return this.root.descendants().filter(function(d) {
-                const match = d.data.taxon === 'Deepstaria reticulum';
-                console.log("match value was %o", match);
-                return match;
+            return this.root.descendants().filter(d => {
+                console.log("taxo-model is %o", this.taxonomyModel);
+
+                const wantedParentName = 'Ulmaridae';
+
+                const wantedParent = taxonomyFunctions.getNodeForCategoryName(
+                    this.taxonomyModel, wantedParentName
+                );
+
+                const maybeChild = taxonomyFunctions.getNodeForCategoryName(
+                    this.taxonomyModel, d.data.taxon
+                );
+                
+                console.log("wantedParent is %o", wantedParent);
+                console.log("maybeChild is %o", maybeChild);
+
+                const descVal = taxonomyFunctions.isDescendant(
+                    wantedParent, maybeChild
+                );
+
+                console.log("desc val = %o", descVal);
+
+                return descVal;
             });
         },
         rootTranslation: function(this: any) {
@@ -178,7 +197,7 @@ export default Vue.extend({
         },
         widgetDropTargets: function(this: any) {
             return this.$store.getters.widgetDropTargets;
-        }, ...mapGetters(['graphData', 'possibleRoots', 'selectedRoot'])
+        }, ...mapGetters(['graphData', 'possibleRoots', 'selectedRoot', 'taxonomyModel'])
     }
 });
 </script>
