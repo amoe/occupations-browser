@@ -68,12 +68,11 @@ def tree_to_graph(tree, relationship_name):
 def add_linear_nodes(g, token_seq):
     for index, token in enumerate(token_seq):
         node_identity = token[IDENTITY_FIELD_NAME]
-        g.add_node(node_identity, foobar=42)
+        g.add_node(node_identity, taxon=token['taxon'])
 
         if index != 0:
             previous_node = token_seq[index - 1][IDENTITY_FIELD_NAME]
             g.add_edge(previous_node, node_identity)
-
 
 # Version of dfs_tree that copies node attributes (as the dfs_tree in networkx
 # will strip them).

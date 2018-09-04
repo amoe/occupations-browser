@@ -28,8 +28,8 @@ def test_get_tree():
     debug("result is %s", result)
     assert result == {
         'id': 'foo',
-        'foobar': 42,
+        'taxon': 'Ulmaridae',
         'children': [
-            {'id': 'bar', 'foobar': 42}
+            {'id': 'bar', 'taxon': 'Deepstaria'}
         ]
     }
