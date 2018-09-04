@@ -1,11 +1,12 @@
 import neo4j
 import neo4j.v1
 import networkx
-import matplotlib
-import matplotlib.pyplot
 import functools
 import pprint
 import occubrow.demo_taxonomy
+from occubrow.plotting import quickplot
+import logging
+from logging import debug, info
 
 # relationship_name here is 'precedes'
 APOC_TREE_GENERATOR_QUERY = """
@@ -67,13 +68,25 @@ def tree_to_graph(tree, relationship_name):
 def add_linear_nodes(g, token_seq):
     for index, token in enumerate(token_seq):
         node_identity = token[IDENTITY_FIELD_NAME]
-
-        g.add_node(node_identity)
+        g.add_node(node_identity, foobar=42)
 
         if index != 0:
             previous_node = token_seq[index - 1][IDENTITY_FIELD_NAME]
             g.add_edge(previous_node, node_identity)
 
+
+# Version of dfs_tree that copies node attributes (as the dfs_tree in networkx
+# will strip them).
+def dfs_tree_with_node_attributes(g, source, depth_limit):
+    edges = networkx.dfs_edges(g, source='foo', depth_limit=1)
+    result = networkx.DiGraph()
+
+    for u, v in edges:
+        result.add_node(u, **g.nodes[u])
+        result.add_node(v, **g.nodes[v])
+        result.add_edge(u, v)
+
+    return result
 
 # Flatten the nodes into a narrowed representation which is appropriate for the
 # tree conversion
@@ -145,7 +158,11 @@ class Neo4jRepository(object):
 
     def get_tree_by_root(self, root, depth_limit):
         g = self.pull_graph()
-        tree = networkx.dfs_tree(g, root, depth_limit=depth_limit)
+
+        # Although the returned graph here is already tree-structured, it might
+        # be too deep to return to the client.  So we use DFS to limit depth.
+
+        tree = dfs_tree_with_node_attributes(g, root, depth_limit=depth_limit)
         return networkx.tree_data(tree, root)
 
     def declare_group(self, synonym, master):
