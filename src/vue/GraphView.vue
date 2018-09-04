@@ -125,7 +125,7 @@ export default Vue.extend({
             }
         },
         getNodeTextContent(d) {
-            return `${d.data.id}`;
+            return `${d.data.id} [${d.data.taxon}]`;
         },
     },
     computed: {
