@@ -1,10 +1,36 @@
 #! /usr/bin/python3
 
+import itertools
 import csv
 import sys
 import neo4j
 import neo4j.v1
 import nltk
+import argparse
+import logging
+from logging import debug
+
+parser = argparse.ArgumentParser()
+
+parser.add_argument(
+    '--log-level', metavar="LEVEL", type=str, help="Log level",
+    default='INFO'
+)
+
+# None will be used as a slice argument, meaning no limit
+parser.add_argument(
+    '--limit', metavar="NUMBER", type=int, default=None,
+    help="Limit number of loaded rows from csv file"
+)
+
+parser.add_argument('rest_args', metavar="ARGS", nargs='*')
+ns = parser.parse_args(sys.argv[1:])
+args = ns.rest_args
+
+logging.basicConfig(
+    level=getattr(logging, ns.log_level),            
+    format="%(asctime)s - %(levelname)8s - %(name)s - %(message)s"
+)
 
 credentials = ('neo4j', 'password')
 uri = "bolt://localhost:7688"
@@ -33,10 +59,11 @@ CREATE_CONTAINS_RELATIONSHIP = """
 """
 
 
-for path in sys.argv[1:]:
+for path in args:
     with open(path, 'r') as csvfile:
         reader = csv.DictReader(csvfile)
-        for index, row in enumerate(reader):
+        for index, row in itertools.islice(enumerate(reader), 0, ns.limit):
+            debug("Loading row %d", index)
             tokens = nltk.word_tokenize(row['occupation_status'])
             result = run_some_query(
                 CREATE_PARENT_SENTENCE, {'token_list': tokens, 'source': index}
