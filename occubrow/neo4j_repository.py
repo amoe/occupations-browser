@@ -109,7 +109,7 @@ class Neo4jRepository(object):
         results = self.query(PULL_ALL_TOKEN_SEQUENCES, {})
 
         for result in results:
-            token_seq = gather_token_seq(result['seq'])
+            token_seq = gather_token_seq(result.get('seq'))
             add_linear_nodes(graph, token_seq)
 
         return graph
