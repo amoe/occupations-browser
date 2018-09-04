@@ -1,11 +1,12 @@
 import neo4j
 import neo4j.v1
 import networkx
-import matplotlib
-import matplotlib.pyplot
 import functools
 import pprint
 import occubrow.demo_taxonomy
+from occubrow.plotting import quickplot
+import logging
+from logging import debug, info
 
 # relationship_name here is 'precedes'
 APOC_TREE_GENERATOR_QUERY = """
@@ -35,17 +36,29 @@ GET_ALL_ROOTS_QUERY = """
     RETURN DISTINCT t1 AS root
 """
 
-PULL_ALL_TOKEN_SEQUENCES = """
+## XXX: REMOVE -- START
+___PULL_ALL_TOKEN_SEQUENCES = """
     MATCH (s1:Sentence)-[r:CONTAINS]->(t)
     WITH s1, t
     ORDER BY r.index
     RETURN s1, COLLECT(t) AS seq;
+"""
+### XXX: REMOVE -- END 
+
+PULL_ALL_TOKEN_SEQUENCES = """
+    MATCH (s1:Sentence)-[r:CONTAINS]->(t)
+    OPTIONAL MATCH (t)-[r2:MEMBER_OF]->(ta:Taxon)
+    WITH s1, t, ta
+    ORDER BY r.index
+    RETURN s1, COLLECT({token: t, taxon: ta}) AS seq
 """
 
 DECLARE_GROUP_QUERY = """
     MATCH (s:Token {content: {synonym}}), (m:Token {content: {master}})
     CREATE (s)-[:SYNONYMOUS]->(m)
 """
+
+IDENTITY_FIELD_NAME = 'content'
 
 def tree_to_graph(tree, relationship_name):
     # defined by apoc, precedes is based on the relationship label
@@ -54,17 +67,50 @@ def tree_to_graph(tree, relationship_name):
 
 def add_linear_nodes(g, token_seq):
     for index, token in enumerate(token_seq):
-        g.add_node(token)
+        node_identity = token[IDENTITY_FIELD_NAME]
+        g.add_node(node_identity, taxon=token['taxon'])
 
         if index != 0:
-            start_node = token_seq[index - 1]
-            g.add_edge(start_node, token)
+            previous_node = token_seq[index - 1][IDENTITY_FIELD_NAME]
+            g.add_edge(previous_node, node_identity)
 
+# Version of dfs_tree that copies node attributes (as the dfs_tree in networkx
+# will strip them).
+def dfs_tree_with_node_attributes(g, source, depth_limit):
+    edges = networkx.dfs_edges(g, source=source, depth_limit=depth_limit)
+    result = networkx.DiGraph()
+
+    for u, v in edges:
+        result.add_node(u, **g.nodes[u])
+        result.add_node(v, **g.nodes[v])
+        result.add_edge(u, v)
+
+    return result
+
+# Flatten the nodes into a narrowed representation which is appropriate for the
+# tree conversion
 def gather_token_seq(result_seq):
     ret = []
     
-    for node in result_seq:
-        ret.append(node.get('content'))
+    for datum in result_seq:
+        # Each datum is a map with keys 'token' and 'taxon' containing
+        # node-interface objects.
+        
+        token_node = datum['token']
+        taxon_node = datum['taxon']
+
+        if taxon_node:
+            taxon = taxon_node.get('name')
+        else:
+            taxon = None
+
+        # Destructure and flatten the list
+        ret.append(
+            {
+                'content': token_node.get('content'),
+                'taxon': taxon
+            }
+        )
 
     return ret
 
@@ -116,7 +162,11 @@ class Neo4jRepository(object):
 
     def get_tree_by_root(self, root, depth_limit):
         g = self.pull_graph()
-        tree = networkx.dfs_tree(g, root, depth_limit=depth_limit)
+
+        # Although the returned graph here is already tree-structured, it might
+        # be too deep to return to the client.  So we use DFS to limit depth.
+
+        tree = dfs_tree_with_node_attributes(g, root, depth_limit=depth_limit)
         return networkx.tree_data(tree, root)
 
     def declare_group(self, synonym, master):

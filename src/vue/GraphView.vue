@@ -38,6 +38,7 @@ import mc from '../mutation-constants';
 import {mapGetters} from 'vuex';
 import Draggable from 'gsap/Draggable';
 import * as log from 'loglevel';
+import taxonomyFunctions from '../taxonomy-functions';
 
 export default Vue.extend({
     props: ['width', 'height', 'xMargin', 'yMargin', 'depthOffset', 'textOffset', 'breadth'],
@@ -125,7 +126,7 @@ export default Vue.extend({
             }
         },
         getNodeTextContent(d) {
-            return `${d.data.id}`;
+            return `${d.data.id} [${d.data.taxon}]`;
         },
     },
     computed: {
@@ -133,15 +134,48 @@ export default Vue.extend({
             if (this.root === null) {
                 return [];
             } else {
-                return this.root.descendants().slice(1);
+                return this.filteredDescendants.slice(1);
             }
         },
         allIncludingRoot: function(this: any) {
             if (this.root === null) {
                 return [];
             } else {
-                return this.root.descendants();
+                const value = this.filteredDescendants;
+                log.debug("allincludingroot = %o", value);
+                return value;
             }
+        },
+        filteredDescendants: function (this: any) {
+            return this.root.descendants().filter(d => {
+                console.log("taxo-model is %o", this.taxonomyModel);
+
+                const wantedParentName = 'Ulmaridae';
+
+                const wantedParent = taxonomyFunctions.getNodeForCategoryName(
+                    this.taxonomyModel, wantedParentName
+                );
+
+                const maybeChild = taxonomyFunctions.getNodeForCategoryName(
+                    this.taxonomyModel, d.data.taxon
+                );
+
+                if (maybeChild === undefined) {
+                    log.warn("Taxon was not found for data point %o", d);
+                    return true;
+                }
+                    
+                console.log("wantedParent is %o", wantedParent);
+                console.log("maybeChild is %o", maybeChild);
+
+                const descVal = taxonomyFunctions.isDescendant(
+                    wantedParent, maybeChild
+                );
+
+                console.log("desc val = %o", descVal);
+
+                return descVal;
+            });
         },
         rootTranslation: function(this: any) {
             const xOffset = (this.width / 2) + this.xMargin;
@@ -168,7 +202,7 @@ export default Vue.extend({
         },
         widgetDropTargets: function(this: any) {
             return this.$store.getters.widgetDropTargets;
-        }, ...mapGetters(['graphData', 'possibleRoots', 'selectedRoot'])
+        }, ...mapGetters(['graphData', 'possibleRoots', 'selectedRoot', 'taxonomyModel'])
     }
 });
 </script>
