@@ -46,7 +46,8 @@ ___PULL_ALL_TOKEN_SEQUENCES = """
 ### XXX: REMOVE -- END 
 
 PULL_ALL_TOKEN_SEQUENCES = """
-    MATCH (s1:Sentence)-[r:CONTAINS]->(t)-[r2:MEMBER_OF]->(ta:Taxon)
+    MATCH (s1:Sentence)-[r:CONTAINS]->(t)
+    OPTIONAL MATCH (t)-[r2:MEMBER_OF]->(ta:Taxon)
     WITH s1, t, ta
     ORDER BY r.index
     RETURN s1, COLLECT({token: t, taxon: ta}) AS seq
@@ -58,7 +59,6 @@ DECLARE_GROUP_QUERY = """
 """
 
 IDENTITY_FIELD_NAME = 'content'
-
 
 def tree_to_graph(tree, relationship_name):
     # defined by apoc, precedes is based on the relationship label
@@ -99,11 +99,16 @@ def gather_token_seq(result_seq):
         token_node = datum['token']
         taxon_node = datum['taxon']
 
+        if taxon_node:
+            taxon = taxon_node.get('name')
+        else:
+            taxon = None
+
         # Destructure and flatten the list
         ret.append(
             {
                 'content': token_node.get('content'),
-                'taxon': taxon_node.get('name')
+                'taxon': taxon
             }
         )
 

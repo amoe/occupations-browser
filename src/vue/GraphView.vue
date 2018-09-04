@@ -159,7 +159,12 @@ export default Vue.extend({
                 const maybeChild = taxonomyFunctions.getNodeForCategoryName(
                     this.taxonomyModel, d.data.taxon
                 );
-                
+
+                if (maybeChild === undefined) {
+                    log.warn("Taxon was not found for data point %o", d);
+                    return true;
+                }
+                    
                 console.log("wantedParent is %o", wantedParent);
                 console.log("maybeChild is %o", maybeChild);
 
