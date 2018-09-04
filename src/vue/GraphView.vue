@@ -38,6 +38,7 @@ import mc from '../mutation-constants';
 import {mapGetters} from 'vuex';
 import Draggable from 'gsap/Draggable';
 import * as log from 'loglevel';
+import taxonomyFunctions from '../taxonomy-functions';
 
 export default Vue.extend({
     props: ['width', 'height', 'xMargin', 'yMargin', 'depthOffset', 'textOffset', 'breadth'],
@@ -146,7 +147,11 @@ export default Vue.extend({
             }
         },
         filteredDescendants: function (this: any) {
-            return this.root.descendants();
+            return this.root.descendants().filter(function(d) {
+                const match = d.data.taxon === 'Deepstaria reticulum';
+                console.log("match value was %o", match);
+                return match;
+            });
         },
         rootTranslation: function(this: any) {
             const xOffset = (this.width / 2) + this.xMargin;
