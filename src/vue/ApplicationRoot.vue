@@ -11,7 +11,6 @@
       </widget-bar>
     </div>
 
-
     <div class="graph">
       <graph-controls :zoom-depth="zoomDepth"></graph-controls>
 
@@ -89,6 +88,8 @@ export default Vue.extend({
             return document.documentElement.clientHeight * this.xMarginVh;
         },
         nodesAtLevel: function (this: any) {
+            // XXX: We should be taking this tree from the one that is pulled
+            // by the WidgetBar component.
             const tree = new TreeModel();
             const root = tree.parse({name: 'a', children: [{name: 'b'}]});
 
