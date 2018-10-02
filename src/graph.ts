@@ -21,4 +21,16 @@ function stratifySentence(tokens: string[]) {
     return _.reduceRight(tokens, reduction, null);
 }
 
-export default { stratifySentence };
+function getNodeLevel(node) {
+    const path = node.getPath();
+    return path.length;
+}
+
+function getAllNodesAtLevel(root, level: number) {
+    return root.all(n => getNodeLevel(n) === level);
+}
+
+export default {
+    stratifySentence,
+    getAllNodesAtLevel
+};
