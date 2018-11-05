@@ -2,15 +2,7 @@ matrix:
   include:
     - language: python
       python: 3.5
-      env:
-        - OCCUBROW_ENVIRONMENT=test
-      services:
-        - neo4j
-      before_install:
-        - sudo wget -O /usr/local/neo4j-3.2.7/plugins/apoc-3.2.3.6-all.jar https://github.com/neo4j-contrib/neo4j-apoc-procedures/releases/download/3.2.3.6/apoc-3.2.3.6-all.jar
-        - sudo service neo4j restart
       install:
         - pip install -r requirements.txt
       script:
-        - python -m pytest -m 'unit' test
-        - python -m pytest -m 'not unit' test
+        - make test
