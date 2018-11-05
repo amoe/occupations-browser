@@ -2,4 +2,4 @@
 
 
 test:
-	python3 -m unittest test_readme.py
+	python3 -m unittest test_readme_pytest.py
