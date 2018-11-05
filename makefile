@@ -2,4 +2,4 @@
 
 
 test:
-	python3 boltkit_demo.py
+	python3 -m unittest test_readme.py

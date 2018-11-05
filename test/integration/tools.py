@@ -157,7 +157,7 @@ class IntegrationTestCase(TestCase):
     def _start_server(cls, home):
         controller_class = WindowsController if platform.system() == "Windows" else UnixController
         cls.controller = controller_class(home, 1)
-        update_config(cls.controller.home, {"dbms.connectors.default_listen_address": "::"})
+#        update_config(cls.controller.home, {"dbms.connectors.default_listen_address": "::"})
         if NEO4J_USER is None:
             cls.controller.create_user(cls.user, cls.password)
             cls.controller.set_user_role(cls.user, "admin")
