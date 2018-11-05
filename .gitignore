@@ -5,3 +5,4 @@ yarn-error.log
 data/
 .cache/
 .pytest_cache/
+test/integration/run/
