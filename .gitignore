@@ -1,9 +1,0 @@
-node_modules/
-__pycache__/
-dist/
-yarn-error.log
-data/
-.cache/
-.pytest_cache/
-test/integration/run/
-ext/

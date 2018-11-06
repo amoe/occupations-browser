@@ -1,0 +1,6 @@
+{
+  "attic/test/rest_test.py": true,
+  "attic/test/taxonomy_test.py": true,
+  "attic/test/test_get_tree.py": true,
+  "test/test_readme_pytest.py::test_should_run_readme": true
+}
