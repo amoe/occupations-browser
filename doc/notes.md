@@ -6,7 +6,6 @@ WITH COLLECT(r) AS rels
 MATCH (n)
 RETURN rels, COLLECT(n) AS nodes
 
-
 CALL apoc.export.graphml.all('yourPath/exportAll.graphml',null);
 
 NEO4J_TEST_PORT = 15374

@@ -1,4 +1,5 @@
 import occubrow
+import pytest
 
 sample_sentence = "I wish I had never come here, and I don't want to see no more magic"
 
@@ -8,6 +9,7 @@ sample_sentence = "I wish I had never come here, and I don't want to see no more
 # The problem is, how to get APOC configured?
 # And we also need to be able to compare two things.  We could take
 
+@pytest.mark.skip
 def test_add_sentence():
     backend = occubrow.OccubrowBackend()
     backend.add_sentence(sample_sentence)
