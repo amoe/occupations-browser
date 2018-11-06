@@ -1,5 +1,30 @@
 2018-11-06
 
+
+NEO4J_TEST_PORT = 15374
+
+bolt_port = NEO4J_TEST_PORT
+bolt_address = ("localhost", bolt_port)
+bolt_uri = "bolt://%s:%d" % bolt_address
+
+realpath = boltkit.controller._install(
+    edition='community',
+    version='3.4.6',
+    path="ext"
+)
+print("Initialized home at", realpath)
+boltkit.config.update(
+    realpath,
+    {boltkit.config.BOLT_LISTEN_URI_SETTING: bolt_uri}
+)
+
+controller = boltkit.controller.create_controller(path=realpath)
+instance_info = controller.start()
+print("Instance info is", instance_info)
+#driver = neo4j.GraphDatabase.driver(bolt_uri)
+#controller.stop()
+
+
     # names = set()
     # print = names.add
 

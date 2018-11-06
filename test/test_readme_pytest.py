@@ -7,7 +7,8 @@ NEO4J_TEST_PORT = 15374
 
 bolt_port = NEO4J_TEST_PORT
 bolt_address = ("localhost", bolt_port)
-bolt_uri = "bolt://%s:%d" % bolt_address
+bolt_listen_address = "%s:%d" % bolt_address
+bolt_uri = "bolt://%s" % bolt_listen_address
 
 realpath = 'ext/neo4j-community-3.4.6'
 
@@ -21,7 +22,7 @@ def neo4j_driver():
     print("Initialized home at", realpath)
     boltkit.config.update(
         realpath,
-        {boltkit.config.BOLT_LISTEN_URI_SETTING: bolt_uri}
+        {boltkit.config.BOLT_LISTEN_URI_SETTING: bolt_listen_address}
     )
 
     controller = boltkit.controller.create_controller(path=realpath)
