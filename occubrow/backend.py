@@ -50,7 +50,6 @@ def export_graph():
         rebuild_graph(pull_graph())
     )
 
-
 def strict_eq(g1, g2):
     return networkx.is_isomorphic(g1, g2, node_match=operator.eq, edge_match=operator.eq)
 
@@ -59,3 +58,17 @@ def check_round_trip():
     data = networkx.readwrite.json_graph.node_link_data(g1)
     g2 = networkx.readwrite.json_graph.node_link_graph(data)
     return strict_eq(g1, g2)
+
+EXPECTED_DATA = {
+    'directed': True,
+    'graph': {},
+    'links': [{'source': 57, 'target': 58, 'type': 'KNOWS'}],
+    'multigraph': False,
+    'nodes': [{'id': 57, 'name': 'Alice'}, {'id': 58, 'name': 'Bob'}]
+}
+
+def assert_graph(data):
+    return strict_eq(
+        rebuild_graph(pull_graph()), 
+        networkx.readwrite.json_graph.node_link_graph(data)
+    )
