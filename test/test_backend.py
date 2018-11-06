@@ -13,4 +13,4 @@ sample_sentence = "I wish I had never come here, and I don't want to see no more
 def test_add_sentence():
     backend = occubrow.OccubrowBackend()
     backend.add_sentence(sample_sentence)
-    assert_graph()
+    backend.assert_graph({})
