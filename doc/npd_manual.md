@@ -15,3 +15,7 @@ passed to `unit_of_work`.
             print(record["friend.name"])
 
     session.read_transaction(print_friends, "Alice")
+
+## Relationship objects
+
+Have the property 'start_node' and 'end_node'

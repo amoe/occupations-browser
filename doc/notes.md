@@ -1,6 +1,8 @@
 2018-11-06
 
 
+assert_graph is going to check that the two graphs are isomorphic
+
 MATCH ()-[r]->()
 WITH COLLECT(r) AS rels
 MATCH (n)
