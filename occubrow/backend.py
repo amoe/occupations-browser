@@ -1,7 +1,7 @@
 import neo4j
 import networkx
 import networkx.readwrite.json_graph
-from drawing import quickplot
+from occubrow.drawing import quickplot
 import operator
 
 ENTIRE_GRAPH_QUERY = """
