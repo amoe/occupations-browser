@@ -17,11 +17,7 @@ def pull_graph():
             results = tx.run(ENTIRE_GRAPH_QUERY)
 
             row = results.single()
-
-            for rel in row.value('rels'):
-                print("Relationship:", rel)
-
-            for node in row.value('nodes'):
-                print("Node:", node)
-                
-    
+            return {
+                'rels': row.value('rels'),
+                'nodes': row.value('nodes')
+            }
