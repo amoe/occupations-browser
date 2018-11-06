@@ -8,7 +8,7 @@ def test_simple_2(neo4j_driver):
         for record in tx.run("MATCH (a:Person)-[:KNOWS]->(friend) "
                              "WHERE a.name = {name} "
                              "RETURN friend.name", name=name):
-            print(record["friend.name"])
+            names.add(record["friend.name"])
 
     with neo4j_driver.session() as session:
         session.run("MATCH (a) DETACH DELETE a")
