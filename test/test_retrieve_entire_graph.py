@@ -1,5 +1,5 @@
 import pytest
-import occubrow.backend
+from occubrow.backend import OccubrowBackend
 
 EXPECTED_DATA = {
     'directed': True,
@@ -11,8 +11,10 @@ EXPECTED_DATA = {
 
 
 def test_can_retrieve_entire_graph(neo4j_driver):
+    backend = OccubrowBackend(neo4j_driver)
+
     with neo4j_driver.session() as session:
         session.run("MATCH (a) DETACH DELETE a")
         session.run("CREATE (a:Person {name:'Alice'})-[:KNOWS]->({name:'Bob'})")
-        occubrow.backend.assert_graph(EXPECTED_DATA)
+        assert backend.graph_matches(EXPECTED_DATA)
     
