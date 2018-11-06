@@ -31,6 +31,7 @@ def rebuild_graph(results):
 
     return g
 
+# Not actually tested but this property should definitely hold true.
 def check_round_trip():
     g1 = rebuild_graph(pull_graph())
     data = networkx.readwrite.json_graph.node_link_data(g1)
