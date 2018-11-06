@@ -1,2 +1,4 @@
-def add_sentence(sentence):
-    print("Adding sentence", sentence)
+class OccubrowBackend(object):
+    def add_sentence(self, sentence):
+        print("Adding sentence", sentence)
+
