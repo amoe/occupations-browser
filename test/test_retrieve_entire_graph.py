@@ -1,12 +1,15 @@
 import pytest
 from occubrow.backend import OccubrowBackend
 
+# Because we have a specialized isomorphic test, the actual (numeric) identity
+# of the nodes doesn't matter, as long as they are in the correct arrangement.
+
 EXPECTED_DATA = {
     'directed': True,
     'graph': {},
-    'links': [{'source': 57, 'target': 58, 'type': 'KNOWS'}],
+    'links': [{'source': 1, 'target': 2, 'type': 'KNOWS'}],
     'multigraph': False,
-    'nodes': [{'id': 57, 'name': 'Alice'}, {'id': 58, 'name': 'Bob'}]
+    'nodes': [{'id': 1, 'name': 'Alice'}, {'id': 2, 'name': 'Bob'}]
 }
 
 
