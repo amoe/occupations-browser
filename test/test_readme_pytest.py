@@ -3,8 +3,9 @@ import pytest
 import boltkit.controller
 import boltkit.config
 
+NEO4J_TEST_PORT = 15374
 
-bolt_port = 7687
+bolt_port = NEO4J_TEST_PORT
 bolt_address = ("localhost", bolt_port)
 bolt_uri = "bolt://%s:%d" % bolt_address
 
