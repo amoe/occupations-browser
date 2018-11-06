@@ -14,9 +14,6 @@ user = "neo4j"
 password = "password"
 auth_token = (user, password)
 
-
-controller.install(edition, version.strip(), path, **kwargs)
-
 realpath = boltkit.controller._install(
     edition='community',
     version='3.4.6',
@@ -35,7 +32,7 @@ controller.create_user(user, password)
 controller.set_user_role(user, "admin")
 
 controller.start()
-boltkit.controller.wait_for_server("localhost", bolt_port, timeout=5)
+boltkit.controller.wait_for_server("localhost", bolt_port, timeout=10)
 
 driver = neo4j.GraphDatabase.driver(bolt_uri, auth=auth_token)
 

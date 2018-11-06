@@ -1,4 +1,4 @@
 import pytest
 
-def test_simple_2(meaning_of_life):
-    assert 2 + 2 == 4
+def test_simple_2(neo4j_driver):
+    print("operating with neo4j driver", neo4j_driver)
