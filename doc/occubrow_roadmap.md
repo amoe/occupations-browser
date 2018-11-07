@@ -49,6 +49,14 @@ to export taxonomical assignments.  (AB confirm?)
 Presentation points: TBC.  Neo4j suitability for taxonomy approach relative to
 relational approaches.  Existing critiques of taxonomy (linnaean etc)
 
+Constraints depending on ordering (!)
+Constraints should be extensible
+Think about levels of ordering -- add widget to be able to filter more
+deeply in hierarchy -- but we need this to be pluggable -- event-based
+architecture.
+Look at 
+http://explore.beautifultrouble.org/#-1:00000
+
 ## Part 3: Data model & data operations
 
 * Implementation of split / join / grouping operators

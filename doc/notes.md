@@ -1,3 +1,80 @@
+2018-11-07
+
+
+We have an issue because we don't 'own' the n4j interface.  It's difficult to
+mock out comfortably because our backend class calls things on it directly.
+It returns objects that are not "plain old objects" essentially.  We'll have
+to add a translation layer to convert it to our own objects.
+
+We need two classes, Node and Relationship, to fully reconstruct the tree.
+
+Node needs two methods:
+   get_id() => int
+   get_properties() => dict
+
+Relationship needs four methods:
+   get_start_node() => int
+   get_end_node() => int
+   get_properties() => dict
+   get_type() => str
+
+pull_graph now returns a dict where the values are lists of Nodes and
+Relationships.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+https://www.huygens.knaw.nl/timbuctoo/?lang=en
+https://www.w3.org/TR/prov-o/
+ontotext
+data modelling
+taxonomized data sets & taxonomies
+biomedical engineering - ontologies
+dbpedia -- DBpedia taxonomy / ontology
+
+NER-tagged text & ontological assignment in Dbpedia
+dbpedia python3 auto-classify
+
 2018-11-06
 
 
