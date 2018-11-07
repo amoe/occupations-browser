@@ -9,15 +9,45 @@ sheet = wb.active
 
 g = networkx.DiGraph()
 
-def get_useful_cell_count(row_values):
-    return sum(x is not None for x in row_values)
+def get_useful_cell_info(row_values):
+    count = 0
+    first_index = None
 
-def handle_row(row):
-    row_values = list([cell.value for cell in row])
-    n_useful = get_useful_cell_count(row_values)
-    print(row_values)
-    if n_useful == 0:
-        raise Exception("row " + row)
 
-for row in sheet:
-    handle_row(row)
+    for index, value in enumerate(row_values):
+        if value is not None:
+            count += 1
+            if first_index is None:
+                first_index = index
+
+    return {
+        'count': count,
+        'first_index': first_index
+    }
+
+level_indices = []
+
+current_index = 0
+should_continue = True
+
+while should_continue:
+    should_continue = False
+
+    for row in sheet:
+        row_values = list([cell.value for cell in row])
+        useful_info = get_useful_cell_info(row_values)
+
+        if useful_info['count'] == 0:
+            raise Exception("found blank row, please check file" + row)
+
+        first_index = useful_info['first_index']
+
+        if useful_info['first_index'] > current_index:
+            should_continue = True
+        else:
+            # Handle this level
+            g.add_node(row_values[first_index])
+
+    current_index += 1
+
+
