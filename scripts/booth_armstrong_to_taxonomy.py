@@ -5,9 +5,10 @@ import matplotlib
 import networkx.drawing
 import matplotlib.pyplot
 import networkx.readwrite.json_graph
+import networkx.readwrite.gexf
 import pprint
 import heapq
-
+import pprint
 
 def quickplot(g):
     matplotlib.pyplot.clf()
@@ -72,4 +73,48 @@ while should_continue:
     current_row += 1
 
 
-pprint.pprint(all_indices)
+def find_parent(indices, child_row, child_level):
+    table = indices[child_level - 1]
+
+    last_item = None
+    
+    for item in table:
+        if item['row_index'] < child_row:
+            last_item = item
+
+    return last_item
+    
+
+for level, table in enumerate(all_indices):
+    for item in table:
+        g.add_node(item['content'])
+
+        if level > 0:
+            parent = find_parent(all_indices, item['row_index'], level)
+            g.add_edge(parent['content'], item['content'])
+
+
+print("nodes = %d", g.number_of_nodes())
+print("edges = %d", g.number_of_edges())
+
+for node, in_degree in g.in_degree():
+    if in_degree == 0:
+        print("node is", node)
+
+g2 = networkx.dfs_tree(g, 'Occupation')
+print("nodes = %d", g2.number_of_nodes())
+print("edges = %d", g2.number_of_edges())
+
+# This reveals that the problem is caused by duplication of names in the tree
+# Answer question why is it not a tree?
+
+edge_set_1 = g.edges
+edge_set_2 = g2.edges
+print(edge_set_1 - edge_set_2)
+
+
+#json_data = networkx.readwrite.json_graph.tree_data(g2, 'Occupation')
+
+
+
+
