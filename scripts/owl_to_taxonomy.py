@@ -6,7 +6,7 @@ import networkx
 import matplotlib
 import networkx.drawing
 import matplotlib.pyplot
-import networkx.readwrite.gexf
+import networkx.readwrite.json_graph
 
 
 def quickplot(g):
@@ -51,4 +51,6 @@ for class_ in classes:
         g.add_edge(parent_uri, uri)
 
 
-#networkx.readwrite.gexf.write_gexf(g, 'foo.gexf')
+# Error: G is not a tree (even when we restrict it)
+# How to extract the subgraph?
+networkx.readwrite.json_graph.tree_data(g, "http://dbpedia.org/ontology/Event")
