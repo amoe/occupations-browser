@@ -1,6 +1,20 @@
 import networkx
 import openpyxl
 import sys
+import matplotlib
+import networkx.drawing
+import matplotlib.pyplot
+import networkx.readwrite.json_graph
+import pprint
+import heapq
+
+
+def quickplot(g):
+    matplotlib.pyplot.clf()
+    layout = networkx.drawing.kamada_kawai_layout(g)
+    networkx.draw_networkx(g, pos=layout)
+    matplotlib.pyplot.show()
+
 
 # Booth-Armstrong file involves an excel sheet
 
@@ -30,10 +44,15 @@ level_indices = []
 current_index = 0
 should_continue = True
 
+myheap = []
+
 while should_continue:
     should_continue = False
 
     for row in sheet:
+        row_reference = row[0].row
+        print(row_reference)
+
         row_values = list([cell.value for cell in row])
         useful_info = get_useful_cell_info(row_values)
 
@@ -51,3 +70,4 @@ while should_continue:
     current_index += 1
 
 
+# quickplot(g)
