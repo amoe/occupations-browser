@@ -18,15 +18,15 @@ def rebuild_graph(results):
 
     for node in results['nodes']:
         g.add_node(
-            node.id, **dict(node.items())
+            node.get_id(), **node.get_properties()
         )
 
     for rel in results['rels']:
         g.add_edge(
-            rel.start_node.id, 
-            rel.end_node.id, 
-            **dict(rel.items()), 
-            type=rel.type
+            rel.get_start_node(),
+            rel.get_end_node(),
+            **rel.get_properties(),
+            type=rel.get_type()
         )
 
     return g
@@ -43,26 +43,16 @@ def strict_eq(g1, g2):
 
 
 class OccubrowBackend(object):
-    def __init__(self, driver):
-        self.driver = driver
-
-    def pull_graph(self):
-        with self.driver.session() as session:
-            with session.begin_transaction() as tx:
-                results = tx.run(ENTIRE_GRAPH_QUERY)
-                row = results.single()
-                return {
-                    'rels': row.value('rels'),
-                    'nodes': row.value('nodes')
-                }
+    def __init__(self, repository):
+        self.repository = repository
 
     def export_graph(self):
         return networkx.readwrite.json_graph.node_link_data(
-            rebuild_graph(pull_graph())
+            rebuild_graph(self.repository.pull_graph())
         )
 
     def graph_matches(self, data):
         return strict_eq(
-            rebuild_graph(self.pull_graph()), 
+            rebuild_graph(self.repository.pull_graph()), 
             networkx.readwrite.json_graph.node_link_graph(data)
         )
