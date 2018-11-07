@@ -39,35 +39,37 @@ def get_useful_cell_info(row_values):
         'first_index': first_index
     }
 
-level_indices = []
 
-current_index = 0
+current_row = 0
 should_continue = True
 
-myheap = []
+all_indices = []
 
 while should_continue:
     should_continue = False
 
+    level_indices = []
     for row in sheet:
-        row_reference = row[0].row
-        print(row_reference)
-
-        row_values = list([cell.value for cell in row])
-        useful_info = get_useful_cell_info(row_values)
-
-        if useful_info['count'] == 0:
-            raise Exception("found blank row, please check file" + row)
-
-        first_index = useful_info['first_index']
-
-        if useful_info['first_index'] > current_index:
+        this_row_index = row[0].row
+        row_values = [x.value for x in row]
+        info = get_useful_cell_info(row_values)
+        first_index = info['first_index']
+        if first_index > current_row:
             should_continue = True
-        else:
-            # Handle this level
-            g.add_node(row_values[first_index])
+            continue
 
-    current_index += 1
+        if first_index < current_row:
+            # We already handled it so ignore
+            continue
+
+        if first_index == current_row:
+            level_indices.append({
+                'row_index': this_row_index,
+                'content': row_values[first_index]
+            })
+
+    all_indices.append(level_indices)
+    current_row += 1
 
 
-# quickplot(g)
+pprint.pprint(all_indices)
