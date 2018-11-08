@@ -59,3 +59,11 @@ class OccubrowBackend(object):
             rebuild_graph(self.repository.pull_graph()), 
             networkx.readwrite.json_graph.node_link_graph(data)
         )
+
+    def import_taxonomy(self, taxonomy_data):
+        """
+        Import taxonomy data.  Data should be a JSON tree (in the sense defined
+        by networkx).
+        """
+        pass
+

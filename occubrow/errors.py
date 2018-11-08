@@ -1,0 +1,2 @@
+class EmptyTaxonomyError(Exception):
+    pass
