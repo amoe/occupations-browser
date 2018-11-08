@@ -38,9 +38,10 @@ class RealNeo4jRepository(object):
                     'rels': [shim_relationship(r) for r in row.value('rels')]
                 }
 
-    def run_statement(self, execution_spec):
+    # wrapper to allow asserting calls on this type
+    def run_statement(self, statement, parameters=None, **kwparameters):
         with self.driver.session() as session:
-            session.run(**execution_spec)
+            session.run(statement, parameters, kwparameters)
 
 
 def demo():

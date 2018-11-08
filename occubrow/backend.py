@@ -71,17 +71,22 @@ class OccubrowBackend(object):
 
         if not 'id' in taxonomy_data:
             raise occubrow.errors.EmptyTaxonomyError()
-         
-        cypher_params = {
-            'statement': "CREATE (t:Taxon $properties)",
-            'parameters': None,
-            'kwparameters': {
-                'properties': {
-                    'content': taxonomy_data['id']
-                }
-            }
-        }
-        
-        self.repository.run_statement(cypher_params)
 
+        g = networkx.readwrite.json_graph.tree_graph(taxonomy_data)
+
+        for node in g.nodes:
+            self.repository.run_statement("""
+                 CREATE (t:Taxon {content: $content})
+            """.strip(), content=node)
+
+        for edge in g.edges:
+            start_node = edge[0]
+            end_node = edge[1]
+
+            self.repository.run_statement("""
+                MATCH (t1:Taxon {content: $start_node}), (t2:Taxon {content: $end_node})
+                CREATE (t1)-[:SUPERCATEGORY_OF]->(t2)
+            """.strip(), start_node=start_node, end_node=end_node)
+
+         
 

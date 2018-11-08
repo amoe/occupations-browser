@@ -1,5 +1,21 @@
 2018-11-08
 
+        cypher_params = {
+            'statement': "CREATE (t:Taxon $properties)",
+            'parameters': None,
+            'kwparameters': {
+                'properties': {
+                    'content': taxonomy_data['id']
+                }
+            }
+        }
+        
+        self.repository.run_statement(cypher_params)
+
+
+
+
+
 Now that we own the N4J interface, we need to be able to declare what database
 structure we want to get after the import happens, but in order to do that
 we need to be extracting the graph labels as well as the properties.
