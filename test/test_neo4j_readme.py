@@ -1,7 +1,8 @@
+import pytest
+
 # This is adapted from test_readme.py in the neo4j-python-driver git repository.
 
-import occubrow.backend
-
+@pytest.mark.functional
 def test_readme_v1(neo4j_driver):
     names = set()
     print = names.add

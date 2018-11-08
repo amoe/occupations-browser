@@ -17,7 +17,7 @@ EXPECTED_DATA = {
 }
 
 
-# Integration version
+@pytest.mark.functional
 def test_can_retrieve_entire_graph(neo4j_driver):
     backend = OccubrowBackend(RealNeo4jRepository(neo4j_driver))
 
@@ -25,6 +25,7 @@ def test_can_retrieve_entire_graph(neo4j_driver):
         session.run("MATCH (a) DETACH DELETE a")
         session.run("CREATE (a:Person {name:'Alice'})-[:KNOWS]->(b:Person {name:'Bob'})")
         assert backend.graph_matches(EXPECTED_DATA)
+
 
 # Isolated version
 def test_can_retrieve_entire_graph_mocked():
