@@ -11,7 +11,7 @@ The tarfile doesn't open successfully, so maybe it didn't download the first tim
 
 A node can have multiple labels; but perhaps we just don't support that use-case
 
-
+So whatt about 'prepared statements'
 
 
 

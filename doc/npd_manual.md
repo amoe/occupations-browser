@@ -1,5 +1,10 @@
 # Neo4j-Python-Driver: The Missing Manual
 
+## Adding arbitrary properties to a node when it's created
+
+    def run(self, statement, parameters=None, **kwparameters):
+    tx.run("CREATE (t:Taxon $props)", props={'name': 'Dave', 'age': 42}).summary()
+
 ## BoltStatementResult
 
 ## `read_transaction(unit_of_work)`

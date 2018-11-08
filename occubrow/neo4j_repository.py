@@ -38,6 +38,9 @@ class RealNeo4jRepository(object):
                     'rels': [shim_relationship(r) for r in row.value('rels')]
                 }
 
+    def run_statement(self, execution_spec):
+        pass
+
 
 def demo():
     repo = RealNeo4jRepository()

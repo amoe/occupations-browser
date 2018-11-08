@@ -29,15 +29,26 @@ def test_single_root_taxonomy_imports():
     }
 
     # For the isolated test, we check that the backend submits the correct
-    # Cypher query to the repository.  Really we want to be able to do
-    # non-string-matching on this.  We will have to experiment to get this
-    # value.
+    # Cypher query to the repository.  We can't really test on raw strings
+    # because we use NPD's feature of parameterized queries.  So we have to
+    # shim the driver's "run" interface and test against that instead.
+    # 
+    # The use of $properties here is a bit unfortunate because it's shared
+    # knowledge between the tests & code.
 
-    expected_cypher = """
-       
-    """
+    expected_cypher_params = {
+        'statement': "CREATE (t:Taxon $properties)",
+        'parameters': None,
+        'kwparameters': {
+            'content': 'A_Single_Root'
+        }
+    }
 
-    backend = OccubrowBackend(repository=Mock())
+    mock_repository = Mock()
+    backend = OccubrowBackend(mock_repository)
     backend.import_taxonomy(input_data)
-    # TODO: Speak to the mock to verify that expected_cypher was asked
-#    assert backend.graph_matches(expected_data)
+
+    mock_repository.run_statement.assert_called_once_with(
+        expected_cypher_params
+    )
+    
