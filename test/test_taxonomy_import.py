@@ -91,5 +91,6 @@ def test_small_taxonomy_imports():
         call('MATCH (t1:Taxon {content: $start_node}), (t2:Taxon {content: $end_node})\n                CREATE (t1)-[:SUPERCATEGORY_OF]->(t2)', end_node='Rock', start_node='Music'),
         call('MATCH (t1:Taxon {content: $start_node}), (t2:Taxon {content: $end_node})\n                CREATE (t1)-[:SUPERCATEGORY_OF]->(t2)', end_node='Classical', start_node='Music')
     ]
+
     runmock.assert_has_calls(calls, any_order=True)
 

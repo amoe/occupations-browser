@@ -9,8 +9,17 @@ ENTIRE_GRAPH_QUERY = """
 """
 
 def shim_node(node):
+    labels = node.labels
+
+    # Nodes should always have one and only one label under our data model
+    if len(labels) != 1:
+        raise Exception("node should have one label, corruption likely")
+
+    # can't index into a frozenset so just pick an arbitrary one
+    label = next(iter(labels))
+
     return occubrow.types.Node(
-        node.id, dict(node.items())
+        node.id, label, dict(node.items())
     )
 
 def shim_relationship(relationship):

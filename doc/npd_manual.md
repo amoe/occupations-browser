@@ -28,4 +28,4 @@ Have the property 'start_node' and 'end_node'
 ## Node objects
 
 Have an attribute `.labels ` that returns the labels of the node, and note there
-can be more than one label.
+can be more than one label.  This is returned as a frozenset.
