@@ -71,5 +71,18 @@ class OccubrowBackend(object):
 
         if not 'id' in taxonomy_data:
             raise occubrow.errors.EmptyTaxonomyError()
-            
+         
+        cypher_params = {
+            'statement': "CREATE (t:Taxon $properties)",
+            'parameters': None,
+            'kwparameters': {
+                'properties': {
+                    'content': taxonomy_data['id']
+                }
+            }
+        }
+        
+
+        self.repository.run_statement(cypher_params)
+
 

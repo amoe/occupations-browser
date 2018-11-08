@@ -40,7 +40,9 @@ def test_single_root_taxonomy_imports():
         'statement': "CREATE (t:Taxon $properties)",
         'parameters': None,
         'kwparameters': {
-            'content': 'A_Single_Root'
+            'properties': {
+                'content': 'A_Single_Root'
+            }
         }
     }
 

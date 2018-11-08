@@ -39,7 +39,8 @@ class RealNeo4jRepository(object):
                 }
 
     def run_statement(self, execution_spec):
-        pass
+        with self.driver.session() as session:
+            session.run(**execution_spec)
 
 
 def demo():
