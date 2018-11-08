@@ -3,6 +3,7 @@ import networkx
 import networkx.readwrite.json_graph
 from occubrow.drawing import quickplot
 import operator
+import occubrow.errors
 
 ENTIRE_GRAPH_QUERY = """
     MATCH ()-[r]->()
@@ -65,5 +66,10 @@ class OccubrowBackend(object):
         Import taxonomy data.  Data should be a JSON tree (in the sense defined
         by networkx).
         """
-        pass
+        if not taxonomy_data:
+            raise occubrow.errors.EmptyTaxonomyError()
 
+        if not 'id' in taxonomy_data:
+            raise occubrow.errors.EmptyTaxonomyError()
+            
+        
