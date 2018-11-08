@@ -38,5 +38,9 @@ def neo4j_driver():
     boltkit.controller.wait_for_server("localhost", bolt_port, timeout=10)
 
     driver = neo4j.GraphDatabase.driver(bolt_uri, auth=auth_token)
+
+    with driver.session() as session:
+        session.run("MATCH (n) DETACH DELETE n")
+
     yield driver
     controller.stop()

@@ -1,15 +1,10 @@
 from occubrow.backend import OccubrowBackend
+from occubrow.neo4j_repository import RealNeo4jRepository
 from unittest.mock import call, Mock
 import occubrow.errors
 from pytest import raises
-
-EXPECTED_DATA = {
-    'directed': True,
-    'graph': {},
-    'links': [],
-    'multigraph': False,
-    'nodes': []
-}
+import pytest
+import pprint
 
 INPUT_TAXONOMY = {}
 
@@ -76,3 +71,34 @@ def test_small_taxonomy_imports():
 
     runmock.assert_has_calls(calls, any_order=True)
 
+
+
+@pytest.mark.functional
+def test_import_worked(neo4j_driver):
+    input_data = {
+        'id': 'Music',
+        'children': [
+            {
+                'id': 'Rock',
+                'children': []
+            },
+            {
+                'id': 'Classical',
+                'children': []
+            }
+        ]
+    }
+
+    expected_graph = {'directed': True,
+                      'graph': {},
+                      'links': [{'source': 0, 'target': 1, 'type': 'SUPERCATEGORY_OF'},
+                                {'source': 0, 'target': 2, 'type': 'SUPERCATEGORY_OF'}],
+                      'multigraph': False,
+                      'nodes': [{'content': 'Music', 'id': 0},
+                                {'content': 'Rock', 'id': 1},
+                                {'content': 'Classical', 'id': 2}]}
+
+
+    backend = OccubrowBackend(RealNeo4jRepository(neo4j_driver))
+    backend.import_taxonomy(input_data)
+    assert backend.graph_matches(expected_graph)
