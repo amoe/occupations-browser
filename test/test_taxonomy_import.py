@@ -54,3 +54,45 @@ def test_single_root_taxonomy_imports():
         expected_cypher_params
     )
     
+
+def test_small_taxonomy_imports():
+    input_data = {
+        'id': 'Music',
+        'children': [
+            {
+                'id': 'Rock',
+                'children': []
+            },
+            {
+                'id': 'Classical',
+                'children': []
+            }
+        ]
+    }
+
+    # For the isolated test, we check that the backend submits the correct
+    # Cypher query to the repository.  We can't really test on raw strings
+    # because we use NPD's feature of parameterized queries.  So we have to
+    # shim the driver's "run" interface and test against that instead.
+    # 
+    # The use of $properties here is a bit unfortunate because it's shared
+    # knowledge between the tests & code.
+
+    expected_cypher_params = {
+        'statement': "CREATE (t:Taxon $properties)",
+        'parameters': None,
+        'kwparameters': {
+            'properties': {
+                'content': 'A_Single_Root'
+            }
+        }
+    }
+
+    mock_repository = Mock()
+    backend = OccubrowBackend(mock_repository)
+    backend.import_taxonomy(input_data)
+
+    mock_repository.run_statement.assert_called_once_with(
+        expected_cypher_params
+    )
+    

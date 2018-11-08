@@ -82,7 +82,6 @@ class OccubrowBackend(object):
             }
         }
         
-
         self.repository.run_statement(cypher_params)
 
 
