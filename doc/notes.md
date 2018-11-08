@@ -1,3 +1,43 @@
+2018-11-08
+
+Now that we own the N4J interface, we need to be able to declare what database
+structure we want to get after the import happens, but in order to do that
+we need to be extracting the graph labels as well as the properties.
+
+The tarfile doesn't open successfully, so maybe it didn't download the first time
+
+* Modify node
+* Extract label from node
+
+A node can have multiple labels; but perhaps we just don't support that use-case
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 2018-11-07
 
 

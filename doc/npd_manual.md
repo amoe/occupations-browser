@@ -19,3 +19,8 @@ passed to `unit_of_work`.
 ## Relationship objects
 
 Have the property 'start_node' and 'end_node'
+
+## Node objects
+
+Have an attribute `.labels ` that returns the labels of the node, and note there
+can be more than one label.

@@ -18,6 +18,7 @@ EXPECTED_DATA = {
 
 
 # Integration version
+@pytest.mark.skip
 def test_can_retrieve_entire_graph(neo4j_driver):
     backend = OccubrowBackend(RealNeo4jRepository(neo4j_driver))
 
@@ -32,7 +33,7 @@ def test_can_retrieve_entire_graph_mocked():
 
     mock_neo4j_repository.pull_graph.return_value = {
         'nodes': [
-            Node(1, {'name': 'Alice'}), Node(2, {'name': 'Bob'})
+            Node(1, 'Person', {'name': 'Alice'}), Node(2, 'Person', {'name': 'Bob'})
         ],
         'rels': [
             Relationship(1, 2, {}, 'KNOWS')

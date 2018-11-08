@@ -3,17 +3,23 @@
 
 class Node(object):
     id_ = None
+    label = None
     properties = None
 
-    def __init__(self, id_, properties):
+    def __init__(self, id_, label, properties):
         """
-        Initialize a Node with a numerical ID and a dictionary of properties.
+        Initialize a Node with a numerical ID, a label, and a dictionary of
+        properties.  Note that we only support one label at present.
         """
         self.id_ = id_
+        self.label = label
         self.properties = properties
 
     def get_id(self):
         return self.id_
+
+    def get_label(self):
+        return self.label
     
     def get_properties(self):
         return self.properties

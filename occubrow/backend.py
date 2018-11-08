@@ -17,6 +17,9 @@ def rebuild_graph(results):
     g = networkx.DiGraph()
 
     for node in results['nodes']:
+        merged_node_properties = {'label': node.get_label()}
+        merged_node_properties.update(node.get_properties())
+
         g.add_node(
             node.get_id(), **node.get_properties()
         )
