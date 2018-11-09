@@ -1,5 +1,26 @@
 # Neo4j-Python-Driver: The Missing Manual
 
+## Finding the results summary of an executed statement
+
+.summary() object on a BoltStatementResult will give a BoltStatementResultSummary
+object.  You can get execution plans.  You can get ''Counters'  This is going
+to give a SummaryCOunters
+
+SummaryCounters has data attached to it that gets updated, eg
+
+    nodes_created = 0
+    nodes_deleted = 0
+    relationships_created = 0
+    relationships_deleted = 0
+    properties_set = 0
+    labels_added = 0
+    labels_removed = 0
+    indexes_added = 0
+    indexes_removed = 0
+    constraints_added = 0
+    constraints_removed = 0
+
+
 ## Adding arbitrary properties to a node when it's created
 
     def run(self, statement, parameters=None, **kwparameters):

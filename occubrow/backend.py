@@ -50,6 +50,9 @@ class OccubrowBackend(object):
     def __init__(self, repository):
         self.repository = repository
 
+    def add_sentence(self, sentence):
+        pass
+
     def export_graph(self):
         return networkx.readwrite.json_graph.node_link_data(
             rebuild_graph(self.repository.pull_graph())

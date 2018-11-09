@@ -1,3 +1,35 @@
+2018-11-09
+
+We can't figure out how to get the 
+
+
+MATCH (t1:Token {content: "nonexistent"})-[r:PRECEDES]-(t2:Token {content: "nonexistent"}) SET r.occurrences = r.occurrences + 1;
+
+CREATE (t1:Token {content: "foo"})-[:PRECEDES {occurrences: 1}]->(t2:Token {content: "bar"});
+
+
+MATCH (t1:Token {content: "foo"})-[r:PRECEDES]-(t2:Token {content: "bar"})
+RETURN r.occurrences;
+
+MATCH (t1:Token {content: "foo"})-[r:PRECEDES]-(t2:Token {content: "bar"})
+SET r.occurrences = r.occurrences + 1;
+
+MATCH (t1:Token {content: "nonexistent"})-[r:PRECEDES]-(t2:Token {content: "nonexistent"}) SET r.occurrences = r.occurrences + 1;
+
+
+for phrase in phrases:
+    first_idx = 0
+    last_idx = len(phrase) - 1
+    
+    for index in range(last_idx):
+        print(phrase[index])
+        print(phrase[index + 1])
+
+
+
+
+
+
 2018-11-08
 
         cypher_params = {
