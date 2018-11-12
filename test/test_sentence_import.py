@@ -2,34 +2,32 @@ import pytest
 from occubrow.backend import OccubrowBackend
 from occubrow.neo4j_repository import RealNeo4jRepository
 
+
 EXPECTED_DATA = {
     'directed': True,
     'graph': {},
-    'links': [{'index': 2, 'source': 7, 'target': 0, 'type': 'CONTAINS'},
-              {'firstIndex': True,
-               'index': 0,
-               'source': 7,
+    'links': [{'index': 3,
+               'lastIndex': True,
+               'source': 3,
                'target': 8,
                'type': 'CONTAINS'},
-              {'index': 3,
-               'lastIndex': True,
-               'source': 7,
-               'target': 3,
-               'type': 'CONTAINS'}],
+              {'firstIndex': True,
+               'index': 0,
+               'source': 3,
+               'target': 4,
+               'type': 'CONTAINS'},
+              {'index': 2, 'source': 3, 'target': 7, 'type': 'CONTAINS'}],
     'multigraph': False,
-    'nodes': [{'content': 'Chicken', 'id': 0},
-              {'content': 'Winner', 'id': 8},
-              {'content': 'Dinner', 'id': 3},
-              {'content': 'Winner Winner, Chicken Dinner',
-               'id': 7,
-               'uuid': '545b07d6-6903-4549-847e-044c61326b0c'}]
+    'nodes': [{'content': 'Dinner', 'id': 8, 'label': 'Token'},
+              {'content': ['Winner', 'Winner', 'Chicken', 'Dinner'],
+               'id': 3,
+               'label': 'Sentence',
+               'uuid': '9cb34c17-da37-46fa-9e21-233f9eca01c4'},
+              {'content': 'Winner', 'id': 4, 'label': 'Token'},
+              {'content': 'Chicken', 'id': 7, 'label': 'Token'}]
 }
 
-
-sample_sentence = """
-Winner Winner, Chicken Dinner
-"""
-
+sample_sentence = ["Winner", "Winner", "Chicken", "Dinner"]
 
 # NB: Should factor the two parts (precedes+tezra) schema to the repository
 # then backend add_sentence just combines these calls

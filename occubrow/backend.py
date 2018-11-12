@@ -34,7 +34,7 @@ def rebuild_graph(results):
         merged_node_properties.update(node.get_properties())
 
         g.add_node(
-            node.get_id(), **node.get_properties()
+            node.get_id(), **merged_node_properties
         )
 
     for rel in results['rels']:
@@ -54,8 +54,22 @@ def check_round_trip():
     g2 = networkx.readwrite.json_graph.node_link_graph(data)
     return strict_eq(g1, g2)
 
+
+def without_keys(d, keys):
+    return {x: d[x] for x in d if x not in keys}
+
+# This is primarily used for testing, and obviously a UUID used in an
+# integration test won't be identical, so we have to ignore them
+def node_match(n1, n2):
+    ignored_keys_set = {'uuid'}
+
+    return operator.eq(
+        without_keys(n1, ignored_keys_set),
+        without_keys(n2, ignored_keys_set)
+    )
+
 def strict_eq(g1, g2):
-    return networkx.is_isomorphic(g1, g2, node_match=operator.eq, edge_match=operator.eq)
+    return networkx.is_isomorphic(g1, g2, node_match=node_match, edge_match=operator.eq)
 
 class OccubrowBackend(object):
     def __init__(self, repository):
