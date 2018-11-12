@@ -28,6 +28,14 @@ sample_sentence = """
 Winner Winner, Chicken Dinner
 """
 
+
+# NB: Should factor the two parts (precedes+tezra) schema to the repository
+# then backend add_sentence just combines these calls
+# so this test should run against the repository
+# directly using the repository is the only way that we can produce
+# the graph above because the normal backend add-sentence procedure would create
+# a more complicated graph including PRECEDES links
+
 @pytest.mark.functional
 def test_sentence_import(neo4j_driver):
     backend = OccubrowBackend(RealNeo4jRepository(neo4j_driver))
