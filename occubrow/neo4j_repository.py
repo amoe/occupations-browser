@@ -1,5 +1,6 @@
 import neo4j
 import occubrow.types
+from logging import debug
 
 ENTIRE_GRAPH_QUERY = """
     MATCH ()-[r]->()
@@ -7,6 +8,21 @@ ENTIRE_GRAPH_QUERY = """
     MATCH (n)
     RETURN rels, COLLECT(n) AS nodes
 """
+
+UPDATE_QUERY = """
+    MATCH (t1:Token {content: $content1})-[r:PRECEDES]-(t2:Token {content: $content2})
+    SET r.occurrences = r.occurrences + 1;
+"""
+
+INSERT_QUERY = """
+    MATCH (t1:Token {content: $content1}), (t2:Token {content: $content2})
+    CREATE (t1)-[:PRECEDES {occurrences: 1}]->(t2)
+"""
+
+MERGE_NODE_QUERY = """
+    MERGE (t:Token {content: $content})
+"""
+
 
 def shim_node(node):
     labels = node.labels
@@ -29,6 +45,19 @@ def shim_relationship(relationship):
         dict(relationship.items()),
         relationship.type
     )
+
+def merge_node(session, content):
+    session.run(MERGE_NODE_QUERY, content=content)
+
+def create_or_increment_precedes_relationship(session, start_node, end_node):
+    with session.begin_transaction() as tx:
+        result = tx.run(UPDATE_QUERY, content1=start_node, content2=end_node)
+        property_set_count = result.summary().counters.properties_set
+        print("Property set count = %d" % property_set_count)
+        
+        if property_set_count == 0:
+            tx.run(INSERT_QUERY, content1=start_node, content2=end_node)
+
  
 class RealNeo4jRepository(object):
     def __init__(self):
@@ -51,6 +80,14 @@ class RealNeo4jRepository(object):
     def run_statement(self, statement, parameters=None, **kwparameters):
         with self.driver.session() as session:
             session.run(statement, parameters, **kwparameters)
+
+    def merge_sentence_links(self, start_node, end_node):
+        debug("Relationship: %s -> %s", start_node, end_node)
+
+        with self.driver.session() as session:
+            merge_node(session, start_node)
+            merge_node(session, end_node)
+            create_or_increment_precedes_relationship(session, start_node, end_node)
 
 
 def demo():

@@ -4,6 +4,7 @@ import networkx.readwrite.json_graph
 from occubrow.drawing import quickplot
 import operator
 import occubrow.errors
+from logging import debug
 
 ENTIRE_GRAPH_QUERY = """
     MATCH ()-[r]->()
@@ -45,7 +46,6 @@ def check_round_trip():
 def strict_eq(g1, g2):
     return networkx.is_isomorphic(g1, g2, node_match=operator.eq, edge_match=operator.eq)
 
-
 class OccubrowBackend(object):
     def __init__(self, repository):
         self.repository = repository
@@ -63,6 +63,21 @@ class OccubrowBackend(object):
             rebuild_graph(self.repository.pull_graph()), 
             networkx.readwrite.json_graph.node_link_graph(data)
         )
+
+    def add_sentences(self, phrases):
+        """
+        Add a group of phrases to the repository.
+        """
+        for phrase in phrases:
+            first_idx = 0
+            last_idx = len(phrase) - 1
+
+            for index in range(last_idx):
+                start_node = phrase[index]
+                end_node = phrase[index + 1]
+
+                self.repository.merge_sentence_links(start_node, end_node)
+                
 
     def import_taxonomy(self, taxonomy_data):
         """
