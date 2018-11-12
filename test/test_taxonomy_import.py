@@ -94,9 +94,9 @@ def test_import_worked(neo4j_driver):
                       'links': [{'source': 0, 'target': 1, 'type': 'SUPERCATEGORY_OF'},
                                 {'source': 0, 'target': 2, 'type': 'SUPERCATEGORY_OF'}],
                       'multigraph': False,
-                      'nodes': [{'content': 'Music', 'id': 0},
-                                {'content': 'Rock', 'id': 1},
-                                {'content': 'Classical', 'id': 2}]}
+                      'nodes': [{'content': 'Music', 'id': 0, 'label': 'Taxon'},
+                                {'content': 'Rock', 'id': 1, 'label': 'Taxon'},
+                                {'content': 'Classical', 'id': 2, 'label': 'Taxon'}]}
 
 
     backend = OccubrowBackend(RealNeo4jRepository(neo4j_driver))
