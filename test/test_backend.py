@@ -33,7 +33,7 @@ EXPECTED_DATA = {
     ]
 }
 
-
+@pytest.mark.skip("not fleshed out yet")
 def test_add_sentence(neo4j_driver):
     backend = OccubrowBackend(neo4j_driver)
     backend.add_sentence(sample_sentence)
