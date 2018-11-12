@@ -1,4 +1,6 @@
 import pytest
+from occubrow.backend import OccubrowBackend
+from occubrow.neo4j_repository import RealNeo4jRepository
 
 EXPECTED_DATA = {
     'directed': True,
@@ -38,6 +40,7 @@ Winner Winner, Chicken Dinner
 
 @pytest.mark.functional
 def test_sentence_import(neo4j_driver):
-    backend = OccubrowBackend(RealNeo4jRepository(neo4j_driver))
-    backend.add_single_sentence(sample_sentence)
+    repository = RealNeo4jRepository(neo4j_driver)
+    backend = OccubrowBackend(repository)
+    repository.add_sentence(sample_sentence)
     assert backend.graph_matches(EXPECTED_DATA)

@@ -1,6 +1,8 @@
 import neo4j
 import occubrow.types
 from logging import debug
+import uuid
+import queries
 
 ENTIRE_GRAPH_QUERY = """
     MATCH ()-[r]->()
@@ -81,10 +83,48 @@ class RealNeo4jRepository(object):
         with self.driver.session() as session:
             session.run(statement, parameters, **kwparameters)
 
-    def add_sentence_precedes_links(self, phrase):
+
+    def add_sentence_with_tokens(self, phrase):
+        """
+        Add a Sentence node plus its contained Token links, which will be
+        merged.  Phrase should be a tokenized list.  Returns a new uuid that
+        can be used to locate the Sentence.
+        """
+        this_uuid = uuid.uuid4()
+
+        with self.driver.session() as session:
+            session.run(
+                queries.CREATE_SENTENCE_QUERY,
+                sentence=phrase, uuid=str(this_uuid)
+            )
+
+            for index, token in enumerate(phrase):
+                relationship_properties = {
+                    'index': index
+                }
+
+                if index == 0:
+                    relationship_properties['firstIndex'] = True
+
+                if index == len(phrase) - 1:
+                    relationship_properties['lastIndex'] = True
+
+
+                session.run(queries.CREATE_TOKEN_QUERY, token=token)
+                session.run(
+                    queries.CREATE_CONTAINS_RELATIONSHIP,
+                    token=token, 
+                    sentence_id=str(this_uuid),
+                    relationship_properties=relationship_properties
+                )
+
+        return this_uuid
+
+    def add_precedes_links(self, phrase):
         """
         Add only the precedes links for one sentence.  This will only add a part
-        of the database structure for a given sentence.
+        of the database structure for a given sentence.  Phrase should be
+        a tokenized list.
         """
         first_idx = 0
         last_idx = len(phrase) - 1
@@ -94,7 +134,6 @@ class RealNeo4jRepository(object):
             end_node = phrase[index + 1]
 
             self._merge_sentence_links(start_node, end_node)
-
 
     def _merge_sentence_links(self, start_node, end_node):
         debug("Relationship: %s -> %s", start_node, end_node)

@@ -6,12 +6,23 @@ import operator
 import occubrow.errors
 from logging import debug
 
+# XXX SRP
+import nltk
+import string
+
 ENTIRE_GRAPH_QUERY = """
     MATCH ()-[r]->()
     WITH COLLECT(r) AS rels
     MATCH (n)
     RETURN rels, COLLECT(n) AS nodes
 """
+
+# Preprocessing step to strip punctuation, terrible
+def strip_punctuation(tokens):
+    return [
+        t for t in tokens if t not in string.punctuation
+    ]
+
 
 # Rebuild the graph in memory, converting from the NPD wrapper structures
 # to Networkx structures
@@ -92,5 +103,16 @@ class OccubrowBackend(object):
                 CREATE (t1)-[:SUPERCATEGORY_OF]->(t2)
             """.strip(), start_node=start_node, end_node=end_node)
 
-         
 
+    def add_sentence(self, sentence):
+        """
+        Add a single sentence.  Sentence is a flat text string which will be
+        tokenized.  It's assumed that this is the result of a previous
+        sentence-tokenization step (i.e. it's not a giant flat body of text.)
+        Returns the sentence UUID.
+        """
+        # tokenize step goes here
+        tokens = strip_punctuation(nltk.word_tokenize(sentence))
+        sentence_uuid = self.repository.add_sentence_with_tokens(tokens)
+        self.repository.add_precedes_links(tokens)
+        return sentence_uuid
