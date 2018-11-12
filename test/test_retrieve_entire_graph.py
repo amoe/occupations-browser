@@ -13,7 +13,10 @@ EXPECTED_DATA = {
     'graph': {},
     'links': [{'source': 1, 'target': 2, 'type': 'KNOWS'}],
     'multigraph': False,
-    'nodes': [{'id': 1, 'name': 'Alice'}, {'id': 2, 'name': 'Bob'}]
+    'nodes': [
+        {'id': 1, 'name': 'Alice', 'label': 'Person'},
+        {'id': 2, 'name': 'Bob', 'label': 'Person'}
+    ]
 }
 
 
