@@ -11,11 +11,11 @@ EXPECTED_DATA = {
               {'occurrences': 2, 'source': 2, 'target': 0, 'type': 'PRECEDES'},
               {'occurrences': 1, 'source': 20, 'target': 1, 'type': 'PRECEDES'}],
     'multigraph': False,
-    'nodes': [{'content': 'foo', 'id': 0},
-              {'content': 'baz', 'id': 1},
-              {'content': 'quux', 'id': 2},
-              {'content': 'fry', 'id': 3},
-              {'content': 'bar', 'id': 20}]
+    'nodes': [{'content': 'foo', 'id': 0, 'label': 'Token'},
+              {'content': 'baz', 'id': 1, 'label': 'Token'},
+              {'content': 'quux', 'id': 2, 'label': 'Token'},
+              {'content': 'fry', 'id': 3, 'label': 'Token'},
+              {'content': 'bar', 'id': 20, 'label': 'Token'}]
 }
 
 phrases = [
