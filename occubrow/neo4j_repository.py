@@ -81,7 +81,22 @@ class RealNeo4jRepository(object):
         with self.driver.session() as session:
             session.run(statement, parameters, **kwparameters)
 
-    def merge_sentence_links(self, start_node, end_node):
+    def add_sentence_precedes_links(self, phrase):
+        """
+        Add only the precedes links for one sentence.  This will only add a part
+        of the database structure for a given sentence.
+        """
+        first_idx = 0
+        last_idx = len(phrase) - 1
+
+        for index in range(last_idx):
+            start_node = phrase[index]
+            end_node = phrase[index + 1]
+
+            self._merge_sentence_links(start_node, end_node)
+
+
+    def _merge_sentence_links(self, start_node, end_node):
         debug("Relationship: %s -> %s", start_node, end_node)
 
         with self.driver.session() as session:

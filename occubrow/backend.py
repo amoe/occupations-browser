@@ -64,21 +64,7 @@ class OccubrowBackend(object):
             networkx.readwrite.json_graph.node_link_graph(data)
         )
 
-    def add_sentences(self, phrases):
-        """
-        Add a group of phrases to the repository.
-        """
-        for phrase in phrases:
-            first_idx = 0
-            last_idx = len(phrase) - 1
-
-            for index in range(last_idx):
-                start_node = phrase[index]
-                end_node = phrase[index + 1]
-
-                self.repository.merge_sentence_links(start_node, end_node)
                 
-
     def import_taxonomy(self, taxonomy_data):
         """
         Import taxonomy data.  Data should be a JSON tree (in the sense defined

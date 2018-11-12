@@ -24,7 +24,15 @@ phrases = [
     ["baz", "quux", "foo"]
 ]
 
+# This functionality belongs in the repository, and shouldn't be directly in the
+# backend, because it's only a smaller piece of the full transaction structure
+# for adding a sentence.
+
 def test_precedes_relationship(neo4j_driver):
-    backend = OccubrowBackend(RealNeo4jRepository(neo4j_driver))
-    backend.add_sentences(phrases)
+    repository = RealNeo4jRepository(neo4j_driver)
+    backend = OccubrowBackend(repository)
+
+    for phrase in phrases:
+        repository.add_sentence_precedes_links(phrase)
+
     assert backend.graph_matches(EXPECTED_DATA)
