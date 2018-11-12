@@ -1,8 +1,9 @@
 import neo4j
 import occubrow.types
+import occubrow.queries
 from logging import debug
 import uuid
-import queries
+
 
 ENTIRE_GRAPH_QUERY = """
     MATCH ()-[r]->()

@@ -33,6 +33,6 @@ def test_precedes_relationship(neo4j_driver):
     backend = OccubrowBackend(repository)
 
     for phrase in phrases:
-        repository.add_sentence_precedes_links(phrase)
+        repository.add_precedes_links(phrase)
 
     assert backend.graph_matches(EXPECTED_DATA)
