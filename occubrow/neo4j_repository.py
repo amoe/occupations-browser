@@ -95,7 +95,7 @@ class RealNeo4jRepository(object):
 
         with self.driver.session() as session:
             session.run(
-                queries.CREATE_SENTENCE_QUERY,
+                occubrow.queries.CREATE_SENTENCE_QUERY,
                 sentence=phrase, uuid=str(this_uuid)
             )
 
@@ -111,9 +111,9 @@ class RealNeo4jRepository(object):
                     relationship_properties['lastIndex'] = True
 
 
-                session.run(queries.CREATE_TOKEN_QUERY, token=token)
+                session.run(occubrow.queries.CREATE_TOKEN_QUERY, token=token)
                 session.run(
-                    queries.CREATE_CONTAINS_RELATIONSHIP,
+                    occubrow.queries.CREATE_CONTAINS_RELATIONSHIP,
                     token=token, 
                     sentence_id=str(this_uuid),
                     relationship_properties=relationship_properties
