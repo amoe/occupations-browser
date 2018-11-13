@@ -38,6 +38,8 @@ for name, group in result:
 
 
 
+# So produce an XML-annotated set
+
 #"18000528-0074"
 
 

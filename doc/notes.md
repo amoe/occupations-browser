@@ -1,4 +1,90 @@
+2018-11-13
+
+The outcome of this was that  GATE support ontology import in the format OWL-lite.
+It supports exporting either in GATE format which is a proprietary set of nodes:
+
+    <?xml version='1.0' encoding='UTF-8'?>
+    <GateDocument version="3">
+    <!-- The document's features-->
+
+    <GateDocumentFeatures>
+    <Feature>
+      <Name className="java.lang.String">gate.SourceURL</Name>
+      <Value className="java.lang.String">created from String</Value>
+    </Feature>
+    </GateDocumentFeatures>
+    <!-- The document content area with serialized nodes -->
+
+    <TextWithNodes>The <Node id="4"/>wildehaard<Node id="14"/> did a blunderbaard on the <Node id="41"/>PDP-11.<Node id="48"/></TextWithNodes>
+    <!-- The default annotation set -->
+
+    <AnnotationSet>
+    </AnnotationSet>
+
+    <!-- Named annotation set -->
+
+    <AnnotationSet Name="dave">
+    <Annotation Id="0" Type="Mention" StartNode="4" EndNode="14">
+    <Feature>
+      <Name className="java.lang.String">class</Name>
+      <Value className="java.lang.String">http://gate.ac.uk/owlim#animal</Value>
+    </Feature>
+    <Feature>
+      <Name className="java.lang.String">ontology</Name>
+      <Value className="java.lang.String">http://gate.ac.uk/owlim</Value>
+    </Feature>
+    </Annotation>
+    <Annotation Id="1" Type="Mention" StartNode="41" EndNode="48">
+    <Feature>
+      <Name className="java.lang.String">class</Name>
+      <Value className="java.lang.String">http://gate.ac.uk/owlim#computer</Value>
+    </Feature>
+    <Feature>
+      <Name className="java.lang.String">ontology</Name>
+      <Value className="java.lang.String">http://gate.ac.uk/owlim</Value>
+    </Feature>
+    </Annotation>
+    </AnnotationSet>
+
+    </GateDocument>
+
+Or it supports exporting in an inline-annotation format which depends upon
+defining the Annotation Set.
+
+
+    The <Mention gate:gateId="3" class="http://gate.ac.uk/owlim#animal"
+    ontology="http://gate.ac.uk/owlim">wildehaard</Mention> did a blunderbaard on
+    the <Mention gate:gateId="4" class="http://gate.ac.uk/owlim#computer"
+    ontology="http://gate.ac.uk/owlim">PDP-11.</Mention>
+
+GATE
+see this https://gate.ac.uk/sale/talks/gate-course-aug10/track-3/module-9-ontologies/module-9-ontologies.pdf
+
+the other thing is Protege
+https://protege.stanford.edu/
+Not NER - - flat structure
+https://gate.ac.uk/sale/talks/gate-course-aug10/track-3/module-9-ontologies/module-9-ontologies.pdf
+
+Semantic annotation 
+– annotate in the texts all mentions of 
+instances relating to concepts in the ontology
+Magpie, firefox plugin from Open University
+OAT (Ontology Annotation Tool)
+
+Thisis  a GATE plugin
+
+https://gate.ac.uk/sale/tao/splitch14.html
+COllaborative a la Brat
+https://pypi.org/project/Owlready2/
+
+WSD as token -- all tokens are identical  although instances can be distinguished
+
+
+
 2018-11-09
+
+
+
 
 We can't figure out how to get the 
 
