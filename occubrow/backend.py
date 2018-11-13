@@ -94,8 +94,9 @@ class OccubrowBackend(object):
         Export the taxonomy tree in a JSON-able format.  Should be interpretable
         by d3-hierarchy, networkx, and the JavaScript TreeModel library.
         """
-        pass
-
+        result = self.repository.pull_graph()
+        g = rebuild_graph(result)
+        return networkx.tree_data(g)
                 
     def import_taxonomy(self, taxonomy_data):
         """

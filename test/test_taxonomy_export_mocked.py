@@ -32,6 +32,7 @@ EXPECTED_EXPORT_DATA = {
 def get_mocked_repository():
     mock_neo4j_repository = unittest.mock.Mock()
     mock_neo4j_repository.pull_graph.return_value = PRELOADED_TAXONOMY
+    return mock_neo4j_repository
 
 def test_taxonomy_export():
     repository = get_mocked_repository()
