@@ -89,14 +89,25 @@ class OccubrowBackend(object):
             networkx.readwrite.json_graph.node_link_graph(data)
         )
 
-    def export_taxonomy_tree(self):
+    def export_taxonomy_tree(self, root):
         """
         Export the taxonomy tree in a JSON-able format.  Should be interpretable
         by d3-hierarchy, networkx, and the JavaScript TreeModel library.
         """
         result = self.repository.pull_graph()
         g = rebuild_graph(result)
-        return networkx.tree_data(g)
+
+        # So this isn't going to work when root is a string.  Networkx needs
+        # to have a valid expression for G.nodes[x] where x is how we identify
+        # the root.  argument to __getitem__
+
+        # regarding the DiGraph __getitem__:
+        # "It presents a dict-like interface as well with G.nodes.items()
+        # iterating over (node, nodedata) 2-tuples and G.nodes[3]['foo']
+        # providing the value of the foo attribute for node 3"
+        
+
+        return networkx.tree_data(g, root)
                 
     def import_taxonomy(self, taxonomy_data):
         """

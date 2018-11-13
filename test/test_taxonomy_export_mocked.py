@@ -37,7 +37,9 @@ def get_mocked_repository():
 def test_taxonomy_export():
     repository = get_mocked_repository()
     b = OccubrowBackend(repository)
-    tree_data = b.export_taxonomy_tree()
+    root = 'Music'
+
+    tree_data = b.export_taxonomy_tree(root)
     assert tree_data == EXPECTED_EXPORT_DATA
     
     
