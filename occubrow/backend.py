@@ -93,20 +93,15 @@ class OccubrowBackend(object):
         """
         Export the taxonomy tree in a JSON-able format.  Should be interpretable
         by d3-hierarchy, networkx, and the JavaScript TreeModel library.
+
+        Root is a string that specifies the 'content' property of a Taxon node
+        with in-degree zero.  That is, root is a string that uniquely names the
+        'top' Taxon of a taxonomy.  If the database contains two taxonomies
+        with a top-node with the same value for 'content', the behaviour is
+        undefined (i.e. this should never happen and is considered a corruption).
         """
-        result = self.repository.pull_graph()
+        result = self.repository.pull_all_taxonomies()
         g = rebuild_graph(result)
-
-        # So this isn't going to work when root is a string.  Networkx needs
-        # to have a valid expression for G.nodes[x] where x is how we identify
-        # the root.  argument to __getitem__
-
-        # regarding the DiGraph __getitem__:
-        # "It presents a dict-like interface as well with G.nodes.items()
-        # iterating over (node, nodedata) 2-tuples and G.nodes[3]['foo']
-        # providing the value of the foo attribute for node 3"
-        
-
         return networkx.tree_data(g, root)
                 
     def import_taxonomy(self, taxonomy_data):

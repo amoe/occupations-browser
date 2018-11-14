@@ -35,12 +35,10 @@ def get_mocked_repository():
     return mock_neo4j_repository
 
 
-@pytest.mark.skip(reason="backend needs method signature change")
 def test_taxonomy_export():
     repository = get_mocked_repository()
     b = OccubrowBackend(repository)
     root = 'Music'
-
     tree_data = b.export_taxonomy_tree(root)
     assert tree_data == EXPECTED_EXPORT_DATA
     

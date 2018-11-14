@@ -7,6 +7,16 @@ load it.
 
 
 
+When we need to mock out the interface, we need to use MagicMock to mock the session
+
+    mock_driver = unittest.mock.Mock()
+    mock_session = unittest.mock.MagicMock()
+    mock_driver.session.return_value = mock_session
+    mock_session.__enter__ = lambda self: self
+    mock_session.run.return_value = 42
+
+
+
 2018-11-13
 
 First goal: Export taxonomy
