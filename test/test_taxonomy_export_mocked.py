@@ -35,6 +35,7 @@ def get_mocked_repository():
     return mock_neo4j_repository
 
 
+@pytest.mark.skip("blah")
 def test_taxonomy_export():
     repository = get_mocked_repository()
     b = OccubrowBackend(repository)
