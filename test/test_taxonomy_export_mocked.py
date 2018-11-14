@@ -5,9 +5,9 @@ from occubrow.types import Node, Relationship
 
 PRELOADED_TAXONOMY = {
     'nodes': [
-        Node(0, 'Taxon', {'name': 'Music'}),
-        Node(1, 'Taxon', {'name': 'Rock'}),
-        Node(2, 'Taxon', {'name': 'Classical'})
+        Node(0, 'Taxon', {'content': 'Music'}),
+        Node(1, 'Taxon', {'content': 'Rock'}),
+        Node(2, 'Taxon', {'content': 'Classical'})
     ],
     'rels': [
         Relationship(0, 1, {}, 'SUPERCATEGORY_OF'),
@@ -16,18 +16,13 @@ PRELOADED_TAXONOMY = {
 }
 
 EXPECTED_EXPORT_DATA = {
-    'id': 'Music',
-    'children': [
-        {
-            'id': 'Rock',
-            'children': []
-        },
-        {
-            'id': 'Classical',
-            'children': []
-        }
-    ]
+    'children': [{'content': 'Rock', 'id': 1, 'label': 'Taxon'},
+                 {'content': 'Classical', 'id': 2, 'label': 'Taxon'}],
+    'content': 'Music',
+    'id': 0,
+    'label': 'Taxon'
 }
+
 
 def get_mocked_repository():
     mock_neo4j_repository = unittest.mock.Mock()
