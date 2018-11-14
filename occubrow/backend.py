@@ -100,7 +100,7 @@ class OccubrowBackend(object):
         with a top-node with the same value for 'content', the behaviour is
         undefined (i.e. this should never happen and is considered a corruption).
         """
-        result = self.repository.pull_all_taxonomies()
+        result = self.repository.get_all_taxonomies()
         g = rebuild_graph(result)
         return networkx.tree_data(g, root)
                 
