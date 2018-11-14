@@ -1,5 +1,18 @@
 # Neo4j-Python-Driver: The Missing Manual
 
+## Manually handling session open and close
+
+The definition of the context handler is just as such:
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.close()
+
+
+So you can just make sure that you call close afterward
+
 ## Finding the results summary of an executed statement
 
 .summary() object on a BoltStatementResult will give a BoltStatementResultSummary

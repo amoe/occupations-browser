@@ -1,5 +1,27 @@
 2018-11-13
 
+First goal: Export taxonomy
+Problem: Need to specify taxonomy root in order to export a tree.
+Question: How to specify taxonomy root?
+Attempt: Specify by string name.
+Problem: Does not uniquely identify node.
+Question: How to uniquely identify node?
+ {
+   Attempt: Use UUID.
+   Problem: Makes it hard to test.
+   Answer: Mock UUID generator.
+   Problem: Makes it hard for user to specify taxonomy.
+   Answer: ??? Entails same code as below solution
+  }
+  {
+  Attempt: find all valid roots at runtime and match string
+  Problem: can we enforce at database level?  would entail in-degree constraints
+  Answer: Use constraint?
+  }
+}
+
+When we parse taxonomies, we should make sure that we aren't using 
+
 The outcome of this was that  GATE support ontology import in the format OWL-lite.
 It supports exporting either in GATE format which is a proprietary set of nodes:
 
