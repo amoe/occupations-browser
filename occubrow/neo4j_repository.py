@@ -61,6 +61,13 @@ def create_or_increment_precedes_relationship(session, start_node, end_node):
         if property_set_count == 0:
             tx.run(INSERT_QUERY, content1=start_node, content2=end_node)
 
+
+def shim_subgraph_result(row):
+    return {
+        'nodes': [shim_node(n) for n in row.value('nodes')],
+        'rels': [shim_relationship(r) for r in row.value('rels')]
+    }
+
  
 class RealNeo4jRepository(object):
     def __init__(self):
@@ -74,10 +81,8 @@ class RealNeo4jRepository(object):
             with session.begin_transaction() as tx:
                 results = tx.run(ENTIRE_GRAPH_QUERY)
                 row = results.single()
-                return {
-                    'nodes': [shim_node(n) for n in row.value('nodes')],
-                    'rels': [shim_relationship(r) for r in row.value('rels')]
-                }
+                return shim_subgraph_result(row)
+
 
     # wrapper to allow asserting calls on this type
     def run_statement(self, statement, parameters=None, **kwparameters):
@@ -144,7 +149,11 @@ class RealNeo4jRepository(object):
             merge_node(session, end_node)
             create_or_increment_precedes_relationship(session, start_node, end_node)
 
-
+    def get_all_taxonomies(self):
+        with self.driver.session() as session:
+            r = session.run(occubrow.queries.SLURP_TAXONOMIES)
+            return shim_subgraph_result(r.single())
+    
 def demo():
     repo = RealNeo4jRepository()
     return repo.pull_graph()
