@@ -1,3 +1,12 @@
+2018-11-14
+
+Having done the proof of concept for the taxonomy export root finder.  The next
+step is to actually find out how to export the taxonomy.  Only then can the widgets
+load it.
+
+
+
+
 2018-11-13
 
 First goal: Export taxonomy
