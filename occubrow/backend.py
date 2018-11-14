@@ -71,6 +71,21 @@ def node_match(n1, n2):
 def strict_eq(g1, g2):
     return networkx.is_isomorphic(g1, g2, node_match=node_match, edge_match=operator.eq)
 
+
+
+def find_root_by_content(g, wanted):
+   sources = [v for v, indegree in g.in_degree() if indegree == 0]
+   valid_sources = [n for n, content in g.nodes(data='content') if content == wanted]
+   
+   if not valid_sources:
+       raise occubrow.errors.NoRootsFoundError()
+
+   if len(valid_sources) != 1:
+       raise occubrow.errors.AmbiguousRootError()
+
+   return valid_sources[0]
+
+
 class OccubrowBackend(object):
     def __init__(self, repository):
         self.repository = repository
@@ -102,7 +117,8 @@ class OccubrowBackend(object):
         """
         result = self.repository.get_all_taxonomies()
         g = rebuild_graph(result)
-        return networkx.tree_data(g, root)
+        root_id = find_root_by_content(g, root)
+        return networkx.tree_data(g, root_id)
                 
     def import_taxonomy(self, taxonomy_data):
         """
