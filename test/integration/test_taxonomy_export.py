@@ -1,5 +1,6 @@
 import pytest
 import copy
+import networkx
 from occubrow.backend import OccubrowBackend, strict_eq
 from occubrow.neo4j_repository import RealNeo4jRepository
 
