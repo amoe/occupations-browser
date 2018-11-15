@@ -2,7 +2,7 @@
 
 Widget birth spec: One row representing the taxonomy type
 One row representing the level
-A series of 'pulses'
+A series of 'pulses' -- icons for these?
 A button on the widget itself that adds a new widget IN THAT TAXONOMY TYPE
 
 All widgets for a given taxonomy type are grouped, with a certain bracket
