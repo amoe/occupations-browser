@@ -1,6 +1,6 @@
 import pytest
 import copy
-from occubrow.backend import OccubrowBackend
+from occubrow.backend import OccubrowBackend, strict_eq
 from occubrow.neo4j_repository import RealNeo4jRepository
 
 # functional test, note that this shows that we actually don't have a 1 to 1
@@ -29,17 +29,13 @@ input_data = {
     ]
 }
 
-def remove_ids_from_tree(t):
-    t.pop('id', None)
-    for child in t.get('children', []):
-        remove_ids_from_tree(child)
-        
 def tree_matches(t1, t2):
-    t1_new = copy.deepcopy(t1)
-    t2_new = copy.deepcopy(t2)
-    remove_ids_from_tree(t1_new)
-    remove_ids_from_tree(t2_new)
-    return t1_new == t2_new
+    g1 = networkx.tree_graph(t1)
+    g2 = networkx.tree_graph(t2)
+    return strict_eq(g1, g2)
+
+
+# We can't just parse to a tree because children can be in an arbitrary order.
 
 @pytest.mark.functional
 def test_can_export_taxonomy_tree(neo4j_driver):
@@ -49,3 +45,5 @@ def test_can_export_taxonomy_tree(neo4j_driver):
     tree_data = backend.export_taxonomy_tree(root)
     assert tree_matches(tree_data, EXPECTED_EXPORT_DATA)
     
+
+
