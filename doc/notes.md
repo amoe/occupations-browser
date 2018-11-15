@@ -1,3 +1,80 @@
+2018-11-15
+
+Widget birth spec: One row representing the taxonomy type
+One row representing the level
+A series of 'pulses'
+A button on the widget itself that adds a new widget IN THAT TAXONOMY TYPE
+
+All widgets for a given taxonomy type are grouped, with a certain bracket
+When one widget is dragged onto another widget, the top first level widget
+'absorbs' the lower level widget
+The filter-meaning is absorbed into it and the glyph disappears.
+When I want to edit, I toggle a particular level by clicking the level-indicator
+This will pop-out the other levels, shunting other type-brackets down the line
+(Other ones that are shunted down the line will just occlude off the screen)
+
+The blank widget button still exists
+
+Speccing for next sprint:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 2018-11-14
 
 Having done the proof of concept for the taxonomy export root finder.  The next

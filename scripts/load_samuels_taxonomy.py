@@ -1,6 +1,7 @@
 import networkx
 import openpyxl
 import sys
+from logging import debug, info, warn
 
 def quickplot(g):
     import matplotlib.pyplot as plt
@@ -40,9 +41,12 @@ g = networkx.DiGraph()
 for row in sheet.iter_rows(min_row=2):
     cell_values = [c.value for c in row]
     rec = form_record(cell_values)
-    print(rec)
+    if not rec['t1']:
+        warn("Strange record encountered, skipping: %s", rec)
+
 
     category_sequence = record_to_category_sequence(rec)
+
     last_index = len(category_sequence) - 1
 
     this_category_node_id = get_concat_id(category_sequence, last_index)
@@ -61,8 +65,47 @@ for row in sheet.iter_rows(min_row=2):
 
         g.add_edge(u, v)
 
-#quickplot(g)
 
-networkx.write_gexf(g, 'out.gexf')
+print("Nodes: %d, edges: %d" % (g.number_of_nodes(), g.number_of_edges()))
+
+# if g.number_of_nodes() != g.number_of_edges() + 1:
+#     raise TypeError("G is not a tree.")
+
+g2 = networkx.dfs_tree(g, '01')
+
+#leftovers = networkx.difference(g, g2)
+#print(leftovers.nodes)
+
+g1set = set()
+for x in g.nodes:
+    g1set.add(x)
+
+g2set = set()
+for x in g2.nodes:
+    g2set.add(x)
+
+diff = g1set - g2set
+
+print("Size of g1set =", len(g1set))
+print("Size of g2set =", len(g2set))
+
+
+print("Size of g2 =", g2.number_of_nodes())
+
+
+sources = [v for v, indegree in g.in_degree() if indegree == 0]
+
+print("Possible roots:", sources)
+
+
+emptystring = networkx.dfs_tree(g, '')
+print("DFS from empty string:", emptystring.number_of_nodes())
+
+# ... so, a large part of the graph is disconnected
+
+
+#networkx.write_gexf(g, 'out.gexf')
+
+
 
 
