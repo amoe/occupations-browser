@@ -2,6 +2,7 @@ import networkx
 import openpyxl
 import sys
 from logging import debug, info, warn
+import pprint
 
 def quickplot(g):
     import matplotlib.pyplot as plt
@@ -114,3 +115,6 @@ for source in sources:
 
 tree = networkx.dfs_tree(g, '00')
 print("Calculated tree")
+
+tree_data = networkx.tree_data(tree, '00')
+pprint.pprint(tree_data)
