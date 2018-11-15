@@ -94,7 +94,6 @@ print("Size of g2 =", g2.number_of_nodes())
 
 
 sources = [v for v, indegree in g.in_degree() if indegree == 0]
-
 print("Possible roots:", sources)
 
 
@@ -107,5 +106,11 @@ print("DFS from empty string:", emptystring.number_of_nodes())
 #networkx.write_gexf(g, 'out.gexf')
 
 
+# artificially reparent to form a rooted tree
+g.add_node('00', content='Theme')
+for source in sources:
+    g.add_edge('00', source)
 
 
+tree = networkx.dfs_tree(g, '00')
+print("Calculated tree")
