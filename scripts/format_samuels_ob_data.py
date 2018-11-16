@@ -22,15 +22,22 @@ result = df.groupby('chunk')
 
 soup = bs4.BeautifulSoup(features='xml')
 
-soup.append(soup.new_tag("root"))
+root = soup.new_tag("root")
+soup.append(root)
 
 for name, group in result:
     if name == 1000:
         print(group)
         print("Found chunk 1000")
 
+        
         for index, row in group.iterrows():
-            print(row['vard'], row['SEMTAG3'])
+            annotation_tag = soup.new_tag("annotation")
+            annotation_tag['SEMTAG3'] = row['SEMTAG3']
+            annotation_tag.string = row['vard']
+
+            root.append(annotation_tag)
+            root.append(" ")
 
         # Get back to the relatively pristine phrase with this.
 #        print(group['vard'].str.cat(sep=' '))
@@ -53,6 +60,4 @@ for name, group in result:
 
 #"18000528-0074"
 
-
-
-print(soup.prettify())
+print(str(soup))
