@@ -1,3 +1,40 @@
+2018-11-21
+
+So we need some way to produce an Importable / Exportable Set
+
+This is tricky
+
+The Importable Set needs to be produced first.
+
+It's obvious that 
+
+https://www.npmjs.com/package/amoe-butterworth-widgets
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 2018-11-20
 
 killbox for each level

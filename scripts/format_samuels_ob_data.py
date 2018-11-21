@@ -26,18 +26,18 @@ root = soup.new_tag("root")
 soup.append(root)
 
 for name, group in result:
-    if name == 1000:
-        print(group)
-        print("Found chunk 1000")
 
-        
-        for index, row in group.iterrows():
-            annotation_tag = soup.new_tag("annotation")
-            annotation_tag['SEMTAG3'] = row['SEMTAG3']
-            annotation_tag.string = row['vard']
+    sentence = soup.new_tag('sentence')
 
-            root.append(annotation_tag)
-            root.append(" ")
+    for index, row in group.iterrows():
+        annotation_tag = soup.new_tag("annotation")
+        annotation_tag['SEMTAG3'] = row['SEMTAG3']
+        annotation_tag.string = row['vard']
+
+        sentence.append(annotation_tag)
+        sentence.append(" ")
+
+    root.append(sentence)
 
         # Get back to the relatively pristine phrase with this.
 #        print(group['vard'].str.cat(sep=' '))
@@ -60,4 +60,4 @@ for name, group in result:
 
 #"18000528-0074"
 
-print(str(soup))
+sys.stdout.write(soup.prettify())
