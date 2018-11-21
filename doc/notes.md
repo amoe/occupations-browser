@@ -1,3 +1,33 @@
+2018-11-20
+
+killbox for each level
+
+Plus should only appear on the final (lowest) taxonomy level and should be greyed
+out if there are no taxonomy levels remaining
+Kill button top left
+
+Shade
+Plus button forms the last pulse and pulses remain below
+
+Adding 'floating' widget with plus button causes it to be untagged and shown
+with border.  Can be moved into a category of taxonomical types.  Then it 
+merges into a compound widget.
+
+Grabbing entire groups and dropping and rearranging them: This means grabbing by
+taxonomy type.
+
+Also dragging should be restricted to within a certain vertical range.
+
+distance + kind of distance
+
+semantic data management -- check out timbuktoo
+
+archers
+
+metaphacts
+
+https://www.archesproject.org/
+
 2018-11-15
 
 Widget birth spec: One row representing the taxonomy type
