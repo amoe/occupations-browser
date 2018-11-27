@@ -1,3 +1,40 @@
+2018-11-27
+
+Trying to figure out what an input/output format would like for the OCCUBROW
+tool.  There are various existing web standards that relate to this task.
+Mostly XML-based.  OWL is an ontology description standard that can be used to
+represent taxonomies.  I have written a taxonomy-importer from OWL that could be
+used in a pinch.
+
+The real question is how to represent annotated text and how to link it to
+existing taxonomies.  To annotate a token as belonging to a certain taxon, you
+need to know which taxonomy you're referring to.  So the URL of an OWL file
+provides a nice way of making this link.  Any annotation that gets applied to a
+token needs to be *symbolic*, that is, we can't simply use the
+English-description of a taxon as the identifier, because we need something
+unique.  One way is that every taxon can be assigned a UUID.  Alternatively, a
+full path within the taxonomy tree could be used.  Both of these options are quite
+verbose.  Another way would be to disambiguate duplicated names with a small numeric
+suffix or something similar.
+
+The innovation in this tool is specifically the graph view and operations.  I
+hoped to use a standard method of import/export.  However every tool I could
+find uses its own format.  For instance, brat uses a format described here:
+http://brat.nlplab.org/standoff.html, while Sheffield's GATE tool uses two
+formats, one extremely implementation-specific Java serialization and one rather
+ad-hoc XML serialization that uses OWL URLs.  The rest of the semantic web
+ecosystem is -- let's say -- rather a niche interest -- I wish I had the
+knowledge of the ins and outs of it already, but I'm not sure I have time to
+acquire it now, and something more hacky might be in order.
+
+From a practical perspective we want to be able to share and import previously
+annotated texts.  What I'm considering is perhaps 1) requiring UUIDs for nodes
+during import 2) using a hash of the entire graph in the document header and
+3) introducing redundancy by providing a UUID=>taxon-name mapping within the
+file itself.  That way the exported document can seem to 'know' which taxonomy
+it refers to but still retains the ability to be re-matched against any updates
+that could happen.
+
 2018-11-21
 
 So we need some way to produce an Importable / Exportable Set
