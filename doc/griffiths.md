@@ -1,5 +1,7 @@
 Interconnectedness: 
 
+http://psiexp.ss.uci.edu/research/papers/Griffiths_Steyvers_Tenenbaum_2007.pdf
+
 There are several measures defined here.
 Clustering coefficient describes the interconnectedness of content  -- Watts & Strogatz, 1998
 
