@@ -1,6 +1,7 @@
 matrix:
   include:
     - language: python
+      dist: xenial
       python: 3.5
       before_install:
         # Workaround https://github.com/travis-ci/travis-ci/issues/7940
