@@ -1,6 +1,7 @@
 matrix:
   include:
     - language: python
+      dist: xenial
       python: 3.5
       env:
         - OCCUBROW_ENVIRONMENT=test
