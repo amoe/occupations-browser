@@ -9,6 +9,7 @@ matrix:
       install:
         - sudo apt install openjdk-8-jdk
         - sudo update-java-alternatives -s java-1.8.0-openjdk-amd64
+        - java -version
         - pip install pytz==2018.7
         - pip install -r requirements.txt
       script:
