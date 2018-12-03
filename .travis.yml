@@ -3,12 +3,14 @@ matrix:
     - language: python
       dist: xenial
       python: 3.5
+      jdk:
+        - openjdk8
       before_install:
         # Workaround https://github.com/travis-ci/travis-ci/issues/7940
         - sudo rm -f /etc/boto.cfg
       install:
-        - sudo apt install openjdk-8-jdk
-        - sudo update-java-alternatives -s java-1.8.0-openjdk-amd64
+        # - sudo apt install openjdk-8-jdk
+        # - sudo update-java-alternatives -s java-1.8.0-openjdk-amd64
         - java -version
         - pip install pytz==2018.7
         - pip install -r requirements.txt
