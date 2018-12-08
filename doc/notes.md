@@ -1,3 +1,38 @@
+2018-12-06
+
+
+An issue here is that we can't just enumerate those things at level x, we really
+need it to depend on the existing path-so-far
+
+The toggle buttons will end up looking something like this:
+
+        
+        <ol>
+          <li v-for="n in depth + 1">Toggle</li>
+        </ol>
+
+
+How we're going to filter it is pretty not clear.  It's obvious that given a 
+Node, we can get the children of that node.  How can we look up a given node?
+The question doesn't make sense, because every node retains its children.
+
+We don't have networkx like lookup concepts, so we'll just have to walk the
+tree.  We can do BFS search on the tree and at every concept we decrement our
+path-so-far.  Each node BEEN having an identity.  So we just make sure that the
+generated path contains the unique ID.  We obtain a list of IDs from the
+selected filters so far.  Given this list of IDs -- which forms a path -- we can
+find all direct children.
+
+This can be tested, even.
+
+
+
+
+
+
+
+
+
 2018-11-27
 
 Trying to figure out what an input/output format would like for the OCCUBROW
