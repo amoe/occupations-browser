@@ -1,3 +1,26 @@
+2018-12-10
+
+  <svg xmlns="http://www.w3.org/2000/svg"
+       :width="dynamicWidth" class="distance-indicator" ref="distanceIndicator">
+    <line v-for="n in distance"
+          :x1="getXPos(n - 1)" y1="0" :x2="getXPos(n - 1)" y2="100" :stroke="stroke"
+          :stroke-width="strokeWidth"/>
+  </svg>
+
+
+2018-12-08
+
+    <div>
+      <div v-for="item in filteredChildren">
+        <input type="radio" name="taxon" :value="item.model.id" 
+               v-on:change="onSelect"/>
+        <label :for="item.model.id">{{item.model.content}}</label>
+      </div>
+    </div>
+
+
+
+
 2018-12-06
 
 

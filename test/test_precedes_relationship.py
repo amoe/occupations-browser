@@ -28,6 +28,7 @@ phrases = [
 # backend, because it's only a smaller piece of the full transaction structure
 # for adding a sentence.
 
+@pytest.mark.functional
 def test_precedes_relationship(neo4j_driver):
     repository = RealNeo4jRepository(neo4j_driver)
     backend = OccubrowBackend(repository)

@@ -41,7 +41,8 @@ additional TSs
 
 The red buttons are the mechanism used to retract/collapse/expand and foreground TSs
 
-A sequence of red buttons (whether outline or filled) represents the currently active TSs in any ‘compound widget’.
+A sequence of red buttons (whether outline or filled) represents the currently
+active TSs in any ‘compound widget’.
 
 On any individual TS they are filled to indicate both (a) the place in the TS
 hierarchy of that TS, (b) any TSs below it in the hierarchy that are also
