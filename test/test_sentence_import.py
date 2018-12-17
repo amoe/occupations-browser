@@ -1,5 +1,6 @@
 import pytest
-from occubrow.test_utility import make_backend
+from occubrow.backend import OccubrowBackend
+from occubrow.identifier_functions import get_predictable_uuid_generator
 from occubrow.neo4j_repository import RealNeo4jRepository
 
 
@@ -22,7 +23,7 @@ EXPECTED_DATA = {
               {'content': ['Winner', 'Winner', 'Chicken', 'Dinner'],
                'id': 3,
                'label': 'Sentence',
-               'uuid': '9cb34c17-da37-46fa-9e21-233f9eca01c4'},
+               'uuid': '00000000-0000-0000-0000-000000000000'},
               {'content': 'Winner', 'id': 4, 'label': 'Token'},
               {'content': 'Chicken', 'id': 7, 'label': 'Token'}]
 }
@@ -39,6 +40,6 @@ sample_sentence = ["Winner", "Winner", "Chicken", "Dinner"]
 @pytest.mark.functional
 def test_sentence_import(neo4j_driver):
     repository = RealNeo4jRepository(neo4j_driver)
-    backend = make_backend(repository)
+    backend = OccubrowBackend(repository, get_predictable_uuid_generator())
     backend.add_sentence_with_tokens(sample_sentence)
     assert backend.graph_matches(EXPECTED_DATA)

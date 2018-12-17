@@ -65,7 +65,7 @@ def without_keys(d, keys):
 # This is primarily used for testing, and obviously a UUID used in an
 # integration test won't be identical, so we have to ignore them
 def node_match(n1, n2):
-    ignored_keys_set = {'uuid'}
+    ignored_keys_set = {}
 
     return operator.eq(
         without_keys(n1, ignored_keys_set),
