@@ -1,8 +1,9 @@
 # Don't want this to be in the occubrow source tree directly but this is the easiest place to put it
 # XXX: We should probably use builder pattern here
+import collections
+import networkx
 import occubrow.backend
 from occubrow.identifier_functions import random_uuid
-import networkx
 from occubrow.backend import strict_eq
 
 def tree_matches(t1, t2):
@@ -21,3 +22,36 @@ def make_backend(repository):
     return occubrow.backend.OccubrowBackend(repository, identifier_function=random_uuid)
 
 
+# Mocking out a crazy API from N-P-D whereby we have to satisfy the chained call:
+#    result.summary().counters.nodes_created
+# Once we have a better idea of what we need, it might be good to write a facade
+# instead of this kludge
+
+class MockStatementResultSummary(object):
+    def __init__(self, counters):
+        self.counters = counters
+
+class MockSummaryCounters(object):
+    def __init__(self, nodes_created, relationships_created):
+        self.nodes_created = nodes_created
+        self.relationships_created = relationships_created
+
+class MockResult(object):
+    def __init__(self, config):
+        self.config = config
+        
+    def summary(self):
+        return MockStatementResultSummary(
+            MockSummaryCounters(self.config['nodes_created'], self.config['relationships_created'])
+        )
+
+# Top level function for use in tests
+def ncreated(n):
+    return MockResult({
+        'nodes_created': n, 'relationships_created': 0
+    })
+
+def rcreated(n):
+    return MockResult({
+        'nodes_created': 0, 'relationships_created': n
+    })

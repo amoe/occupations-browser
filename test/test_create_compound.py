@@ -1,7 +1,7 @@
 from occubrow.backend import OccubrowBackend
 from occubrow.constants import MOCKED_UUID
 from occubrow.identifier_functions import random_uuid
-from occubrow.test_utility import make_backend
+from occubrow.test_utility import make_backend, ncreated, rcreated
 from occubrow.neo4j_repository import RealNeo4jRepository
 from unittest.mock import Mock
 import pytest
@@ -22,6 +22,9 @@ EXPECTED_DATA = {
 def test_create_compound():
     repository = Mock()
     backend = OccubrowBackend(repository, identifier_function=lambda: MOCKED_UUID)
+    repository.run_statement.side_effect = [
+        ncreated(1), rcreated(1), rcreated(1), rcreated(1)
+    ]
     compound_id = backend.create_compound(['Dog', 'and', 'Duck'])
     assert compound_id == MOCKED_UUID
 
@@ -29,6 +32,9 @@ def test_create_compound():
 def test_correct_neo4j_calls_happened():
     repository = Mock()
     backend = OccubrowBackend(repository, identifier_function=lambda: MOCKED_UUID)
+    repository.run_statement.side_effect = [
+        ncreated(1), rcreated(1), rcreated(1), rcreated(1)
+    ]
     compound_id = backend.create_compound(['Dog', 'and', 'Duck'])
     assert repository.run_statement.call_count == 4
 
