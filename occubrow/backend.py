@@ -5,6 +5,7 @@ from occubrow.drawing import quickplot
 import operator
 import occubrow.errors
 from logging import debug
+import occubrow.queries
 
 # XXX SRP
 import nltk
@@ -164,5 +165,14 @@ class OccubrowBackend(object):
     
     def create_compound(self, tokens):
         new_compound_id = self.identifier_function()
+        self.repository.run_statement(
+            occubrow.queries.CREATE_COMPOUND_NODE_QUERY, {'id': new_compound_id}
+        )
+        for token in tokens:
+            self.repository.run_statement(
+                occubrow.queries.CREATE_COMPOUND_NODE_LINKED_TOKENS,
+                {'search_id': new_compound_id, 'search_content': token}
+            )
+
         return new_compound_id
             
