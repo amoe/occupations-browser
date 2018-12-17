@@ -87,8 +87,9 @@ class RealNeo4jRepository(object):
     # wrapper to allow asserting calls on this type
     def run_statement(self, statement, parameters=None, **kwparameters):
         with self.driver.session() as session:
-            session.run(statement, parameters, **kwparameters)
+            result = session.run(statement, parameters, **kwparameters)
 
+        return result
 
     def add_sentence_with_tokens(self, phrase):
         """

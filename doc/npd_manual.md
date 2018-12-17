@@ -15,9 +15,10 @@ So you can just make sure that you call close afterward
 
 ## Finding the results summary of an executed statement
 
-.summary() object on a BoltStatementResult will give a BoltStatementResultSummary
-object.  You can get execution plans.  You can get ''Counters'  This is going
-to give a SummaryCOunters
+.summary() object on a BoltStatementResult will give a
+BoltStatementResultSummary object.  You can get execution plans.  You can get
+.counters attribute. This is going to give a SummaryCOunters object.  Don't try
+to print it, just access attributes on it.
 
 SummaryCounters has data attached to it that gets updated, eg
 

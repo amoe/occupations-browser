@@ -165,14 +165,18 @@ class OccubrowBackend(object):
     
     def create_compound(self, tokens):
         new_compound_id = self.identifier_function()
-        self.repository.run_statement(
+        result = self.repository.run_statement(
             occubrow.queries.CREATE_COMPOUND_NODE_QUERY, {'id': new_compound_id}
         )
+        assert result.summary().counters.nodes_created == 1
+
         for token in tokens:
-            self.repository.run_statement(
+            result = self.repository.run_statement(
                 occubrow.queries.CREATE_COMPOUND_NODE_LINKED_TOKENS,
                 {'search_id': new_compound_id, 'search_content': token}
             )
+            assert result.summary().counters.relationships_created == 1
+
 
         return new_compound_id
             
