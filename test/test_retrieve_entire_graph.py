@@ -1,6 +1,6 @@
 import pytest
 import unittest.mock
-from occubrow.backend import OccubrowBackend
+from occubrow.test_utility import make_backend
 from occubrow.neo4j_repository import RealNeo4jRepository
 from occubrow.types import Node, Relationship
 
@@ -22,7 +22,7 @@ EXPECTED_DATA = {
 
 @pytest.mark.functional
 def test_can_retrieve_entire_graph(neo4j_driver):
-    backend = OccubrowBackend(RealNeo4jRepository(neo4j_driver))
+    backend = make_backend(RealNeo4jRepository(neo4j_driver))
 
     with neo4j_driver.session() as session:
         session.run("MATCH (a) DETACH DELETE a")
@@ -43,7 +43,7 @@ def test_can_retrieve_entire_graph_mocked():
         ]
     }
 
-    backend = OccubrowBackend(mock_neo4j_repository)
+    backend = make_backend(mock_neo4j_repository)
 
     # This is just going to no-op
     mock_neo4j_repository.execute("MATCH (a) DETACH DELETE a")

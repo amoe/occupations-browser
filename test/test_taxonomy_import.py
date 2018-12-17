@@ -1,4 +1,4 @@
-from occubrow.backend import OccubrowBackend
+from occubrow.test_utility import make_backend
 from occubrow.neo4j_repository import RealNeo4jRepository
 from unittest.mock import call, Mock
 import occubrow.errors
@@ -9,7 +9,7 @@ import pprint
 INPUT_TAXONOMY = {}
 
 def test_import_empty_taxonomy_throws():
-    backend = OccubrowBackend(repository=Mock())
+    backend = make_backend(Mock())
 
     # We don't know how to locate the taxonomy with no root, so there's not
     # much option other than to throw.  Remember there could be multiple
@@ -25,7 +25,7 @@ def test_single_root_taxonomy_imports():
 
     mock_repository = Mock()
     runmock = mock_repository.run_statement
-    backend = OccubrowBackend(mock_repository)
+    backend = make_backend(mock_repository)
     backend.import_taxonomy(input_data)
 
     runmock.assert_called_once_with(
@@ -57,7 +57,7 @@ def test_small_taxonomy_imports():
 
     mock_repository = Mock()
     runmock = mock_repository.run_statement
-    backend = OccubrowBackend(mock_repository)
+    backend = make_backend(mock_repository)
     backend.import_taxonomy(input_data)
 
     calls = [
@@ -99,6 +99,6 @@ def test_import_worked(neo4j_driver):
                                 {'content': 'Classical', 'id': 2, 'label': 'Taxon'}]}
 
 
-    backend = OccubrowBackend(RealNeo4jRepository(neo4j_driver))
+    backend = make_backend(RealNeo4jRepository(neo4j_driver))
     backend.import_taxonomy(input_data)
     assert backend.graph_matches(expected_graph)

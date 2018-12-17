@@ -1,5 +1,5 @@
 import pytest
-from occubrow.backend import OccubrowBackend
+from occubrow.test_utility import make_backend
 from occubrow.neo4j_repository import RealNeo4jRepository
 
 EXPECTED_DATA = {
@@ -31,7 +31,7 @@ phrases = [
 @pytest.mark.functional
 def test_precedes_relationship(neo4j_driver):
     repository = RealNeo4jRepository(neo4j_driver)
-    backend = OccubrowBackend(repository)
+    backend = make_backend(repository)
 
     for phrase in phrases:
         repository.add_precedes_links(phrase)

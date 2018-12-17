@@ -1,6 +1,6 @@
 import pytest
 import unittest.mock
-from occubrow.backend import OccubrowBackend
+from occubrow.test_utility import make_backend
 from occubrow.types import Node, Relationship
 
 PRELOADED_TAXONOMY = {
@@ -31,7 +31,7 @@ def get_mocked_repository():
 
 def test_taxonomy_export():
     repository = get_mocked_repository()
-    b = OccubrowBackend(repository)
+    b = make_backend(repository)
     root = 'Music'
     tree_data = b.export_taxonomy_tree(root)
     assert tree_data == EXPECTED_EXPORT_DATA

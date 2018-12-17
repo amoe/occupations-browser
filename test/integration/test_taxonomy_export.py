@@ -2,6 +2,7 @@ import pytest
 import copy
 import networkx
 from occubrow.backend import OccubrowBackend, strict_eq
+from occubrow.test_utility import make_backend
 from occubrow.neo4j_repository import RealNeo4jRepository
 
 # functional test, note that this shows that we actually don't have a 1 to 1
@@ -40,7 +41,7 @@ def tree_matches(t1, t2):
 
 @pytest.mark.functional
 def test_can_export_taxonomy_tree(neo4j_driver):
-    backend = OccubrowBackend(RealNeo4jRepository(neo4j_driver))
+    backend = make_backend(RealNeo4jRepository(neo4j_driver))
     backend.import_taxonomy(input_data)
     root = 'Music'
     tree_data = backend.export_taxonomy_tree(root)

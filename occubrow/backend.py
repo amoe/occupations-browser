@@ -87,8 +87,9 @@ def find_root_by_content(g, wanted):
 
 
 class OccubrowBackend(object):
-    def __init__(self, repository):
+    def __init__(self, repository, identifier_function):
         self.repository = repository
+        self.identifier_function = identifier_function
 
     def add_sentence(self, sentence):
         pass
@@ -162,4 +163,6 @@ class OccubrowBackend(object):
         return sentence_uuid
     
     def create_compound(self, tokens):
-        pass
+        new_compound_id = self.identifier_function()
+        return new_compound_id
+            
