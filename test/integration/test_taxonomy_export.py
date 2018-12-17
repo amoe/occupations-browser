@@ -2,7 +2,7 @@ import pytest
 import copy
 import networkx
 from occubrow.backend import OccubrowBackend, strict_eq
-from occubrow.test_utility import make_backend
+from occubrow.test_utility import make_backend, tree_matches
 from occubrow.neo4j_repository import RealNeo4jRepository
 
 # functional test, note that this shows that we actually don't have a 1 to 1
@@ -30,12 +30,6 @@ input_data = {
         }
     ]
 }
-
-def tree_matches(t1, t2):
-    g1 = networkx.tree_graph(t1)
-    g2 = networkx.tree_graph(t2)
-    return strict_eq(g1, g2)
-
 
 # We can't just parse to a tree because children can be in an arbitrary order.
 

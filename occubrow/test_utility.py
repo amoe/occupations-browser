@@ -2,6 +2,13 @@
 # XXX: We should probably use builder pattern here
 import occubrow.backend
 from occubrow.identifier_functions import random_uuid
+import networkx
+from occubrow.backend import strict_eq
+
+def tree_matches(t1, t2):
+    g1 = networkx.tree_graph(t1)
+    g2 = networkx.tree_graph(t2)
+    return strict_eq(g1, g2)
 
 # repository might be mocked, but the identifiers are generated as in production
 # (randomly)
