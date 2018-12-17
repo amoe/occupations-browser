@@ -10,14 +10,30 @@ import pprint
 EXPECTED_DATA = {
     'directed': True,
     'graph': {},
-    'links': [{'source': 1, 'target': 2, 'type': 'KNOWS'}],
+    'links': [{'source': 9, 'target': 8, 'type': 'CONTAINS'},
+              {'source': 9, 'target': 28, 'type': 'CONTAINS'},
+              {'source': 9, 'target': 29, 'type': 'CONTAINS'},
+              {'firstIndex': True,
+               'index': 0,
+               'source': 6,
+               'target': 8,
+               'type': 'CONTAINS'},
+              {'index': 1, 'source': 6, 'target': 28, 'type': 'CONTAINS'},
+              {'index': 2,
+               'lastIndex': True,
+               'source': 6,
+               'target': 29,
+               'type': 'CONTAINS'}],
     'multigraph': False,
-    'nodes': [
-        {'id': 1, 'name': 'Alice', 'label': 'Person'},
-        {'id': 2, 'name': 'Bob', 'label': 'Person'}
-    ]
+    'nodes': [{'content': 'Dog', 'id': 8, 'label': 'Token'},
+              {'id': 9, 'label': 'Compound'},
+              {'content': 'and', 'id': 28, 'label': 'Token'},
+              {'content': 'Duck', 'id': 29, 'label': 'Token'},
+              {'content': ['Dog', 'and', 'Duck'],
+               'id': 6,
+               'label': 'Sentence',
+               'uuid': '402fe070-1d40-484a-8966-0eca5a23575e'}]
 }
-
 
 def test_create_compound():
     repository = Mock()
@@ -40,7 +56,9 @@ def test_correct_neo4j_calls_happened():
 
 @pytest.mark.functional
 def test_compounds_are_inserted_to_db(neo4j_driver):
-    backend = make_backend(RealNeo4jRepository(neo4j_driver))
+    repository = RealNeo4jRepository(neo4j_driver)
+    repository.add_sentence_with_tokens(['Dog', 'and', 'Duck'])
+    backend = make_backend(repository)
     backend.create_compound(['Dog', 'and', 'Duck'])
     pprint.pprint(backend.export_graph())
     assert backend.graph_matches(EXPECTED_DATA)
