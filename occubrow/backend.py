@@ -6,6 +6,9 @@ import operator
 import occubrow.errors
 from logging import debug
 import occubrow.queries
+import json
+import datetime
+import pdb
 
 # XXX SRP
 import nltk
@@ -69,10 +72,16 @@ def node_match(n1, n2):
         without_keys(n2, ignored_keys_set)
     )
 
+def roundtrip(g):
+    return networkx.node_link_graph(networkx.node_link_data(g))
+
+# No idea why but the serialization here seems necessary.  Spurious results
+# otherwise.
 def strict_eq(g1, g2):
-    return networkx.is_isomorphic(g1, g2, node_match=node_match, edge_match=operator.eq)
-
-
+    return networkx.is_isomorphic(
+        roundtrip(g1), roundtrip(g2),
+        node_match=node_match, edge_match=operator.eq
+    )
 
 def find_root_by_content(g, wanted):
    sources = [v for v, indegree in g.in_degree() if indegree == 0]
@@ -102,7 +111,7 @@ class OccubrowBackend(object):
 
     def graph_matches(self, data):
         return strict_eq(
-            rebuild_graph(self.repository.pull_graph()), 
+            rebuild_graph(self.repository.pull_graph()),
             networkx.readwrite.json_graph.node_link_graph(data)
         )
 
@@ -159,9 +168,47 @@ class OccubrowBackend(object):
         """
         # tokenize step goes here
         tokens = strip_punctuation(nltk.word_tokenize(sentence))
-        sentence_uuid = self.repository.add_sentence_with_tokens(tokens)
+        sentence_uuid = self.add_sentence_with_tokens(tokens)
         self.repository.add_precedes_links(tokens)
         return sentence_uuid
+
+    def add_sentence_with_tokens(self, phrase):
+        """
+        Add a Sentence node plus its contained Token links, which will be
+        merged.  Phrase should be a tokenized list.  Returns a new uuid that
+        can be used to locate the Sentence.
+        """
+        this_uuid = self.identifier_function()
+
+        self.repository.run_statement(
+            occubrow.queries.CREATE_SENTENCE_QUERY,
+            sentence=phrase, uuid=str(this_uuid)
+        )
+
+        for index, token in enumerate(phrase):
+            relationship_properties = {
+                'index': index
+            }
+
+            if index == 0:
+                relationship_properties['firstIndex'] = True
+
+            if index == len(phrase) - 1:
+                relationship_properties['lastIndex'] = True
+
+
+            self.repository.run_statement(
+                occubrow.queries.CREATE_TOKEN_QUERY, token=token
+            )
+            self.repository.run_statement(
+                occubrow.queries.CREATE_CONTAINS_RELATIONSHIP,
+                token=token, 
+                sentence_id=str(this_uuid),
+                relationship_properties=relationship_properties
+            )
+
+        return this_uuid
+
     
     def create_compound(self, tokens):
         new_compound_id = self.identifier_function()
@@ -179,4 +226,10 @@ class OccubrowBackend(object):
 
 
         return new_compound_id
-            
+
+    def dump_internal_graph(self):
+        self.dump_graph(self.export_graph())
+
+    def dump_graph(self, data):
+        with open('/tmp/export-%s.json' % datetime.datetime.utcnow(), 'w') as f:
+            json.dump(data, f, indent=4)

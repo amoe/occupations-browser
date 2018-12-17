@@ -91,41 +91,6 @@ class RealNeo4jRepository(object):
 
         return result
 
-    def add_sentence_with_tokens(self, phrase):
-        """
-        Add a Sentence node plus its contained Token links, which will be
-        merged.  Phrase should be a tokenized list.  Returns a new uuid that
-        can be used to locate the Sentence.
-        """
-        this_uuid = uuid.uuid4()
-
-        with self.driver.session() as session:
-            session.run(
-                occubrow.queries.CREATE_SENTENCE_QUERY,
-                sentence=phrase, uuid=str(this_uuid)
-            )
-
-            for index, token in enumerate(phrase):
-                relationship_properties = {
-                    'index': index
-                }
-
-                if index == 0:
-                    relationship_properties['firstIndex'] = True
-
-                if index == len(phrase) - 1:
-                    relationship_properties['lastIndex'] = True
-
-
-                session.run(occubrow.queries.CREATE_TOKEN_QUERY, token=token)
-                session.run(
-                    occubrow.queries.CREATE_CONTAINS_RELATIONSHIP,
-                    token=token, 
-                    sentence_id=str(this_uuid),
-                    relationship_properties=relationship_properties
-                )
-
-        return this_uuid
 
     def add_precedes_links(self, phrase):
         """

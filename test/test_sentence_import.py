@@ -40,5 +40,5 @@ sample_sentence = ["Winner", "Winner", "Chicken", "Dinner"]
 def test_sentence_import(neo4j_driver):
     repository = RealNeo4jRepository(neo4j_driver)
     backend = make_backend(repository)
-    repository.add_sentence_with_tokens(sample_sentence)
+    backend.add_sentence_with_tokens(sample_sentence)
     assert backend.graph_matches(EXPECTED_DATA)

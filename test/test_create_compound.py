@@ -32,7 +32,7 @@ EXPECTED_DATA = {
               {'content': ['Dog', 'and', 'Duck'],
                'id': 6,
                'label': 'Sentence',
-               'uuid': '402fe070-1d40-484a-8966-0eca5a23575e'}]
+               'uuid': '00000000-0000-0000-0000-000000000000'}]
 }
 
 def test_create_compound():
@@ -56,11 +56,10 @@ def test_correct_neo4j_calls_happened():
 
 # DISABLED -- Pending refactoring of the uuid-using code into the backend
 # from repository -- Repository becomes a dumb layer
-# @pytest.mark.functional
-# def test_compounds_are_inserted_to_db(neo4j_driver):
-#     repository = RealNeo4jRepository(neo4j_driver)
-#     repository.add_sentence_with_tokens(['Dog', 'and', 'Duck'])
-#     backend = OccubrowBackend(repository, get_predictable_uuid_generator())
-#     backend.create_compound(['Dog', 'and', 'Duck'])
-#     pprint.pprint(backend.export_graph())
-#     assert backend.graph_matches(EXPECTED_DATA)
+@pytest.mark.functional
+def test_compounds_are_inserted_to_db(neo4j_driver):
+    repository = RealNeo4jRepository(neo4j_driver)
+    backend = OccubrowBackend(repository, get_predictable_uuid_generator())
+    backend.add_sentence_with_tokens(['Dog', 'and', 'Duck'])
+    backend.create_compound(['Dog', 'and', 'Duck'])
+    assert backend.graph_matches(EXPECTED_DATA)
