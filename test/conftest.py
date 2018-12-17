@@ -18,7 +18,6 @@ user = "neo4j"
 password = "password"
 auth_token = (user, password)
 
-
 @pytest.fixture
 def neo4j_driver():
     if os.path.exists(home):

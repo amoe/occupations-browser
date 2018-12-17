@@ -160,3 +160,6 @@ class OccubrowBackend(object):
         sentence_uuid = self.repository.add_sentence_with_tokens(tokens)
         self.repository.add_precedes_links(tokens)
         return sentence_uuid
+    
+    def create_compound(self, tokens):
+        pass
