@@ -39,3 +39,7 @@ writing it yourself.
 Also, this method is quite ugly and fragile.  It would be better to formalize
 the individual queries as discrete objects and test their properties, then have
 another layer of tests asserting that they coerce to strings as expected.
+
+## Loading large graphs as preconditions for functional tests
+
+TBD
