@@ -2,6 +2,10 @@ import pytest
 import neo4j
 import boltkit.controller
 import boltkit.config
+import os
+
+# Note that this file MUST be called 'conftest.py' as this name is automatically
+# looked for by the pytest driver.
 
 home = "ext/neo4j-community-3.4.6"
 
@@ -17,14 +21,18 @@ auth_token = (user, password)
 
 @pytest.fixture
 def neo4j_driver():
-    realpath = boltkit.controller._install(
-        edition='community',
-        version='3.4.6',
-        path="ext"
-    )
+    if os.path.exists(home):
+        # We found a preinstalled boltkit neo4j.  We hope that it was fully
+        # installed the first time around!
+        realpath = home
+    else:
+        realpath = boltkit.controller._install(
+            edition='community',
+            version='3.4.6',
+            path="ext"
+        )
 
     controller = boltkit.controller.UnixController(home=realpath, verbosity=0)
-
 
     boltkit.config.update(
         realpath,
