@@ -65,8 +65,6 @@ def test_correct_neo4j_calls_happened():
         call(CreateCompoundLink(MOCKED_UUID, 'Duck'))
     ])
 
-# DISABLED -- Pending refactoring of the uuid-using code into the backend
-# from repository -- Repository becomes a dumb layer
 @pytest.mark.functional
 def test_compounds_are_inserted_to_db(neo4j_driver):
     repository = RealNeo4jRepository(neo4j_driver)
