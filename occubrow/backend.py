@@ -2,7 +2,8 @@ import neo4j
 import networkx
 import networkx.readwrite.json_graph
 from occubrow.drawing import quickplot
-from occubrow.canned_statements import CreateCompoundNodeQuery, CreateCompoundLink
+from occubrow.canned_statements \
+  import CreateCompoundNodeQuery, CreateCompoundLink, CreateGroupLink, CreateGroupNodeQuery
 import operator
 import occubrow.errors
 from logging import debug
@@ -210,6 +211,20 @@ class OccubrowBackend(object):
 
         return this_uuid
 
+    def create_group(self, tokens):
+        new_group_id = self.identifier_function()
+        result = self.repository.run_canned_statement(
+            CreateGroupNodeQuery(new_group_id)
+        )
+        assert result.summary().counters.nodes_created == 1
+
+        for token in tokens:
+            result = self.repository.run_canned_statement(
+                CreateGroupLink(new_group_id, token)
+            )
+            assert result.summary().counters.relationships_created == 1
+
+        return new_group_id
     
     def create_compound(self, tokens):
         new_compound_id = self.identifier_function()
