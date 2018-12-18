@@ -32,4 +32,16 @@ class CreateCompoundNodeQuery(CannedStatement):
     def get_parameters(self):
         return {'id': self.id_}
 
-    
+
+class CreateCompoundLink(CannedStatement):
+    def __init__(self, compound_id, search_token):
+        self.compound_id = compound_id
+        self.search_token = search_token
+
+    def get_cypher(self):
+        return occubrow.queries.CREATE_COMPOUND_NODE_LINKED_TOKENS
+
+    def get_parameters(self):
+        return {
+            'search_id': self.compound_id, 'search_content': self.search_token
+        }

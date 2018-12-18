@@ -2,7 +2,7 @@ import neo4j
 import networkx
 import networkx.readwrite.json_graph
 from occubrow.drawing import quickplot
-from occubrow.canned_statements import CreateCompoundNodeQuery
+from occubrow.canned_statements import CreateCompoundNodeQuery, CreateCompoundLink
 import operator
 import occubrow.errors
 from logging import debug
@@ -220,9 +220,8 @@ class OccubrowBackend(object):
         assert result.summary().counters.nodes_created == 1
 
         for token in tokens:
-            result = self.repository.run_statement(
-                occubrow.queries.CREATE_COMPOUND_NODE_LINKED_TOKENS,
-                {'search_id': new_compound_id, 'search_content': token}
+            result = self.repository.run_canned_statement(
+                CreateCompoundLink(new_compound_id, token)
             )
             assert result.summary().counters.relationships_created == 1
 
