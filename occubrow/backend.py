@@ -2,6 +2,7 @@ import neo4j
 import networkx
 import networkx.readwrite.json_graph
 from occubrow.drawing import quickplot
+from occubrow.canned_statements import CreateCompoundNodeQuery
 import operator
 import occubrow.errors
 from logging import debug
@@ -212,8 +213,9 @@ class OccubrowBackend(object):
     
     def create_compound(self, tokens):
         new_compound_id = self.identifier_function()
-        result = self.repository.run_statement(
-            occubrow.queries.CREATE_COMPOUND_NODE_QUERY, {'id': new_compound_id}
+
+        result = self.repository.run_canned_statement(
+            CreateCompoundNodeQuery(new_compound_id)
         )
         assert result.summary().counters.nodes_created == 1
 

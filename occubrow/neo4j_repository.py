@@ -91,6 +91,14 @@ class RealNeo4jRepository(object):
 
         return result
 
+    # run a specially typed query
+    def run_canned_statement(self, canned_statement):
+        with self.driver.session() as session:
+            query = canned_statement.get_cypher()
+            parameters = canned_statement.get_parameters()
+            result = session.run(query, parameters)
+            
+        return result
 
     def add_precedes_links(self, phrase):
         """
