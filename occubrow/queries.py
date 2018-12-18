@@ -19,10 +19,10 @@ SLURP_TAXONOMIES = """
 """
 
 CREATE_COMPOUND_NODE_QUERY = """
-    CREATE (c:Compound {id: {id}})
+    CREATE (c:Compound {uuid: {id}})
 """
 
 CREATE_COMPOUND_NODE_LINKED_TOKENS = """
-    MATCH (c:Compound {id: {search_id}}), (t:Token {content: {search_content}})
+    MATCH (c:Compound {uuid: {search_id}}), (t:Token {content: {search_content}})
     CREATE (c)-[:CONTAINS]->(t);
 """

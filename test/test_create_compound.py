@@ -27,7 +27,7 @@ EXPECTED_DATA = {
                'type': 'CONTAINS'}],
     'multigraph': False,
     'nodes': [{'content': 'Dog', 'id': 8, 'label': 'Token'},
-              {'id': 9, 'label': 'Compound'},
+              {'id': 9, 'label': 'Compound', 'uuid': '00000000-0000-0000-0000-000000000001'},
               {'content': 'and', 'id': 28, 'label': 'Token'},
               {'content': 'Duck', 'id': 29, 'label': 'Token'},
               {'content': ['Dog', 'and', 'Duck'],
@@ -73,4 +73,5 @@ def test_compounds_are_inserted_to_db(neo4j_driver):
     backend = OccubrowBackend(repository, get_predictable_uuid_generator())
     backend.add_sentence_with_tokens(['Dog', 'and', 'Duck'])
     backend.create_compound(['Dog', 'and', 'Duck'])
+    backend.dump_internal_graph()
     assert backend.graph_matches(EXPECTED_DATA)
