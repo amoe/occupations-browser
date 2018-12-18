@@ -11,9 +11,9 @@ import pprint
 EXPECTED_DATA = {
     'directed': True,
     'graph': {},
-    'links': [{'source': 9, 'target': 8, 'type': 'CONTAINS'},
-              {'source': 9, 'target': 28, 'type': 'CONTAINS'},
-              {'source': 9, 'target': 29, 'type': 'CONTAINS'},
+    'links': [{'source': 9, 'target': 8, 'type': 'COMPOUND_CONTAINS'},
+              {'source': 9, 'target': 28, 'type': 'COMPOUND_CONTAINS'},
+              {'source': 9, 'target': 29, 'type': 'COMPOUND_CONTAINS'},
               {'firstIndex': True,
                'index': 0,
                'source': 6,

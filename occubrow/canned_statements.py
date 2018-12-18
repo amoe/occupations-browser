@@ -37,7 +37,7 @@ class CreateCompoundNodeQuery(CannedStatement):
 
 CREATE_COMPOUND_NODE_LINKED_TOKENS = """
     MATCH (c:Compound {uuid: {search_id}}), (t:Token {content: {search_content}})
-    CREATE (c)-[:CONTAINS]->(t);
+    CREATE (c)-[:COMPOUND_CONTAINS]->(t);
 """
 
 class CreateCompoundLink(CannedStatement):
