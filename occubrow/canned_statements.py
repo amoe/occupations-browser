@@ -54,7 +54,7 @@ class CreateCompoundLink(CannedStatement):
         }
 
 
-CREATE_COMPOUND_NODE_QUERY = """
+CREATE_GROUP_NODE_QUERY = """
     CREATE (g:Group {uuid: {id}})
 """
 
