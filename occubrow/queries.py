@@ -17,12 +17,3 @@ SLURP_TAXONOMIES = """
     MATCH (t:Taxon)
     RETURN rels, COLLECT(t) AS nodes
 """
-
-CREATE_COMPOUND_NODE_QUERY = """
-    CREATE (c:Compound {uuid: {id}})
-"""
-
-CREATE_COMPOUND_NODE_LINKED_TOKENS = """
-    MATCH (c:Compound {uuid: {search_id}}), (t:Token {content: {search_content}})
-    CREATE (c)-[:CONTAINS]->(t);
-"""

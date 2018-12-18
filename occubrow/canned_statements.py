@@ -1,5 +1,3 @@
-import occubrow.queries
-
 # canned statements know how to marshal themselves to a string that can be
 # provided to the N-P-D driver, but also can be interrogated for their
 # various values in a sensible way, and are also immutable in spirit
@@ -22,16 +20,25 @@ class CannedStatement(object):
         raise Exception("not implemented")
 
 
+CREATE_COMPOUND_NODE_QUERY = """
+    CREATE (c:Compound {uuid: {id}})
+"""
+
 class CreateCompoundNodeQuery(CannedStatement):
     def __init__(self, id_):
         self.id_ = id_
 
     def get_cypher(self):
-        return occubrow.queries.CREATE_COMPOUND_NODE_QUERY
+        return CREATE_COMPOUND_NODE_QUERY
 
     def get_parameters(self):
         return {'id': self.id_}
 
+
+CREATE_COMPOUND_NODE_LINKED_TOKENS = """
+    MATCH (c:Compound {uuid: {search_id}}), (t:Token {content: {search_content}})
+    CREATE (c)-[:CONTAINS]->(t);
+"""
 
 class CreateCompoundLink(CannedStatement):
     def __init__(self, compound_id, search_token):
@@ -39,7 +46,7 @@ class CreateCompoundLink(CannedStatement):
         self.search_token = search_token
 
     def get_cypher(self):
-        return occubrow.queries.CREATE_COMPOUND_NODE_LINKED_TOKENS
+        return CREATE_COMPOUND_NODE_LINKED_TOKENS
 
     def get_parameters(self):
         return {
