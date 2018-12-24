@@ -249,3 +249,6 @@ class OccubrowBackend(object):
     def dump_graph(self, data):
         with open('/tmp/export-%s.json' % datetime.datetime.utcnow(), 'w') as f:
             json.dump(data, f, indent=4)
+
+    def get_tree(self):
+        return None
