@@ -1,3 +1,8 @@
+2018-12-24
+
+tree_data is using a special dfs method this seems to work ok
+
+
 2018-12-10
 
   <svg xmlns="http://www.w3.org/2000/svg"

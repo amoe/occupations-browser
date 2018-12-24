@@ -1,4 +1,30 @@
 import re
+import networkx
 
 def collapse(qry):
     return re.sub(r'\s+', ' ', qry)
+
+# Version of dfs_tree that copies node attributes (as the dfs_tree in networkx
+# will strip them).  Source is actually root.
+def dfs_tree_with_node_attributes(g, source, depth_limit):
+    edges = networkx.dfs_edges(g, source=source, depth_limit=depth_limit)
+    result = networkx.DiGraph()
+
+    for u, v in edges:
+        result.add_node(u, **g.nodes[u])
+        result.add_node(v, **g.nodes[v])
+        result.add_edge(u, v)
+
+    return result
+
+
+def get_node_by_attribute(g, attribute_name, attribute_value):
+    result_set = [x for x, y in g.nodes(data=True) if y[attribute_name] == attribute_value]
+
+    if not result_set:
+        raise Exception("attribute value not found")
+
+    if len(result_set) > 1:
+        raise Exception("ambiguous result")
+
+    return result_set[0]

@@ -1,12 +1,13 @@
 import neo4j
 import networkx
 import networkx.readwrite.json_graph
+import occubrow.errors
+from occubrow.utility import get_node_by_attribute, dfs_tree_with_node_attributes
 from occubrow.drawing import quickplot
 from occubrow.canned_statements \
   import CreateCompoundNodeQuery, CreateCompoundLink, CreateGroupLink, \
          CreateGroupNodeQuery, ClearAllDataQuery
 import operator
-import occubrow.errors
 from logging import debug
 import occubrow.queries
 import json
@@ -258,4 +259,10 @@ class OccubrowBackend(object):
             json.dump(data, f, indent=4)
 
     def get_tree(self):
-        return None
+        # Basic strategy is to pull the entire tree, which can be memory
+        # intensive, and then to dfs_tree it to get the specific tree.
+        g = rebuild_graph(self.repository.pull_graph())
+        root = get_node_by_attribute(g, 'content', 'keep')
+        tree = dfs_tree_with_node_attributes(g, root, depth_limit=4)
+        return networkx.tree_data(tree, root)
+    
