@@ -86,3 +86,18 @@ class CreateGroupLink(CannedStatement):
             'search_id': self.group_id,
             'search_content': self.search_token
         }
+
+
+CLEAR_ALL_DATA_QUERY = """
+    MATCH (n) DETACH DELETE n;
+"""
+
+class ClearAllDataQuery(CannedStatement):
+    def __init__(self):
+        pass
+
+    def get_cypher(self):
+        return CLEAR_ALL_DATA_QUERY
+
+    def get_parameters(self):
+        return {}

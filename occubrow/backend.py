@@ -3,7 +3,8 @@ import networkx
 import networkx.readwrite.json_graph
 from occubrow.drawing import quickplot
 from occubrow.canned_statements \
-  import CreateCompoundNodeQuery, CreateCompoundLink, CreateGroupLink, CreateGroupNodeQuery
+  import CreateCompoundNodeQuery, CreateCompoundLink, CreateGroupLink, \
+         CreateGroupNodeQuery, ClearAllDataQuery
 import operator
 import occubrow.errors
 from logging import debug
@@ -213,6 +214,9 @@ class OccubrowBackend(object):
             )
 
         return this_uuid
+
+    def clear_all_data(self):
+        self.repository.run_canned_statement(ClearAllDataQuery())
 
     def create_group(self, tokens):
         new_group_id = self.identifier_function()
