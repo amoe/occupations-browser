@@ -258,11 +258,11 @@ class OccubrowBackend(object):
         with open('/tmp/export-%s.json' % datetime.datetime.utcnow(), 'w') as f:
             json.dump(data, f, indent=4)
 
-    def get_tree(self):
+    def get_tree(self, token):
         # Basic strategy is to pull the entire tree, which can be memory
         # intensive, and then to dfs_tree it to get the specific tree.
         g = rebuild_graph(self.repository.pull_graph())
-        root = get_node_by_attribute(g, 'content', 'keep')
+        root = get_node_by_attribute(g, 'content', token)
         tree = dfs_tree_with_node_attributes(g, root, depth_limit=4)
         return networkx.tree_data(tree, root)
     
