@@ -161,6 +161,9 @@ class OccubrowBackend(object):
             """.strip(), start_node=start_node, end_node=end_node)
 
 
+    def preprocess(self, sentence):
+        return strip_punctuation(nltk.word_tokenize(sentence))
+
     def add_sentence(self, sentence):
         """
         Add a single sentence.  Sentence is a flat text string which will be
@@ -169,7 +172,7 @@ class OccubrowBackend(object):
         Returns the sentence UUID.
         """
         # tokenize step goes here
-        tokens = strip_punctuation(nltk.word_tokenize(sentence))
+        tokens = self.preprocess(sentence)
         sentence_uuid = self.add_sentence_with_tokens(tokens)
         self.repository.add_precedes_links(tokens)
         return sentence_uuid

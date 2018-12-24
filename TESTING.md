@@ -43,3 +43,29 @@ another layer of tests asserting that they coerce to strings as expected.
 ## Loading large graphs as preconditions for functional tests
 
 TBD
+
+
+## Mocking preloaded data
+
+    from occubrow.types import Node, Relationship
+
+    ...
+
+    PRELOADED_TAXONOMY = {
+        'nodes': [
+            Node(0, 'Taxon', {'content': 'Music'}),
+            Node(1, 'Taxon', {'content': 'Rock'}),
+            Node(2, 'Taxon', {'content': 'Classical'})
+        ],
+        'rels': [
+            Relationship(0, 1, {}, 'SUPERCATEGORY_OF'),
+            Relationship(0, 2, {}, 'SUPERCATEGORY_OF')
+        ]
+    }
+
+    ...
+
+    def get_mocked_repository():
+        mock_neo4j_repository = unittest.mock.Mock()
+        mock_neo4j_repository.get_all_taxonomies.return_value = PRELOADED_TAXONOMY
+        return mock_neo4j_repository
