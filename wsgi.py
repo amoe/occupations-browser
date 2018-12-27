@@ -1,1 +1,1 @@
-from occubrow.flask_application import app
+from occubrow.flask_application import app as application
