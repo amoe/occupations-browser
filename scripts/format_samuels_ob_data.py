@@ -26,7 +26,6 @@ root = soup.new_tag("root")
 soup.append(root)
 
 for name, group in result:
-
     sentence = soup.new_tag('sentence')
 
     for index, row in group.iterrows():

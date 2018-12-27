@@ -1,3 +1,43 @@
+2018-12-27
+
+"keep the St. Andrew, public-house, Gower-street, Portman-square",1
+"Tapster",3
+"drive the waggon",1
+"keep a shop for selling all sorts of wearing apparel",1
+"take bricks for him to different places",1
+
+We can manually create tags in the database by tagging all things of a certain kind.
+
+occupation / object / place
+
+
+what would that be?   place = {public-house, Gower-Street, Portman-square}
+
+
+Occupation = {Tapster}
+
+object = {waggon, shop, apparel, bricks}
+
+
+Unfortunately since this doesn't have multiple levels, it doesn't demonstrate
+the taxonomy in any reasonable way.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 2018-12-24
 
 tree_data is using a special dfs method this seems to work ok
