@@ -2,6 +2,8 @@ from occubrow.backend import OccubrowBackend
 from occubrow.test_utility import make_backend
 from unittest.mock import Mock
 from occubrow.types import Node, Relationship
+import pytest
+import pprint
 
 
 WANTED_DATA = {
@@ -56,4 +58,5 @@ PRELOADED_SENTENCES = {
 def test_get_tree():
     repository = Mock()
     backend = make_backend(repository)
-    assert backend.get_tree() == WANTED_DATA
+    repository.pull_graph.return_value = PRELOADED_SENTENCES
+    pprint.pprint(backend.get_tree('keep'))
