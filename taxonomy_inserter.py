@@ -4,11 +4,9 @@ class TaxonomyInserter(object):
     def __init__(self, driver):
         self.driver = driver
 
-
     def load_taxonomy(self, g):
         self.index = {}
         with self.driver.session() as s:
-            s.run("MATCH (n) DETACH DELETE n")
             self.do_insert(s, g)
 
     def make_tag_uri(self, s):
