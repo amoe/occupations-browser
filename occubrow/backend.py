@@ -262,7 +262,15 @@ class OccubrowBackend(object):
         # Basic strategy is to pull the entire tree, which can be memory
         # intensive, and then to dfs_tree it to get the specific tree.
         g = rebuild_graph(self.repository.pull_graph())
+
+        if g.number_of_nodes() == 0:
+            raise Exception('Result tree was empty? 1')
+
         root = get_node_by_attribute(g, 'content', token)
         tree = dfs_tree_with_node_attributes(g, root, depth_limit=4)
+
+        print("Number of nodes in tree", tree.number_of_nodes())
+        print("Number of edges in tree", tree.number_of_edges())
+
         return networkx.tree_data(tree, root)
     

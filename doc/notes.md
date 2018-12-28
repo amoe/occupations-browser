@@ -1,10 +1,10 @@
 2018-12-27
 
-"keep the St. Andrew, public-house, Gower-street, Portman-square",1
-"Tapster",3
-"drive the waggon",1
-"keep a shop for selling all sorts of wearing apparel",1
-"take bricks for him to different places",1
+"keep the St. Andrew, public-house, Gower-street, Portman-square"
+"Tapster"
+"drive the waggon"
+"keep a shop for selling all sorts of wearing apparel"
+"take bricks for him to different places"
 
 We can manually create tags in the database by tagging all things of a certain kind.
 

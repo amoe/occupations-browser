@@ -1,5 +1,6 @@
 import re
 import networkx
+import pdb
 
 def collapse(qry):
     return re.sub(r'\s+', ' ', qry)
@@ -8,9 +9,13 @@ def collapse(qry):
 # will strip them).  Source is actually root.
 def dfs_tree_with_node_attributes(g, source, depth_limit):
     edges = networkx.dfs_edges(g, source=source, depth_limit=depth_limit)
+
+    # coerce from generator to ease debugging
+    edges_list = list(edges)
+
     result = networkx.DiGraph()
 
-    for u, v in edges:
+    for u, v in edges_list:
         result.add_node(u, **g.nodes[u])
         result.add_node(v, **g.nodes[v])
         result.add_edge(u, v)
