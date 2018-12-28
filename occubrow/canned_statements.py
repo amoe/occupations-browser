@@ -101,3 +101,25 @@ class ClearAllDataQuery(CannedStatement):
 
     def get_parameters(self):
         return {}
+
+ADD_ANNOTATION_QUERY = """
+    MATCH (to:Token {content: {token}}),
+          (ta:Taxon {uri: {taxon_reference}})
+    CREATE (to)-[:INSTANCE_OF {context: {sentence_id}}]->(ta)
+"""
+
+class AddAnnotationStatement(CannedStatement):
+    def __init__(self, sentence_id, token, taxon_reference):
+        self.sentence_id = sentence_id
+        self.token = token
+        self.taxon_reference = taxon_reference
+
+    def get_cypher(self):
+        return ADD_ANNOTATION_QUERY
+
+    def get_parameters(self):
+        return {
+            'sentence_id': self.sentence_id,
+            'token': self.token,
+            'taxon_reference': self.taxon_reference
+        }

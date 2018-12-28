@@ -6,7 +6,7 @@ from occubrow.utility import get_node_by_attribute, dfs_tree_with_node_attribute
 from occubrow.drawing import quickplot
 from occubrow.canned_statements \
   import CreateCompoundNodeQuery, CreateCompoundLink, CreateGroupLink, \
-         CreateGroupNodeQuery, ClearAllDataQuery
+         CreateGroupNodeQuery, ClearAllDataQuery, AddAnnotationStatement
 import operator
 from logging import debug
 import occubrow.queries
@@ -273,4 +273,18 @@ class OccubrowBackend(object):
         print("Number of edges in tree", tree.number_of_edges())
 
         return networkx.tree_data(tree, root)
+
+
+    def annotate(self, sentence_id, token, taxon_reference):
+        """
+        Create an annotation.  Sentence ID is a uuid.  Token is the actual token
+        which must be unique.  Taxon reference is the tag URI of a taxon.
+        """
+
+        # basic strategy is to match the taxon through URI.  Match token by
+        # the token.  Sentence id will just be a property of the link.
+        result = self.repository.run_canned_statement(
+            AddAnnotationStatement(sentence_id, token, taxon_reference)
+        )
+        assert result.summary().counters.relationships_created == 1
     
