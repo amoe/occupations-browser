@@ -7,17 +7,20 @@ import pprint
 
 
 WANTED_DATA = {
-    'children': [{'children': [{'id': 'St.', 'taxon': None},
-                               {'id': 'waggon', 'taxon': None}],
-                  'id': 'the',
-                  'taxon': None},
-                 {'children': [{'id': 'shop', 'taxon': None}],
-                  'id': 'a',
-                  'taxon': None}],
-    'id': 'keep',
-    'taxon': None
+    'children': [{'children': [{'content': 'shop', 'id': 2, 'label': 'Token'},
+                               {'content': 'bar', 'id': 3, 'label': 'Token'}],
+                  'content': 'a',
+                  'id': 1,
+                  'label': 'Token'},
+                 {'children': [{'content': 'peace', 'id': 5, 'label': 'Token'},
+                               {'content': 'books', 'id': 6, 'label': 'Token'}],
+                  'content': 'the',
+                  'id': 4,
+                  'label': 'Token'}],
+    'content': 'keep',
+    'id': 0,
+    'label': 'Token'
 }
-
 
 PRELOADED_SENTENCES = {
     'nodes': [
@@ -50,7 +53,16 @@ PRELOADED_SENTENCES = {
 
         Relationship(10, 0, {}, 'CONTAINS'),
         Relationship(10, 4, {}, 'CONTAINS'),
-        Relationship(10, 6, {}, 'CONTAINS')
+        Relationship(10, 6, {}, 'CONTAINS'),
+
+        # Only the PRECEDES links are actually used to form the tree.
+
+        Relationship(0, 1, {}, 'PRECEDES'),
+        Relationship(1, 2, {}, 'PRECEDES'),
+        Relationship(1, 3, {}, 'PRECEDES'),
+        Relationship(0, 4, {}, 'PRECEDES'),
+        Relationship(4, 5, {}, 'PRECEDES'),
+        Relationship(4, 6, {}, 'PRECEDES')
     ]
 }
 
@@ -59,4 +71,4 @@ def test_get_tree():
     repository = Mock()
     backend = make_backend(repository)
     repository.pull_graph.return_value = PRELOADED_SENTENCES
-    pprint.pprint(backend.get_tree('keep'))
+    assert backend.get_tree('keep') == WANTED_DATA

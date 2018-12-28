@@ -19,4 +19,4 @@ for sentence in sentences:
     backend.add_sentence(sentence)
 
 result = backend.get_tree('keep')
-#pprint.pprint(result)
+pprint.pprint(result)
