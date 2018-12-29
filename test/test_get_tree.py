@@ -71,4 +71,4 @@ def test_get_tree():
     repository = Mock()
     backend = make_backend(repository)
     repository.pull_graph.return_value = PRELOADED_SENTENCES
-    assert backend.get_tree('keep') == WANTED_DATA
+    assert backend.get_token_tree('keep') == WANTED_DATA

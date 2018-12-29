@@ -3,8 +3,8 @@ import occubrow.types
 import occubrow.queries
 from logging import debug
 import uuid
-
-
+import pdb
+import occubrow.shim_graph
 
 UPDATE_QUERY = """
     MATCH (t1:Token {content: $content1})-[r:PRECEDES]-(t2:Token {content: $content2})
@@ -21,28 +21,6 @@ MERGE_NODE_QUERY = """
 """
 
 
-def shim_node(node):
-    labels = node.labels
-
-    # Nodes should always have one and only one label under our data model
-    if len(labels) != 1:
-        raise Exception("node should have one label, corruption likely")
-
-    # can't index into a frozenset so just pick an arbitrary one
-    label = next(iter(labels))
-
-    return occubrow.types.Node(
-        node.id, label, dict(node.items())
-    )
-
-def shim_relationship(relationship):
-    return occubrow.types.Relationship(
-        relationship.start_node.id,
-        relationship.end_node.id,
-        dict(relationship.items()),
-        relationship.type
-    )
-
 def merge_node(session, content):
     session.run(MERGE_NODE_QUERY, content=content)
 
@@ -56,12 +34,6 @@ def create_or_increment_precedes_relationship(session, start_node, end_node):
             tx.run(INSERT_QUERY, content1=start_node, content2=end_node)
 
 
-def shim_subgraph_result(row):
-    return {
-        'nodes': [shim_node(n) for n in row.value('nodes')],
-        'rels': [shim_relationship(r) for r in row.value('rels')]
-    }
-
  
 class RealNeo4jRepository(object):
     def __init__(self):
@@ -71,14 +43,9 @@ class RealNeo4jRepository(object):
         self.driver = driver
 
     def pull_graph(self, canned_statement):
-        with self.driver.session() as session:
-            with session.begin_transaction() as tx:
-                results = tx.run(
-                    canned_statement.get_cypher(), canned_statement.get_parameters()
-                )
-                row = results.single()
-                return shim_subgraph_result(row)
-
+        results = self.run_canned_statement(canned_statement)
+        row = results.single()
+        return occubrow.shim_graph.shim_subgraph_result(row)
 
     # wrapper to allow asserting calls on this type
     def run_statement(self, statement, parameters=None, **kwparameters):

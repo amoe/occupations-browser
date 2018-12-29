@@ -26,7 +26,7 @@ EXPECTED_EXPORT_DATA = {
 
 def get_mocked_repository():
     mock_neo4j_repository = unittest.mock.Mock()
-    mock_neo4j_repository.get_all_taxonomies.return_value = PRELOADED_TAXONOMY
+    mock_neo4j_repository.pull_graph.return_value = PRELOADED_TAXONOMY
     return mock_neo4j_repository
 
 def test_taxonomy_export():
@@ -35,5 +35,3 @@ def test_taxonomy_export():
     root = 'Music'
     tree_data = b.export_taxonomy_tree(root)
     assert tree_data == EXPECTED_EXPORT_DATA
-    
-    
