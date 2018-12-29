@@ -141,3 +141,21 @@ class GetEntireGraphQuery(CannedStatement):
 
     def get_parameters(self):
         return {}
+
+
+GET_ENTIRE_TOKEN_GRAPH_QUERY = """
+    MATCH (t1:Token)-[r]->(t2:Token)
+    WITH COLLECT(r) AS rels
+    MATCH (n)
+    RETURN rels, COLLECT(n) AS nodes
+"""
+
+class GetEntireTokenGraphQuery(CannedStatement):
+    def __init__(self):
+        pass
+
+    def get_cypher(self):
+        return GET_ENTIRE_TOKEN_GRAPH_QUERY
+
+    def get_parameters(self):
+        return {}
