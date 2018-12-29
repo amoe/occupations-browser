@@ -1,7 +1,7 @@
 import neo4j
 import networkx
 import networkx.readwrite.json_graph
-import occubrow.errors
+import occubrow.errors as errors
 from occubrow.utility import get_node_by_attribute, dfs_tree_with_node_attributes
 from occubrow.drawing import quickplot
 from occubrow.canned_statements \
@@ -84,10 +84,10 @@ def find_root_by_content(g, wanted):
    valid_sources = [n for n, content in g.nodes(data='content') if content == wanted]
 
    if not valid_sources:
-       raise occubrow.errors.NoRootsFoundError()
+       raise errors.NoRootsFoundError()
 
    if len(valid_sources) != 1:
-       raise occubrow.errors.AmbiguousRootError()
+       raise errors.AmbiguousRootError()
 
    return valid_sources[0]
 
@@ -133,10 +133,10 @@ class OccubrowBackend(object):
         by networkx).
         """
         if not taxonomy_data:
-            raise occubrow.errors.EmptyTaxonomyError()
+            raise errors.EmptyTaxonomyError()
 
         if not 'id' in taxonomy_data:
-            raise occubrow.errors.EmptyTaxonomyError()
+            raise errors.EmptyTaxonomyError()
 
         g = networkx.readwrite.json_graph.tree_graph(taxonomy_data)
 
@@ -278,5 +278,6 @@ class OccubrowBackend(object):
         result = self.repository.run_canned_statement(
             AddAnnotationStatement(sentence_id, token, taxon_reference)
         )
-        assert result.summary().counters.relationships_created == 1
+        if result.summary().counters.relationships_created != 1:
+            raise errors.AnnotationNotCreatedError(token, taxon_reference)
     
