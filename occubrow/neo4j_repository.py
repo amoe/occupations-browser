@@ -5,12 +5,6 @@ from logging import debug
 import uuid
 
 
-ENTIRE_GRAPH_QUERY = """
-    MATCH ()-[r]->()
-    WITH COLLECT(r) AS rels
-    MATCH (n)
-    RETURN rels, COLLECT(n) AS nodes
-"""
 
 UPDATE_QUERY = """
     MATCH (t1:Token {content: $content1})-[r:PRECEDES]-(t2:Token {content: $content2})
@@ -76,10 +70,12 @@ class RealNeo4jRepository(object):
     def __init__(self, driver):
         self.driver = driver
 
-    def pull_graph(self):
+    def pull_graph(self, canned_statement):
         with self.driver.session() as session:
             with session.begin_transaction() as tx:
-                results = tx.run(ENTIRE_GRAPH_QUERY)
+                results = tx.run(
+                    canned_statement.get_cypher(), canned_statement.get_parameters()
+                )
                 row = results.single()
                 return shim_subgraph_result(row)
 

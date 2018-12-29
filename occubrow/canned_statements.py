@@ -123,3 +123,21 @@ class AddAnnotationStatement(CannedStatement):
             'token': self.token,
             'taxon_reference': self.taxon_reference
         }
+
+
+GET_ENTIRE_GRAPH_QUERY = """
+    MATCH ()-[r]->()
+    WITH COLLECT(r) AS rels
+    MATCH (n)
+    RETURN rels, COLLECT(n) AS nodes
+"""
+
+class GetEntireGraphQuery(CannedStatement):
+    def __init__(self):
+        pass
+
+    def get_cypher(self):
+        return GET_ENTIRE_GRAPH_QUERY
+
+    def get_parameters(self):
+        return {}

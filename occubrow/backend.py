@@ -6,24 +6,16 @@ from occubrow.utility import get_node_by_attribute, dfs_tree_with_node_attribute
 from occubrow.drawing import quickplot
 from occubrow.canned_statements \
   import CreateCompoundNodeQuery, CreateCompoundLink, CreateGroupLink, \
-         CreateGroupNodeQuery, ClearAllDataQuery, AddAnnotationStatement
+         CreateGroupNodeQuery, ClearAllDataQuery, AddAnnotationStatement, \
+         GetEntireGraphQuery
 import operator
 from logging import debug
 import occubrow.queries
 import json
 import datetime
 import pdb
-
-# XXX SRP
 import nltk
 import string
-
-ENTIRE_GRAPH_QUERY = """
-    MATCH ()-[r]->()
-    WITH COLLECT(r) AS rels
-    MATCH (n)
-    RETURN rels, COLLECT(n) AS nodes
-"""
 
 # Preprocessing step to strip punctuation, terrible
 def strip_punctuation(tokens):
@@ -57,7 +49,7 @@ def rebuild_graph(results):
 
 # Not actually tested but this property should definitely hold true.
 def check_round_trip():
-    g1 = rebuild_graph(pull_graph())
+    g1 = rebuild_graph(pull_graph(GetEntireGraphQuery()))
     data = networkx.readwrite.json_graph.node_link_data(g1)
     g2 = networkx.readwrite.json_graph.node_link_graph(data)
     return strict_eq(g1, g2)
@@ -110,12 +102,12 @@ class OccubrowBackend(object):
 
     def export_graph(self):
         return networkx.readwrite.json_graph.node_link_data(
-            rebuild_graph(self.repository.pull_graph())
+            rebuild_graph(self.repository.pull_graph(GetEntireGraphQuery()))
         )
 
     def graph_matches(self, data):
         return strict_eq(
-            rebuild_graph(self.repository.pull_graph()),
+            rebuild_graph(self.repository.pull_graph(GetEntireGraphQuery())),
             networkx.readwrite.json_graph.node_link_graph(data)
         )
 
@@ -261,7 +253,7 @@ class OccubrowBackend(object):
     def get_tree(self, token):
         # Basic strategy is to pull the entire tree, which can be memory
         # intensive, and then to dfs_tree it to get the specific tree.
-        g = rebuild_graph(self.repository.pull_graph())
+        g = rebuild_graph(self.repository.pull_graph(GetEntireGraphQuery()))
 
         if g.number_of_nodes() == 0:
             raise Exception('Result tree was empty? 1')
