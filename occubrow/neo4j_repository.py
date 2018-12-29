@@ -118,11 +118,6 @@ class RealNeo4jRepository(object):
             merge_node(session, start_node)
             merge_node(session, end_node)
             create_or_increment_precedes_relationship(session, start_node, end_node)
-
-    def get_all_taxonomies(self):
-        with self.driver.session() as session:
-            r = session.run(occubrow.queries.SLURP_TAXONOMIES)
-            return shim_subgraph_result(r.single())
     
 def demo():
     repo = RealNeo4jRepository()

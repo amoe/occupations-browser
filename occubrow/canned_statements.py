@@ -159,3 +159,21 @@ class GetEntireTokenGraphQuery(CannedStatement):
 
     def get_parameters(self):
         return {}
+
+
+SLURP_TAXONOMIES_QUERY = """
+    MATCH (t1:Taxon)-[r]->(t2:Taxon)
+    WITH COLLECT(r) AS rels
+    MATCH (t:Taxon)
+    RETURN rels, COLLECT(t) AS nodes
+"""
+
+class SlurpTaxonomiesQuery(CannedStatement):
+    def __init__(self):
+        pass
+
+    def get_cypher(self):
+        return SLURP_TAXONOMIES_QUERY
+
+    def get_parameters(self):
+        return {}

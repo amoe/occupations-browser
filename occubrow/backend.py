@@ -7,7 +7,7 @@ from occubrow.drawing import quickplot
 from occubrow.canned_statements \
   import CreateCompoundNodeQuery, CreateCompoundLink, CreateGroupLink, \
          CreateGroupNodeQuery, ClearAllDataQuery, AddAnnotationStatement, \
-         GetEntireGraphQuery, GetEntireTokenGraphQuery
+         GetEntireGraphQuery, GetEntireTokenGraphQuery, SlurpTaxonomiesQuery
 import operator
 from logging import debug
 import occubrow.queries
@@ -122,7 +122,7 @@ class OccubrowBackend(object):
         with a top-node with the same value for 'content', the behaviour is
         undefined (i.e. this should never happen and is considered a corruption).
         """
-        result = self.repository.get_all_taxonomies()
+        result = self.repository.pull_graph(SlurpTaxonomiesQuery())
         g = rebuild_graph(result)
         root_id = find_root_by_content(g, root)
         return networkx.tree_data(g, root_id)
@@ -250,7 +250,7 @@ class OccubrowBackend(object):
         with open('/tmp/export-%s.json' % datetime.datetime.utcnow(), 'w') as f:
             json.dump(data, f, indent=4)
 
-    def get_tree(self, token):
+    def get_token_tree(self, token):
         # Basic strategy is to pull the entire tree, which can be memory
         # intensive, and then to dfs_tree it to get the specific tree.
         g = rebuild_graph(self.repository.pull_graph(GetEntireTokenGraphQuery()))
