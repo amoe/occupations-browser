@@ -125,7 +125,8 @@ class OccubrowBackend(object):
         result = self.repository.pull_graph(SlurpTaxonomiesQuery())
         g = rebuild_graph(result)
         root_id = find_root_by_content(g, root)
-        return networkx.tree_data(g, root_id)
+        tree = dfs_tree_with_node_attributes(g, root_id, depth_limit=None)
+        return networkx.tree_data(tree, root_id)
                 
     def import_taxonomy(self, taxonomy_data):
         """

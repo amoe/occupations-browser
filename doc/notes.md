@@ -1,3 +1,67 @@
+BLAH
+
+Question being: How do I get the list of anything, for each taxon-selector?
+
+
+2018-12-31
+
+Need to check out the values from findvalidchildren.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+when we add a compound widget we have an error, can't happen
+this is caused by the following
+in compound widget
+it goes to the taxon selector, getTaxonsByCompoundWidgetIndex
+
+this goes to the condition if taxonomyType is null.
+
+think about it
+what is this lookup function gettings called with
+is it correct?
+it gets asked for display info for widget 0
+why?
+actually this makes sense because this is CW 0, not TS 0.
+taxonomyref is clearly null.
+this function is in util
+makeemptycompoundiwdget
+
+it can only be caused by the v-for
+taxonIndices
+taxonIndices should be returning an empty list but is not
+
+remember this is based on taxons, so these will be calculate dbefore
+do we have some circularity here
+
+
+now the problem is that the empty widget is addd with 'hasLastEditableTaxon' as
+true.  But that's not actually the case.
+
+this will also need special handlers.
+
+
+Also the available set needs to be passed in.
+
+filteredChildren?
+
+
 2018-12-29
 
 mark up other things in document

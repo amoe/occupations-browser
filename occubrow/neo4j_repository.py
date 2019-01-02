@@ -33,8 +33,6 @@ def create_or_increment_precedes_relationship(session, start_node, end_node):
         if property_set_count == 0:
             tx.run(INSERT_QUERY, content1=start_node, content2=end_node)
 
-
- 
 class RealNeo4jRepository(object):
     def __init__(self):
         self.driver = neo4j.GraphDatabase.driver(uri="bolt://localhost:7687")
@@ -84,8 +82,4 @@ class RealNeo4jRepository(object):
         with self.driver.session() as session:
             merge_node(session, start_node)
             merge_node(session, end_node)
-            create_or_increment_precedes_relationship(session, start_node, end_node)
-    
-def demo():
-    repo = RealNeo4jRepository()
-    return repo.pull_graph()
+            create_or_increment_precedes_relationship(session, start_node, end_node)   
