@@ -1,6 +1,13 @@
-# Old school
+CREATE_TOKEN_QUERY = """
+    MERGE (t:Token {content: $token})
+"""
 
-READ_ENTIRE_GRAPH_QUERY = """
-    MATCH (n) OPTIONAL MATCH (n)-[r]->() RETURN n, r
+CREATE_SENTENCE_QUERY = """
+    CREATE (s:Sentence {content: $sentence, uuid: $uuid})
+"""
+
+CREATE_CONTAINS_RELATIONSHIP = """
+    MATCH (t:Token {content: $token}), (s:Sentence {uuid: $sentence_id})
+    CREATE (s)-[:CONTAINS $relationship_properties]->(t)
 """
 

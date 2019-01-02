@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<content>
+  <sentence>
+    <annotation ref="tag:solasistim.net,2018-12-28:occubrow/Manage/1">keep</annotation> the St. Andrew,
+    <annotation ref="tag:solasistim.net,2018-12-28:occubrow/Pub/1">public-house</annotation>, Gower-street, Portman-square
+  </sentence>
+  <sentence>
+    <annotation ref="tag:solasistim.net,2018-12-28:occubrow/Serve/1">Tapster</annotation>
+  </sentence>
+  <sentence>
+    <annotation ref="tag:solasistim.net,2018-12-28:occubrow/Drive/1">drive</annotation> the
+    <annotation ref="tag:solasistim.net,2018-12-28:occubrow/Vehicle/1">waggon</annotation>
+  </sentence>
+  <sentence>
+    <annotation ref="tag:solasistim.net,2018-12-28:occubrow/Manage/1">keep</annotation> a
+    <annotation ref="tag:solasistim.net,2018-12-28:occubrow/Clothes shop/1">shop</annotation> for selling all sorts of wearing
+    <annotation ref="tag:solasistim.net,2018-12-28:occubrow/Clothes/1">apparel</annotation>
+  </sentence>
+  <sentence>
+    <annotation ref="tag:solasistim.net,2018-12-28:occubrow/Transport/1">take</annotation>
+    <annotation ref="tag:solasistim.net,2018-12-28:occubrow/Bricks/1">bricks</annotation>
+    for him to different places
+  </sentence>
+</content>

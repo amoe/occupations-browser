@@ -1,195 +1,85 @@
 import neo4j
-import neo4j.v1
-import networkx
-import functools
-import pprint
-import occubrow.demo_taxonomy
-from occubrow.plotting import quickplot
-import logging
-from logging import debug, info
+import occubrow.types
+import occubrow.queries
+from logging import debug
+import uuid
+import pdb
+import occubrow.shim_graph
 
-# relationship_name here is 'precedes'
-APOC_TREE_GENERATOR_QUERY = """
-    MATCH p = (:Token {content: "the"})-[:PRECEDES*]->(end:Token) 
-    WHERE NOT (end)-[:PRECEDES]->()
-    CALL apoc.convert.toTree([p]) YIELD value
-    RETURN value
+UPDATE_QUERY = """
+    MATCH (t1:Token {content: $content1})-[r:PRECEDES]-(t2:Token {content: $content2})
+    SET r.occurrences = r.occurrences + 1;
 """
 
-# relationship_name here is 'supercategory_of'
-TAXONOMY_TREE_QUERY = """
-    MATCH p = (ta1:Taxon)-[:SUPERCATEGORY_OF*]->(ta2:Taxon)
-    WHERE NOT (ta2)-[:SUPERCATEGORY_OF]->()
-    CALL apoc.convert.toTree([p]) YIELD value
-    RETURN value;
+INSERT_QUERY = """
+    MATCH (t1:Token {content: $content1}), (t2:Token {content: $content2})
+    CREATE (t1)-[:PRECEDES {occurrences: 1}]->(t2)
 """
 
-GET_ROOTS_WITH_SUBSTRING_MATCH = """
-    MATCH (t1:Token)<-[r:CONTAINS]-(s1:Sentence)
-    WHERE r.index = 0 AND t1.content CONTAINS {substring}
-    RETURN DISTINCT t1 AS root
+MERGE_NODE_QUERY = """
+    MERGE (t:Token {content: $content})
 """
 
-GET_ALL_ROOTS_QUERY = """
-    MATCH (t1:Token)<-[r:CONTAINS]-(s1:Sentence)
-    WHERE r.index = 0
-    RETURN DISTINCT t1 AS root
-"""
 
-## XXX: REMOVE -- START
-___PULL_ALL_TOKEN_SEQUENCES = """
-    MATCH (s1:Sentence)-[r:CONTAINS]->(t)
-    WITH s1, t
-    ORDER BY r.index
-    RETURN s1, COLLECT(t) AS seq;
-"""
-### XXX: REMOVE -- END 
+def merge_node(session, content):
+    session.run(MERGE_NODE_QUERY, content=content)
 
-PULL_ALL_TOKEN_SEQUENCES = """
-    MATCH (s1:Sentence)-[r:CONTAINS]->(t)
-    OPTIONAL MATCH (t)-[r2:MEMBER_OF]->(ta:Taxon)
-    WITH s1, t, ta
-    ORDER BY r.index
-    RETURN s1, COLLECT({token: t, taxon: ta}) AS seq
-"""
-
-DECLARE_GROUP_QUERY = """
-    MATCH (s:Token {content: {synonym}}), (m:Token {content: {master}})
-    CREATE (s)-[:SYNONYMOUS]->(m)
-"""
-
-IDENTITY_FIELD_NAME = 'content'
-
-def tree_to_graph(tree, relationship_name):
-    # defined by apoc, precedes is based on the relationship label
-    object_format = dict(id='_id', children=relationship_name)
-    return networkx.tree_graph(tree, object_format)
-
-def add_linear_nodes(g, token_seq):
-    for index, token in enumerate(token_seq):
-        node_identity = token[IDENTITY_FIELD_NAME]
-        g.add_node(node_identity, taxon=token['taxon'])
-
-        if index != 0:
-            previous_node = token_seq[index - 1][IDENTITY_FIELD_NAME]
-            g.add_edge(previous_node, node_identity)
-
-# Version of dfs_tree that copies node attributes (as the dfs_tree in networkx
-# will strip them).
-def dfs_tree_with_node_attributes(g, source, depth_limit):
-    edges = networkx.dfs_edges(g, source=source, depth_limit=depth_limit)
-    result = networkx.DiGraph()
-
-    for u, v in edges:
-        result.add_node(u, **g.nodes[u])
-        result.add_node(v, **g.nodes[v])
-        result.add_edge(u, v)
-
-    return result
-
-# Flatten the nodes into a narrowed representation which is appropriate for the
-# tree conversion
-def gather_token_seq(result_seq):
-    ret = []
-    
-    for datum in result_seq:
-        # Each datum is a map with keys 'token' and 'taxon' containing
-        # node-interface objects.
+def create_or_increment_precedes_relationship(session, start_node, end_node):
+    with session.begin_transaction() as tx:
+        result = tx.run(UPDATE_QUERY, content1=start_node, content2=end_node)
+        property_set_count = result.summary().counters.properties_set
+        print("Property set count = %d" % property_set_count)
         
-        token_node = datum['token']
-        taxon_node = datum['taxon']
+        if property_set_count == 0:
+            tx.run(INSERT_QUERY, content1=start_node, content2=end_node)
 
-        if taxon_node:
-            taxon = taxon_node.get('name')
-        else:
-            taxon = None
+class RealNeo4jRepository(object):
+    def __init__(self):
+        self.driver = neo4j.GraphDatabase.driver(uri="bolt://localhost:7687")
 
-        # Destructure and flatten the list
-        ret.append(
-            {
-                'content': token_node.get('content'),
-                'taxon': taxon
-            }
-        )
+    def __init__(self, driver):
+        self.driver = driver
 
-    return ret
+    def pull_graph(self, canned_statement):
+        results = self.run_canned_statement(canned_statement)
+        row = results.single()
+        return occubrow.shim_graph.shim_subgraph_result(row)
 
-class Neo4jRepository(object):
-    port = None
+    # wrapper to allow asserting calls on this type
+    def run_statement(self, statement, parameters=None, **kwparameters):
+        with self.driver.session() as session:
+            result = session.run(statement, parameters, **kwparameters)
 
-    def __init__(self, port=7876):
-        self.port = port
+        return result
 
-    def query(self, query, parameters):
-        uri = "bolt://localhost:%d" % self.port
+    # run a specially typed query
+    def run_canned_statement(self, canned_statement):
+        with self.driver.session() as session:
+            query = canned_statement.get_cypher()
+            parameters = canned_statement.get_parameters()
+            result = session.run(query, parameters)
+            
+        return result
 
-        with neo4j.v1.GraphDatabase.driver(uri) as driver:
-            with driver.session() as session:
-                with session.begin_transaction() as tx:
-                    results = tx.run(query, parameters)
-                    return results
+    def add_precedes_links(self, phrase):
+        """
+        Add only the precedes links for one sentence.  This will only add a part
+        of the database structure for a given sentence.  Phrase should be
+        a tokenized list.
+        """
+        first_idx = 0
+        last_idx = len(phrase) - 1
 
-    def get_tree(self, query, relationship_name):
-        result = self.query(query, {})
-        paths = result.value()
-        get_graph = lambda p: tree_to_graph(p, relationship_name)
-        return functools.reduce(networkx.compose, map(get_graph, paths), networkx.DiGraph())
+        for index in range(last_idx):
+            start_node = phrase[index]
+            end_node = phrase[index + 1]
 
-    def clear_all(self):
-        self.query("MATCH (n) DETACH DELETE n", {})
+            self._merge_sentence_links(start_node, end_node)
 
-    def add_taxonomy(self):
-        occubrow.demo_taxonomy.load_demo_taxonomy(self)
+    def _merge_sentence_links(self, start_node, end_node):
+        debug("Relationship: %s -> %s", start_node, end_node)
 
-    def get_roots_with_substring_match(self, substring):
-        return [
-            record['root'].get('content')
-            for record in self.query(GET_ROOTS_WITH_SUBSTRING_MATCH, {'substring': substring})
-        ]
-
-    # This is going to pull in the entire graph
-    # Because we are using DiGraph and not MultiDiGraph it's going to automatically
-    # remove duplicate edges for us.
-    def pull_graph(self):
-        graph = networkx.DiGraph()
-        results = self.query(PULL_ALL_TOKEN_SEQUENCES, {})
-
-        for result in results:
-            token_seq = gather_token_seq(result.get('seq'))
-            add_linear_nodes(graph, token_seq)
-
-        return graph
-
-    def get_tree_by_root(self, root, depth_limit):
-        g = self.pull_graph()
-
-        # Although the returned graph here is already tree-structured, it might
-        # be too deep to return to the client.  So we use DFS to limit depth.
-
-        tree = dfs_tree_with_node_attributes(g, root, depth_limit=depth_limit)
-        return networkx.tree_data(tree, root)
-
-    def declare_group(self, synonym, master):
-        results = self.query(DECLARE_GROUP_QUERY, {'synonym': synonym, 'master': master})
-
-    def get_taxonomy_as_json(self):
-        dg = self.get_tree(TAXONOMY_TREE_QUERY, 'supercategory_of')
-
-        # This essentially gets the (assumed to be single!) root of the tree.
-        try:
-            root = next(networkx.topological_sort(dg))
-        except StopIteration as e:
-            raise Exception("empty taxonomy?") from e
-
-        # This is just the default tree-json format, but we prefer to be explicit 
-        # about it
-        attrs = {
-            'children': 'children',
-            'id': 'id'
-        }
-        dg_formatted_as_tree = networkx.tree_data(
-            dg, root=root, attrs=attrs
-        )
-
-        return dg_formatted_as_tree
-        
+        with self.driver.session() as session:
+            merge_node(session, start_node)
+            merge_node(session, end_node)
+            create_or_increment_precedes_relationship(session, start_node, end_node)   

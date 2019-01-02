@@ -1,6 +1,5 @@
-pytz==2018.7
-Flask==1.0.2
-networkx==2.1
 neo4j==1.7.1
+boltkit==1.2.0
+networkx==2.1
 matplotlib==2.0.0
-pyyaml==3.12
+nltk==3.3
