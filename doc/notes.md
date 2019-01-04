@@ -1,3 +1,138 @@
+2019-01-04
+
+going to neo4j
+
+MATCH p = (n1 {content: "St."})-[r:PRECEDES*..4]->(n2) 
+RETURN p;
+
+MATCH p = (n1 {content: "St."})-[r:PRECEDES*]->(n2) 
+RETURN n2, last(r).occurrences;
+
+
+This is going to get the tree from thing.
+
+
+            :fill="nodeFill[index] || defaultColor"
+
+
+Action items list from alex:
+
+* Relative proportion of size of taxons to indicate size
+* Shading of taxons to indicate co-occurrence strength
+** This requires returning occurrence data SOMEHOW to the API.
+** This might need prototyping in python
+* Radial bands shading
+* Re-centre of nodes with animating nodes to new re-centered layout
+* Pick a random node as root to begin with?
+* Depth limitation
+* Animate nodes to new re-centred layout
+* Mock-up visuals for compound / group operations on a branch
+* Create a taxonomization relationship by dragging to widget
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2019-01-03
+
+Get all sentences tagged with the 'Manage' taxon.
+
+MATCH (ta:Taxon {uri: "tag:solasistim.net,2018-12-28:occubrow/Manage/1"})<-[:INSTANCE_OF]-(to:Token)<-[:CONTAINS]-(s:Sentence)
+RETURN s;
+
+
+Now imagine that we want to return the tree rooted at these sentences.
+
+We have to determine several things
+
+There could be multiple roots, in fact there often will be this is the entire
+point of a taxon; but since each token is identified once... We need to think
+about cardinality problems.
+
+simplify problem
+
+2019-01-02
+
+Now imagine that we have a path.  Such a path names a Taxon node with
+specificity.  It will actually refer to its uri.  We will need to be able to get
+the defined path of our URI.  We want getQuery() to be returning the uri.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 BLAH
 
 Question being: How do I get the list of anything, for each taxon-selector?
