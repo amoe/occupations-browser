@@ -1,5 +1,12 @@
 # Neo4j-Python-Driver: The Missing Manual
 
+## Extract property from relationship
+
+Use the [] indexing notation.
+
+    r = row.value('r')         # r is now a Relationship
+    print(r['occurrences'])    # access occurrences property
+
 ## Manually handling session open and close
 
 The definition of the context handler is just as such:
