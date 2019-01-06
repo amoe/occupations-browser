@@ -14,12 +14,19 @@ taxonomy_graphs = [
 ]
 
 
+print("Clearing existing database")
+
 # clear database
 with driver.session() as s:
     s.run("MATCH (n) DETACH DELETE n")
 
+print("Importing taxonomy graphs")
+
 # import all of the taxonomies
 for g in taxonomy_graphs: obj.load_taxonomy(g)
+
+
+print("Importing annotated text")
 
 # import the sample annotated tokens
 import_annotation_file("sample_sentences.xml")
