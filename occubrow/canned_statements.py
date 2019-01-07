@@ -193,8 +193,8 @@ class GetTokenTreeQuery(CannedStatement):
     def get_cypher(self):
         # Not the safest thing ever but this will die with TypeError on 
         # injection attempts anyway
-        return GET_TOKEN_TREE_QUERY % (self.depth_limit,)
+        return GET_TOKEN_TREE_QUERY_TEMPLATE % (self.depth_limit,)
 
     def get_parameters(self):
-        return {'root': root}
+        return {'root': self.root}
 

@@ -258,7 +258,7 @@ class OccubrowBackend(object):
         g = rebuild_graph(self.repository.pull_graph(GetTokenTreeQuery(token, 4)))
 
         # At this stage the occurrence properties should have been migrated to
-        # in memory graph.
+        # in memory graph.  However they won't appear on the tree export.
 
         if g.number_of_nodes() == 0:
             raise Exception('Result tree was empty? 1')
