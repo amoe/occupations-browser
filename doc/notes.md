@@ -1,5 +1,51 @@
 2019-01-07
 
+Problem now becomes that we can no longer use rebuild_graph to do the
+needful -- WHY -- because it's reliant on a different data shape.
+
+The 'shim_subgraph_result' relies on being able to return lists with
+values nodes and rels
+
+Can we get our data into this format?
+
+MATCH (to1:Token {content: "keep"})-[r:PRECEDES*..2]->(to2:Token)
+RETURN COLLECT(to1) + COLLECT(to2), COLLECT(last(r)) AS r2;
+
+    for row in r:
+        r = row.value('r')
+        to1 = row.value('to1')
+        to2 = row.value('to2')
+
+        strength = r['occurrences']
+
+        print("to2 has strength", r['occurrences'])
+
+        g.add_node(to1['content'])
+        g.add_node(to2['content'], strength=strength)
+
+        g.add_edge(to1['content'], to2['content'])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+j
 
 What is the needful??  Calculate strength and embed it into node response
 This involves updating tests for get_tree backend API.

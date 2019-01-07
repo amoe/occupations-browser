@@ -257,6 +257,9 @@ class OccubrowBackend(object):
         # intensive, and then to dfs_tree it to get the specific tree.
         g = rebuild_graph(self.repository.pull_graph(GetTokenTreeQuery(token, 4)))
 
+        # At this stage the occurrence properties should have been migrated to
+        # in memory graph.
+
         if g.number_of_nodes() == 0:
             raise Exception('Result tree was empty? 1')
 
