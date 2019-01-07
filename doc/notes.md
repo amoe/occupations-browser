@@ -1,3 +1,100 @@
+2019-01-07
+
+
+What is the needful??  Calculate strength and embed it into node response
+This involves updating tests for get_tree backend API.
+
+
+How are we actually going to do the events?
+
+We probably need to emit a sensible semantic event to the upper layer that
+is going to communicate the change.  HOW DOES THIS WORK -- custom events.
+
+
+
+
+2019-01-07
+
+            // Now we know what nodes are old.
+
+            this.tweenedHierarchy = cloneDeep(newData);   // or clone, or just assign
+
+            // Old nodes start at their old positions.
+
+            this.tweenedHierarchy.
+
+            const nodesToBeTweened = this.tweenedHierarchy.descendants();
+
+            for (let node of nodesToBeTweened) {
+                if (oldTokenSet.has(node.data.content)) {
+                    const targetX = node.x;
+                    const targetY = node.y;
+
+                    TweenLite.to(node, 0.5, {x: targetX, y: targetY});
+                }
+            }
+
+
+The problem is that new stuff should go there immediately, while the old nodes
+should have their old positions.
+
+so we have a computed property that watches the 
+graphDataFromStore property
+
+
+                function (node: HierarchyNode<TokenDatum>): string {
+                    return node.data.content;
+                }
+
+
+            const commonNodes = intersectionBy(
+                oldData.descendants(), newData.descendants(),
+                n => n.data.content
+            );
+
+            const oldNodeSet = new Set(commonNodes);
+
+            console.log("Common nodes are %o", oldNodeSet);
+
+            this.tweenedHierarchy = newData;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 2019-01-04
 
 going to neo4j

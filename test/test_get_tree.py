@@ -56,7 +56,6 @@ PRELOADED_SENTENCES = {
         Relationship(10, 6, {}, 'CONTAINS'),
 
         # Only the PRECEDES links are actually used to form the tree.
-
         Relationship(0, 1, {}, 'PRECEDES'),
         Relationship(1, 2, {}, 'PRECEDES'),
         Relationship(1, 3, {}, 'PRECEDES'),
