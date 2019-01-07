@@ -7,7 +7,8 @@ from occubrow.drawing import quickplot
 from occubrow.canned_statements \
   import CreateCompoundNodeQuery, CreateCompoundLink, CreateGroupLink, \
          CreateGroupNodeQuery, ClearAllDataQuery, AddAnnotationStatement, \
-         GetEntireGraphQuery, GetEntireTokenGraphQuery, SlurpTaxonomiesQuery
+         GetEntireGraphQuery, GetEntireTokenGraphQuery, SlurpTaxonomiesQuery, \
+         GetTokenTreeQuery
 import operator
 from logging import debug
 import occubrow.queries
@@ -16,6 +17,32 @@ import datetime
 import pdb
 import nltk
 import string
+import pprint
+
+# Used by get_token_tree, this should transform to the format 'TokenDatum'
+# defined in occubrow-graph-view's interfaces.ts file.
+def transform(g):
+    result = networkx.DiGraph()
+
+    result.add_nodes_from(g.nodes(data=True))
+    for u, v, ddict in g.edges(data=True):
+        if ddict['type'] == 'PRECEDES':
+            result.nodes[v]['strength'] = ddict['occurrences']
+
+    result.add_edges_from(g.edges)
+
+    sources = [v for v, indegree in result.in_degree() if indegree == 0]
+
+    if not sources:
+        raise Exception('no root somehow')
+
+    if len(sources) != 1:
+        raise Exception('ambiguous root', len(sources))
+
+    root = sources[0]
+    result.nodes[root]['strength'] = None
+
+    return result
 
 # Preprocessing step to strip punctuation, terrible
 def strip_punctuation(tokens):
@@ -254,13 +281,19 @@ class OccubrowBackend(object):
     def get_token_tree(self, token):
         # Basic strategy is to pull the entire tree, which can be memory
         # intensive, and then to dfs_tree it to get the specific tree.
-        g = rebuild_graph(self.repository.pull_graph(GetEntireTokenGraphQuery()))
+        g = rebuild_graph(self.repository.pull_graph(GetTokenTreeQuery(token, 4)))
 
         if g.number_of_nodes() == 0:
             raise Exception('Result tree was empty? 1')
 
-        root = get_node_by_attribute(g, 'content', token)
-        tree = dfs_tree_with_node_attributes(g, root, depth_limit=4)
+        # At this stage the occurrence properties should have been migrated to
+        # in memory graph.  However they won't appear on the tree export yet.
+
+        # So, migrate the strength attributes correctly.
+        g2 = transform(g)
+
+        root = get_node_by_attribute(g2, 'content', token)
+        tree = dfs_tree_with_node_attributes(g2, root, depth_limit=4)
 
         print("Number of nodes in tree", tree.number_of_nodes())
         print("Number of edges in tree", tree.number_of_edges())

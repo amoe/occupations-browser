@@ -177,3 +177,24 @@ class SlurpTaxonomiesQuery(CannedStatement):
 
     def get_parameters(self):
         return {}
+
+
+
+GET_TOKEN_TREE_QUERY_TEMPLATE = """
+    MATCH (to1:Token {content: {root}})-[r:PRECEDES*..%d]->(to2:Token)
+    RETURN (COLLECT(to1) + COLLECT(to2)) AS nodes, COLLECT(last(r)) AS rels
+"""
+
+class GetTokenTreeQuery(CannedStatement):
+    def __init__(self, root, depth_limit):
+        self.root = root
+        self.depth_limit = depth_limit
+
+    def get_cypher(self):
+        # Not the safest thing ever but this will die with TypeError on 
+        # injection attempts anyway
+        return GET_TOKEN_TREE_QUERY_TEMPLATE % (self.depth_limit,)
+
+    def get_parameters(self):
+        return {'root': self.root}
+
