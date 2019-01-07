@@ -7,19 +7,22 @@ import pprint
 
 
 WANTED_DATA = {
-    'children': [{'children': [{'content': 'shop', 'id': 2, 'label': 'Token'},
-                               {'content': 'bar', 'id': 3, 'label': 'Token'}],
+    'children': [{'children': [{'content': 'shop', 'id': 2, 'label': 'Token', 'strength': 1},
+                               {'content': 'bar', 'id': 3, 'label': 'Token', 'strength': 1}],
                   'content': 'a',
                   'id': 1,
-                  'label': 'Token'},
-                 {'children': [{'content': 'peace', 'id': 5, 'label': 'Token'},
-                               {'content': 'books', 'id': 6, 'label': 'Token'}],
+                  'label': 'Token',
+                  'strength': 1},
+                 {'children': [{'content': 'peace', 'id': 5, 'label': 'Token', 'strength': 1},
+                               {'content': 'books', 'id': 6, 'label': 'Token', 'strength': 1}],
                   'content': 'the',
                   'id': 4,
-                  'label': 'Token'}],
+                  'label': 'Token',
+                  'strength': 1}],
     'content': 'keep',
     'id': 0,
-    'label': 'Token'
+    'label': 'Token',
+    'strength': 1
 }
 
 PRELOADED_SENTENCES = {

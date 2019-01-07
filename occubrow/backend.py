@@ -7,7 +7,8 @@ from occubrow.drawing import quickplot
 from occubrow.canned_statements \
   import CreateCompoundNodeQuery, CreateCompoundLink, CreateGroupLink, \
          CreateGroupNodeQuery, ClearAllDataQuery, AddAnnotationStatement, \
-         GetEntireGraphQuery, GetEntireTokenGraphQuery, SlurpTaxonomiesQuery
+         GetEntireGraphQuery, GetEntireTokenGraphQuery, SlurpTaxonomiesQuery, \
+         GetTokenTreeQuery
 import operator
 from logging import debug
 import occubrow.queries
@@ -254,7 +255,7 @@ class OccubrowBackend(object):
     def get_token_tree(self, token):
         # Basic strategy is to pull the entire tree, which can be memory
         # intensive, and then to dfs_tree it to get the specific tree.
-        g = rebuild_graph(self.repository.pull_graph(GetEntireTokenGraphQuery()))
+        g = rebuild_graph(self.repository.pull_graph(GetTokenTreeQuery(token, 4)))
 
         if g.number_of_nodes() == 0:
             raise Exception('Result tree was empty? 1')
