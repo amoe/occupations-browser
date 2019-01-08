@@ -1,3 +1,12 @@
+
+Algorithms:
+Centrality
+Community detection
+Path finding (random walk?)
+
+
+The most important thing is to get the samuels taxonomy import going.
+
 MATCH (to1:Token {content: "Portman-square"})
 OPTIONAL MATCH (to1)-[r:PRECEDES*..2]->(to2:Token)
 RETURN (COLLECT(to1) + COLLECT(to2)) AS nodes, COLLECT(last(r)) AS rels
@@ -20,6 +29,7 @@ Typescript helps a lot
 However typescript can introduce its own difficulties
 circles need to adjust to the base stuff properly
 The space of Neo4j is poorly theorized compared to RDBMS wrt best practices
+For such a common feature, drag and drop is very poorly specified
 
 2019-01-08
 

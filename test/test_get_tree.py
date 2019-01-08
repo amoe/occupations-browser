@@ -53,4 +53,4 @@ def test_get_tree():
     backend = make_backend(repository)
     repository.pull_graph.return_value = PRELOADED_SENTENCES
 
-    assert backend.get_token_tree('keep') == WANTED_DATA
+    assert backend.get_token_tree('keep', 4) == WANTED_DATA

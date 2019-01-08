@@ -278,10 +278,10 @@ class OccubrowBackend(object):
         with open('/tmp/export-%s.json' % datetime.datetime.utcnow(), 'w') as f:
             json.dump(data, f, indent=4)
 
-    def get_token_tree(self, token):
+    def get_token_tree(self, token, depth_limit):
         # Basic strategy is to pull the entire tree, which can be memory
         # intensive, and then to dfs_tree it to get the specific tree.
-        g = rebuild_graph(self.repository.pull_graph(GetTokenTreeQuery(token, 4)))
+        g = rebuild_graph(self.repository.pull_graph(GetTokenTreeQuery(token, depth_limit)))
 
         if g.number_of_nodes() == 0:
             raise Exception('Result tree was empty? 1')
@@ -293,7 +293,7 @@ class OccubrowBackend(object):
         g2 = transform(g)
 
         root = get_node_by_attribute(g2, 'content', token)
-        tree = dfs_tree_with_node_attributes(g2, root, depth_limit=4)
+        tree = dfs_tree_with_node_attributes(g2, root, depth_limit=depth_limit)
 
         print("Number of nodes in tree", tree.number_of_nodes())
         print("Number of edges in tree", tree.number_of_edges())
