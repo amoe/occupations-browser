@@ -8,12 +8,17 @@ def collapse(qry):
 # Version of dfs_tree that copies node attributes (as the dfs_tree in networkx
 # will strip them).  Source is actually root.
 def dfs_tree_with_node_attributes(g, source, depth_limit):
+    result = networkx.DiGraph()
+
+    # in the special case where there's no edges, just return the root
+    if g.number_of_edges() == 0:
+        return g
+
     edges = networkx.dfs_edges(g, source=source, depth_limit=depth_limit)
 
     # coerce from generator to ease debugging
     edges_list = list(edges)
 
-    result = networkx.DiGraph()
 
     for u, v in edges_list:
         result.add_node(u, **g.nodes[u])

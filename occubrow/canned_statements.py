@@ -181,8 +181,9 @@ class SlurpTaxonomiesQuery(CannedStatement):
 
 
 GET_TOKEN_TREE_QUERY_TEMPLATE = """
-    MATCH (to1:Token {content: {root}})-[r:PRECEDES*..%d]->(to2:Token)
-    RETURN (COLLECT(to1) + COLLECT(to2)) AS nodes, COLLECT(last(r)) AS rels
+MATCH (to1:Token {content: {root}})
+OPTIONAL MATCH (to1)-[r:PRECEDES*..%d]->(to2:Token)
+RETURN (COLLECT(to1) + COLLECT(to2)) AS nodes, COLLECT(last(r)) AS rels
 """
 
 class GetTokenTreeQuery(CannedStatement):

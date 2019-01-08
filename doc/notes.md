@@ -1,3 +1,12 @@
+MATCH (to1:Token {content: "Portman-square"})
+OPTIONAL MATCH (to1)-[r:PRECEDES*..2]->(to2:Token)
+RETURN (COLLECT(to1) + COLLECT(to2)) AS nodes, COLLECT(last(r)) AS rels
+
+
+    MATCH (to1:Token {content: "Portman-square"})-[r:PRECEDES*..2]->(to2:Token)
+    RETURN (COLLECT(to1) + COLLECT(to2)) AS nodes, COLLECT(last(r)) AS rels
+
+
 MATCH (ta:Taxon {uri: "tag:solasistim.net,2018-12-28:occubrow/Manage/1"})<-[:INSTANCE_OF]-(to:Token)
 WITH DISTINCT to AS roots
 MATCH (to)-[r:PRECEDES*..4]->(to2:Token)
