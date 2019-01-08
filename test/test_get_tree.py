@@ -20,6 +20,7 @@ WANTED_DATA = {
                   'id': 4,
                   'label': 'Token',
                   'strength': 1}],
+    'strength': None,
     'content': 'keep',
     'id': 0,
     'label': 'Token'

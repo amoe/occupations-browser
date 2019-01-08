@@ -1,3 +1,25 @@
+MATCH (ta:Taxon {uri: "tag:solasistim.net,2018-12-28:occubrow/Manage/1"})<-[:INSTANCE_OF]-(to:Token)
+WITH DISTINCT to AS roots
+MATCH (to)-[r:PRECEDES*..4]->(to2:Token)
+RETURN (COLLECT(to) + COLLECT(to2)) AS nodes, COLLECT(last(r)) AS rels;
+
+
+lessons:
+
+Large JS is very difficult to manage
+Typescript helps a lot
+However typescript can introduce its own difficulties
+circles need to adjust to the base stuff properly
+The space of Neo4j is poorly theorized compared to RDBMS wrt best practices
+
+2019-01-08
+
+Remember that the circle will always be at the centre.
+
+So imagine just steadily increasing the radius.
+
+180 is the max radius
+
 2019-01-07
 
 Problem now becomes that we can no longer use rebuild_graph to do the
@@ -230,8 +252,9 @@ Action items list from alex:
 
 Get all sentences tagged with the 'Manage' taxon.
 
-MATCH (ta:Taxon {uri: "tag:solasistim.net,2018-12-28:occubrow/Manage/1"})<-[:INSTANCE_OF]-(to:Token)<-[:CONTAINS]-(s:Sentence)
-RETURN s;
+MATCH (ta:Taxon {uri: "tag:solasistim.net,2018-12-28:occubrow/Manage/1"})<-[:INSTANCE_OF]-(to:Token)
+WITH DISTINCT to
+RETURN to
 
 
 Now imagine that we want to return the tree rooted at these sentences.
