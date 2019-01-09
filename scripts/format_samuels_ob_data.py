@@ -14,6 +14,21 @@
 import pandas
 import sys
 import bs4
+import neo4j
+import re
+import functools
+
+def strip_semtag(val):
+    v1 = re.sub(r'^[^\[]*\[', '', val)
+    v2 = re.sub(r'\]$', '', v1)
+    return v2
+
+
+driver = neo4j.GraphDatabase.driver("bolt://localhost:7688", auth=('neo4j', 'password'))
+
+query = """
+    MATCH (ta:Taxon {content: {wanted_content}}) RETURN ta.uri AS uri
+"""
 
 combined_csv_path = sys.argv[1]
 df = pandas.read_csv(combined_csv_path)
@@ -25,18 +40,63 @@ soup = bs4.BeautifulSoup(features='xml')
 root = soup.new_tag("root")
 soup.append(root)
 
-for name, group in result:
-    sentence = soup.new_tag('sentence')
 
-    for index, row in group.iterrows():
-        annotation_tag = soup.new_tag("annotation")
-        annotation_tag['SEMTAG3'] = row['SEMTAG3']
-        annotation_tag.string = row['vard']
+class AmbiguousTagException(Exception):
+    pass
 
-        sentence.append(annotation_tag)
-        sentence.append(" ")
+@functools.lru_cache(maxsize=None)
+def lookup_semtag_value_in_neo(semtag):
+    stripped = strip_semtag(semtag)
+    result = session.run(query, {'wanted_content': stripped})
+    uri = result.value('uri')
 
-    root.append(sentence)
+    if len(uri) == 0:
+        return None
+
+    if len(uri) != 1:
+        raise AmbiguousTagException(semtag)
+
+    return uri[0]
+
+
+
+def handle_token(containing_sentence, row):
+    semtag = row['SEMTAG3']
+    vard = row['vard']
+
+    if pandas.isna(semtag):
+        containing_sentence.append(vard)
+    else:
+        uri = lookup_semtag_value_in_neo(semtag)
+
+        if uri:
+            annotation_tag = soup.new_tag("annotation")
+            annotation_tag['ref'] = uri
+            annotation_tag.string = vard
+            containing_sentence.append(annotation_tag)
+        else:
+            containing_sentence.append(vard)
+
+    containing_sentence.append(" ")
+
+
+success = 0
+errors = []
+
+
+with driver.session() as session:
+    for name, group in result:
+        sentence = soup.new_tag('sentence')
+
+        for index, row in group.iterrows():
+            print(index)
+            try:
+                handle_token(sentence, row)
+                success = success + 1
+            except AmbiguousTagException as e:
+                errors.append(e)
+
+        root.append(sentence)
 
         # Get back to the relatively pristine phrase with this.
 #        print(group['vard'].str.cat(sep=' '))
@@ -59,4 +119,8 @@ for name, group in result:
 
 #"18000528-0074"
 
-sys.stdout.write(soup.prettify())
+with open('samuels-annotated.xml', 'w') as f:
+    f.write(soup.prettify())
+
+print("Successful lookup: ", success)
+print("Errors: ", len(errors))

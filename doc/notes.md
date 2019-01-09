@@ -1,3 +1,8 @@
+irritating remaining points
+error handling
+listing of available taxonomies from server
+
+
 2019-01-09
 
 what needs to happen here
@@ -114,6 +119,7 @@ I mean this is a problem, because we only see a certain thing
 
 lessons:
 
+n4j python had to read the source a lot
 Large JS is very difficult to manage
 Typescript helps a lot
 However typescript can introduce its own difficulties
