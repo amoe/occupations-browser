@@ -1,3 +1,19 @@
+* Store data set reference on the SENTENCE.  This needs to involve formalizing the
+prep step
+* Store word count -- total number of times this token has been seen
+* Query for word pairs collocations
+* Import is SLOW
+* Add index on URIs for taxonomies?
+* Add index on content property?
+
+challenges: making this usable large scale -- it's not practical for
+users to import huge dbs -- we'd be eating insane memory
+it's better for them to share imported corpora, like in SketchEngine
+
+closeness centrality -- see https://www.aclweb.org/anthology/I/I13/I13-1102.pdf
+this is used for some NLP
+
+ Florian Boudin in "A Comparison of Centrality Measures for Graph-Based Keyphrase Extraction". 
 irritating remaining points
 error handling
 listing of available taxonomies from server

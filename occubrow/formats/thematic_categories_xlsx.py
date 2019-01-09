@@ -8,6 +8,11 @@ import pdb
 
 # this is for dealing with the file 'media_405073_en.xlsx'
 
+
+def get_uri(concat_id):
+    return "tag:solasistim.net,2018-12-28:occubrow/%s/%s" % ("Theme", concat_id)
+
+
 def form_record(row):
     return {
         't1': row[1],
@@ -50,32 +55,37 @@ class SamuelsLoader(object):
 
             this_category_node_id = get_concat_id(category_sequence, len(category_sequence))
 
-            g.add_node(this_category_node_id, content=rec['samuels_heading'])
+            g.add_node(
+                get_uri(this_category_node_id), 
+                content=rec['samuels_heading']
+            )
 
             for i in range(len(category_sequence)):
                 source = get_concat_id(category_sequence, i)
                 
                 # Skip to the next parent if it doesn't exist as a concrete row
                 # This can happen and it's not an error
-                if source not in g:
+                if get_uri(source) not in g:
                     continue
                 
                 for j in range(i + 1, len(category_sequence)):
                     possible_target = get_concat_id(category_sequence, j)
 
-                    if possible_target in g:
-                        g.add_edge(source, possible_target)
+                    if get_uri(possible_target) in g:
+                        g.add_edge(get_uri(source), get_uri(possible_target))
                         break
                 
         sources = [v for v, indegree in g.in_degree() if indegree == 0]
         print("Possible roots:", sources)
 
-        # artificially reparent to form a rooted tree
-        g.add_node('00', content='Theme')
-        for source in sources:
-            g.add_edge('00', source)
+        ARTIFICIAL_ROOT = get_uri('00')
 
-        tree = dfs_tree_with_node_attributes(g, '00')
+        # artificially reparent to form a rooted tree
+        g.add_node(ARTIFICIAL_ROOT, content='Theme')
+        for source in sources:
+            g.add_edge(ARTIFICIAL_ROOT, source)
+
+        tree = dfs_tree_with_node_attributes(g, ARTIFICIAL_ROOT)
         return tree
 
 if __name__ == '__main__':

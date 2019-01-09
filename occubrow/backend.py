@@ -124,9 +124,6 @@ class OccubrowBackend(object):
         self.repository = repository
         self.identifier_function = identifier_function
 
-    def add_sentence(self, sentence):
-        pass
-
     def export_graph(self):
         return networkx.readwrite.json_graph.node_link_data(
             rebuild_graph(self.repository.pull_graph(GetEntireGraphQuery()))
@@ -305,6 +302,7 @@ class OccubrowBackend(object):
         """
         Create an annotation.  Sentence ID is a uuid.  Token is the actual token
         which must be unique.  Taxon reference is the tag URI of a taxon.
+        You must trim the token first.
         """
 
         # basic strategy is to match the taxon through URI.  Match token by
@@ -315,3 +313,9 @@ class OccubrowBackend(object):
         if result.summary().counters.relationships_created != 1:
             raise errors.AnnotationNotCreatedError(token, taxon_reference)
     
+
+    def get_metrics(self):
+        return {
+            'order': 42,
+            'size': 60
+        }

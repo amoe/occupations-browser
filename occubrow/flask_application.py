@@ -16,3 +16,7 @@ def get_tree():
 def get_taxonomy():
     root = flask.request.args.get('root')
     return jsonify(backend.export_taxonomy_tree(root))
+
+@app.route('/metrics')
+def get_metrics():
+    return jsonify(backend.get_metrics())
