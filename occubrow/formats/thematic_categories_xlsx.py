@@ -4,9 +4,7 @@ import sys
 from logging import debug, info, warn
 import pprint
 
-wb = openpyxl.load_workbook(sys.argv[1])
-sheet = wb.active
-
+# this is for dealing with the file 'media_405073_en.xlsx'
 
 def form_record(row):
     return {
@@ -31,6 +29,8 @@ def get_concat_id(seq, index):
 
 class SamuelsLoader(object):
     def load(self, path):
+        wb = openpyxl.load_workbook(sys.argv[1])
+        sheet = wb.active
         g = networkx.DiGraph()
 
         for row in sheet.iter_rows(min_row=2):

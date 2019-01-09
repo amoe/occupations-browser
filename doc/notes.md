@@ -1,4 +1,29 @@
 
+depth = 0, y = 0
+depth = 1, y = 90
+depth = 2, y = 180
+
+
+
+Radius is actually just the regular radius.
+Find max depth in hierarchy
+
+So the correct radius of circles is 
+((width / 2) - depthOffset) / maxDepthInHierarchy
+
+It simply divides all available space between max depth in a certain path.
+If max depth in one direction is 1, the y value will be 180, so it will appear
+symmetrical.
+
+how to match entities that might be deeper in the graph?
+
+william lyon, video
+https://github.com/graphaware/neo4j-nlp
+
+response to this article
+
+https://neo4j.com/blog/bring-order-to-chaos-graph-based-journey-textual-data-to-wisdom/
+
 Algorithms:
 Centrality
 Community detection
@@ -21,6 +46,8 @@ WITH DISTINCT to AS roots
 MATCH (to)-[r:PRECEDES*..4]->(to2:Token)
 RETURN (COLLECT(to) + COLLECT(to2)) AS nodes, COLLECT(last(r)) AS rels;
 
+I mean this is a problem, because we only see a certain thing
+
 
 lessons:
 
@@ -30,6 +57,7 @@ However typescript can introduce its own difficulties
 circles need to adjust to the base stuff properly
 The space of Neo4j is poorly theorized compared to RDBMS wrt best practices
 For such a common feature, drag and drop is very poorly specified
+Testing for multi lang projects is hard
 
 2019-01-08
 
