@@ -26,7 +26,6 @@ def record_to_category_sequence(rec):
 def get_concat_id(seq, index):
     return ''.join(filter(None, seq[:index + 1]))
 
-
 class SamuelsLoader(object):
     def load(self, path):
         wb = openpyxl.load_workbook(sys.argv[1])
@@ -39,9 +38,7 @@ class SamuelsLoader(object):
             if not rec['t1']:
                 warn("Strange record encountered, skipping: %s", rec)
 
-
             category_sequence = record_to_category_sequence(rec)
-
             last_index = len(category_sequence) - 1
 
             this_category_node_id = get_concat_id(category_sequence, last_index)

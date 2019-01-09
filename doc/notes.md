@@ -1,4 +1,67 @@
+2019-01-09
 
+what needs to happen here
+clearly the taxons can only have one content value
+but their actual definitions are defined by their parents etc
+they already have a format for producing tag URIs
+because they have a unique identifier
+so the uri identifier can encode the 00 category
+content can contain the human readable description
+the annotations then can be looked up with a search on content
+
+the trouble is that taxonomyinserter contains its own code to generate URIs
+this is a bit of a problem
+
+in networkx, each node should have the URI as its node value, with the content specified
+as an edge
+then the taxonomy inserter just runs that
+
+we write an adapter that uses make_tag_uri to tag up the example taxonomy
+properly
+
+so the next step is to modify the 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+j
 depth = 0, y = 0
 depth = 1, y = 90
 depth = 2, y = 180
