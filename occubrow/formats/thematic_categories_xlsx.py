@@ -41,6 +41,7 @@ class SamuelsLoader(object):
         for row in sheet.iter_rows(min_row=2):
             cell_values = [c.value for c in row]
             rec = form_record(cell_values)
+
             if not rec['t1']:
                 warn("Strange record encountered, skipping: %s", rec)
                 continue
@@ -49,15 +50,13 @@ class SamuelsLoader(object):
 
             this_category_node_id = get_concat_id(category_sequence, len(category_sequence))
 
-            if this_category_node_id == '030801':
-                pdb.set_trace()
-
             g.add_node(this_category_node_id, content=rec['samuels_heading'])
 
             for i in range(len(category_sequence)):
                 source = get_concat_id(category_sequence, i)
                 
-                # Skip to the next parent
+                # Skip to the next parent if it doesn't exist as a concrete row
+                # This can happen and it's not an error
                 if source not in g:
                     continue
                 
