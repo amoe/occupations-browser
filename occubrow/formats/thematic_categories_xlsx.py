@@ -3,6 +3,8 @@ import openpyxl
 import sys
 from logging import debug, info, warn
 import pprint
+from occubrow.utility import dfs_tree_with_node_attributes
+import pdb
 
 # this is for dealing with the file 'media_405073_en.xlsx'
 
@@ -21,7 +23,11 @@ def form_record(row):
 
 def record_to_category_sequence(rec):
     wanted_keys = ['t1', 't2', 't3', 't4', 't5', 't6', 't7']
-    return [rec[k] for k in wanted_keys]
+    raw = [rec[k] for k in wanted_keys]
+    while raw[-1] is None:
+        del raw[-1]
+
+    return raw
 
 def get_concat_id(seq, index):
     return ''.join(filter(None, seq[:index + 1]))
@@ -37,76 +43,41 @@ class SamuelsLoader(object):
             rec = form_record(cell_values)
             if not rec['t1']:
                 warn("Strange record encountered, skipping: %s", rec)
+                continue
 
             category_sequence = record_to_category_sequence(rec)
-            last_index = len(category_sequence) - 1
 
-            this_category_node_id = get_concat_id(category_sequence, last_index)
+            this_category_node_id = get_concat_id(category_sequence, len(category_sequence))
+
+            if this_category_node_id == '030801':
+                pdb.set_trace()
+
             g.add_node(this_category_node_id, content=rec['samuels_heading'])
 
-            for index in range(last_index):
-                u = get_concat_id(category_sequence, index)
-                v = get_concat_id(category_sequence, index + 1)
+            for i in range(len(category_sequence)):
+                source = get_concat_id(category_sequence, i)
+                
+                # Skip to the next parent
+                if source not in g:
+                    continue
+                
+                for j in range(i + 1, len(category_sequence)):
+                    possible_target = get_concat_id(category_sequence, j)
 
-                t_u = category_sequence[index]
-                t_v = category_sequence[index + 1]
-
-                # We reached the end of links for this row
-                if t_u is None or t_v is None:
-                    break
-
-                g.add_edge(u, v)
-
-        print("Nodes: %d, edges: %d" % (g.number_of_nodes(), g.number_of_edges()))
-
-        # if g.number_of_nodes() != g.number_of_edges() + 1:
-        #     raise TypeError("G is not a tree.")
-
-        g2 = networkx.dfs_tree(g, '01')
-
-        #leftovers = networkx.difference(g, g2)
-        #print(leftovers.nodes)
-
-        g1set = set()
-        for x in g.nodes:
-            g1set.add(x)
-
-        g2set = set()
-        for x in g2.nodes:
-            g2set.add(x)
-
-        diff = g1set - g2set
-
-        print("Size of g1set =", len(g1set))
-        print("Size of g2set =", len(g2set))
-
-
-        print("Size of g2 =", g2.number_of_nodes())
-
-
+                    if possible_target in g:
+                        g.add_edge(source, possible_target)
+                        break
+                
         sources = [v for v, indegree in g.in_degree() if indegree == 0]
         print("Possible roots:", sources)
-
-
-        emptystring = networkx.dfs_tree(g, '')
-        print("DFS from empty string:", emptystring.number_of_nodes())
-
-        # ... so, a large part of the graph is disconnected
-
-
-        #networkx.write_gexf(g, 'out.gexf')
-
 
         # artificially reparent to form a rooted tree
         g.add_node('00', content='Theme')
         for source in sources:
             g.add_edge('00', source)
 
-        tree = networkx.dfs_tree(g, '00')
+        tree = dfs_tree_with_node_attributes(g, '00')
         return tree
-
-#tree_data = networkx.tree_data(tree, '00')
-#pprint.pprint(tree_data)
 
 if __name__ == '__main__':
     obj = SamuelsLoader()

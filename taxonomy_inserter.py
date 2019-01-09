@@ -13,6 +13,7 @@ class TaxonomyInserter(object):
 
     def do_insert(self, s, g):
         for uri, data in g.nodes(data=True):
+            print(uri, data)
             params = {'uri': uri, 'content': data['content']}
             s.run("CREATE (t:Taxon {uri: {uri}, content: {content}})", params)
 
