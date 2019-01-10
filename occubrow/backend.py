@@ -8,7 +8,8 @@ from occubrow.canned_statements \
   import CreateCompoundNodeQuery, CreateCompoundLink, CreateGroupLink, \
          CreateGroupNodeQuery, ClearAllDataQuery, AddAnnotationStatement, \
          GetEntireGraphQuery, GetEntireTokenGraphQuery, SlurpTaxonomiesQuery, \
-         GetTokenTreeQuery
+         GetTokenTreeQuery, GetRandomTokenQuery, GetTaxonomyRootsQuery, \
+         GetTokenRootWithTaxonFilterQuery
 import operator
 from logging import debug
 import occubrow.queries
@@ -106,6 +107,9 @@ def strict_eq(g1, g2):
         node_match=node_match, edge_match=operator.eq
     )
 
+def find_roots(g):
+    return [v for v, indegree in g.in_degree() if indegree == 0]
+
 def find_root_by_content(g, wanted):
    sources = [v for v, indegree in g.in_degree() if indegree == 0]
    valid_sources = [n for n, content in g.nodes(data='content') if content == wanted]
@@ -123,6 +127,13 @@ class OccubrowBackend(object):
     def __init__(self, repository, identifier_function):
         self.repository = repository
         self.identifier_function = identifier_function
+
+    def get_taxonomy_roots(self):
+        result = self.repository.run_canned_statement(GetTaxonomyRootsQuery())
+        return [
+            {'uri': n['uri'], 'content': n['content']}
+            for n in result.value('ta')
+        ]
 
     def export_graph(self):
         return networkx.readwrite.json_graph.node_link_data(
@@ -319,3 +330,11 @@ class OccubrowBackend(object):
             'order': 42,
             'size': 60
         }
+
+    def pick_root(self):
+        result = self.repository.run_canned_statement(GetRandomTokenQuery())
+        return result.single().value('t')['content']
+
+    # sparse tree with taxon
+    def search_with_taxon(self, token, taxon_uri):
+        return self.repository.pull_graph(GetTokenRootWithTaxonFilterQuery(token, taxon_uri))

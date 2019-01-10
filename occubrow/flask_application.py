@@ -20,3 +20,12 @@ def get_taxonomy():
 @app.route('/metrics')
 def get_metrics():
     return jsonify(backend.get_metrics())
+
+@app.route('/random-root')
+def get_random_root():
+    return jsonify(backend.pick_root())
+
+@app.route('/taxonomy-roots')
+def get_taxonomy_roots():
+    return jsonify(backend.get_taxonomy_roots())
+                   

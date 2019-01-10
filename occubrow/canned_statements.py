@@ -199,3 +199,59 @@ class GetTokenTreeQuery(CannedStatement):
     def get_parameters(self):
         return {'root': self.root}
 
+
+# fast and wrong query
+GET_RANDOM_TOKEN_QUERY = """
+    MATCH (t:Token) WITH t WHERE rand() < 0.3 RETURN t LIMIT 1
+"""
+
+class GetRandomTokenQuery(CannedStatement):
+    def __init__(self):
+        pass
+
+    def get_cypher(self):
+        return GET_RANDOM_TOKEN_QUERY
+
+    def get_parameters(self):
+        return {}
+    
+
+
+
+GET_TAXONOMY_ROOTS_QUERY = """
+    MATCH (ta:Taxon) WHERE NOT (ta)<-[:SUPERCATEGORY_OF]-(:Taxon) RETURN ta
+"""
+
+class GetTaxonomyRootsQuery(object):
+    def __init__(self):
+        pass
+
+    def get_cypher(self):
+        return GET_TAXONOMY_ROOTS_QUERY
+
+    def get_parameters(self):
+        return {}
+
+
+GET_TOKEN_ROOT_WITH_TAXON_FILTER_QUERY = """
+    MATCH (to1:Token {content: {wanted_token}}),
+          (ta:Taxon {uri: {wanted_taxon_uri}})
+    OPTIONAL MATCH (to1)-[r:PRECEDES*..4]->(to2:Token)
+    WHERE (to2)-[:INSTANCE_OF]->(ta)
+    RETURN (COLLECT(to1) + COLLECT(to2)) AS nodes, COLLECT(last(r)) AS rels
+"""
+
+class GetTokenRootWithTaxonFilterQuery(object):
+    def __init__(self, token, taxon_uri):
+        self.token = token
+        self.taxon_uri = taxon_uri
+
+    def get_cypher(self):
+        return GET_TOKEN_ROOT_WITH_TAXON_FILTER_QUERY
+
+    def get_parameters(self):
+        return {
+            'wanted_token': self.token,
+            'wanted_taxon_uri': self.taxon_uri
+        }
+    

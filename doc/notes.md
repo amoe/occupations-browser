@@ -1,3 +1,30 @@
+
+
+
+https://stackoverflow.com/questions/44119453/neo4j-shortestpath-with-highest-aggregated-relationship-propertie
+
+What do we expect in the case where we filter.
+
+The result of this is that the final path element should be expanded.
+Do this as a parameter to the path expander?
+
+We still need to take the root into account.
+
+MATCH (to1:Token {content: "keep"}), (ta:Taxon {uri: "tag:solasistim.net,2018-12-28:occubrow/Vehicle/1"})
+OPTIONAL MATCH (to1)-[r:PRECEDES*..4]->(to2:Token)
+WHERE (to2)-[:INSTANCE_OF]->(ta)
+RETURN (COLLECT(to1) + COLLECT(to2)) AS nodes, COLLECT(last(r)) AS rels
+
+this clear nonsensical relation
+
+
+beware that using the path expander might be necessary
+
+
+Do list from below:
+
+https://www.reddit.com/r/webdev/comments/aehxc7/what_are_some_easysmall_things_that_you_do_that/
+
 MATCH (t:Token) WITH t WHERE rand() < 0.3 RETURN t LIMIT 1;
 
 Main Action Items Left 2019-01-10:
