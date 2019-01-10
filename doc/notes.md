@@ -1,5 +1,50 @@
-* Store data set reference on the SENTENCE.  This needs to involve formalizing the
-prep step
+MATCH (t:Token) WITH t WHERE rand() < 0.3 RETURN t LIMIT 1;
+
+Main Action Items Left 2019-01-10:
+
+* Restrict tree to top N
+* Pick a random node as root to begin with?
+* Mock-up visuals for compound / group operations on a branch
+* Create a taxonomization relationship by dragging to widget
+* Create source text link back to sentence
+* Show metrics from node
+* Allow filtering tree by taxon
+
+Not possible to create indices on relationship properties
+
+apoc.path.subgraphAll
+
+apoc.path.subgraphAll(
+startNode <id>Node/list, {maxLevel, relationshipFilter, labelFilter, bfs:true, filterStartNode:true, limit:-1}) yield nodes, relationships
+
+
+
+maximum cooccurrence value
+
+MATCH (to1:Token {content: "keep"}) OPTIONAL MATCH (to1)-[r:PRECEDES*..4]->(to2:Token) WHERE r.occurrences > 10 RETURN COUNT(DISTINCT to1) AS count1, COUNT(DISTINCT to2) AS count2, COUNT(DISTINCT r) AS count3; 
+
+MATCH (to1:Token {content: "keep"})
+OPTIONAL MATCH (to1)-[r:PRECEDES*..2]->(to2:Token) RETURN COUNT(DISTINCT to1) AS count1, COUNT(DISTINCT to2) AS count2, COUNT(DISTINCT r) AS count3; 
+
+MATCH (to1:Token {content: "keep"})
+OPTIONAL MATCH (to1)-[r:PRECEDES*..3]->(to2:Token)
+RETURN COUNT(DISTINCT to1) AS count1, COUNT(DISTINCT to2) AS count2, COUNT(DISTINCT r) AS count3;
+
+This will give you an idea of what you can expect from the result graph
+
+Verify your server configuration. For example, if you have large value for
+org.neo4j.server.transaction.timeout and you don't handle properly transaction
+at client side - you can end up with a lot of running transactions.
+
+
+MATCH (to1:Token {content: "keep"})
+OPTIONAL MATCH (to1)-[r:PRECEDES*..4]->(to2:Token)
+RETURN (COLLECT(to1) + COLLECT(to2)) AS nodes, COLLECT(last(r)) AS rels
+
+Create an index: `CREATE INDEX ON :Token(content)`.
+
+
+* Store data set reference on the SENTENCE.  This needs to involve formalizing the prep step
 * Store word count -- total number of times this token has been seen
 * Query for word pairs collocations
 * Import is SLOW
@@ -320,12 +365,8 @@ Action items list from alex:
 ** This might need prototyping in python
 * Radial bands shading
 * Re-centre of nodes with animating nodes to new re-centered layout
-* Pick a random node as root to begin with?
 * Depth limitation
 * Animate nodes to new re-centred layout
-* Mock-up visuals for compound / group operations on a branch
-* Create a taxonomization relationship by dragging to widget
-
 
 
 
