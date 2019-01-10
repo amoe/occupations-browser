@@ -1,4 +1,88 @@
 
+Alex wrote this...
+    OPTION ONE
+
+    The ego node represents an arbitrary (or pre-determined) token
+
+    The first taxon-selector (in widgets bar) determines the taxon-type for the first ring of nodes
+    > The first ring of nodes displays all tokens that are currently assigned to that taxon (which co-occur in a sentence with the ego-node-token)
+
+    On selection of a second taxon-selector, this determines the taxon-type for the second ring of nodes
+    > The second ring of nodes displays all tokens that are currently assigned to that taxon (which also co-occur in a sentence with both the ego-node-token and a token on the first ring)
+    Each token on the second ring sits on a path connecting it to the token on the first ring with which it co-occurs
+
+    Nodes are shaded according to the relative frequency with which they co-occur either (a) with the immediately preceding token, or (b) with all the tokens preceding it on the path
+
+    Etc.
+
+    OPTIONS TWO (a and b)
+
+    The ego node represents an arbitrary (or pre-determined) token
+
+    The first taxon-selector (in widgets bar) determines the first taxon-type
+    > The paths outwards from the ego node represent tokens that occur in the same sentence as the ego-node-token and the first-taxon-selector taxon
+    These are filtered as (either):
+
+    (a) all tokens that occur in sentences that include a token with this taxon-type: these sit on the radiating paths according to the sequence of their co-occurence/connections
+    Or
+    (b) all tokens that have been assigned taxons, which are placed on the first ring, with no other tokens visible
+
+    Etc.
+    OPTION THREE
+
+    A taxon is selected in a first taxon selector
+    > The ego node represents the first selected taxon in the widget bar
+
+    A taxon is selected in a second taxon selector
+    > The first ring of nodes represent all the tokens-assigned that taxon that co-occur in a sentence with the Ego-node-taxon, and all the sub-taxons (i.e. tokens ‘grouped’ as that sub-taxon)
+    > where sub-taxons occur, the second ring represents the tokens ‘grouped’ in these sub-taxons
+
+    Etc
+    There you go! TO DISCUSS!
+
+I wrote this...
+Alex was describing a situation of what happens when you have 2 filters, one for
+'vehicle' and one for 'street'
+
+At present, let's say the ego node is rooted at token 'keep'
+
+The depth limit is defined to 4 by the user.
+
+if we go with the most obvious current interpretation, then we first restrict
+all Token nodes displayed to be those which have been assigned to taxon Vehicle
+(or its sub-taxons), and then addtionally show nodes that have been assigned to
+taxon Street (or its sub-taxons), in ANY SENTENCE but within the depth range of
+4, so they all have to co-occur within that limit, [whether the intervening
+nodes on the traversed paths that didn't match the filters are kept or displayed
+in any way is unclear].  Adding filters initially decreases the amount of data
+shown and each additional filter forms an 'OR' condition, so expands the data
+shown
+
+if we go with another (foolish) interpretation, adding 2 filters restricts the
+view to only Token nodes which have been classified as both Vehicle and Street,
+but there wouldn't be many such nodes.
+
+if we go with another interpretation, adding the first filter 'vehicle' forms a
+filter on the SENTENCES that are considered to be shown in the graph instead.
+Adding street restricts this set further that the set of sentences has to
+include both vehicle and street (but they can occur anywhere in the sentence,
+even past the depth limit of 4).  However this raises the question of what to do
+with the ego node, which still has the token 'keep'.  Under the current
+implementation, all candidate sentences would also have to contain 'keep' (and
+this would have to be BEFORE the specific vehicle or street tokens).  which is
+slightly strange behaviour.
+
+The idea of a 'root' Token node could be discarded.  In that case we'd have a
+set of trees displayed instead of just 1 tree.  However, then the concept of
+re-centring 'on' a node doesn't make obvious sense any more.  At least it
+doesn't make sense as 'exploring' the corpus, because you can't easily move back
+and forward, how would you be able to describe the state 'before' re-centring?
+
+
+
+
+
+
 
 
 https://stackoverflow.com/questions/44119453/neo4j-shortestpath-with-highest-aggregated-relationship-propertie
