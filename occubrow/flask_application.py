@@ -29,3 +29,12 @@ def get_random_root():
 def get_taxonomy_roots():
     return jsonify(backend.get_taxonomy_roots())
                    
+
+@app.route('/query')
+def get_token_query():
+    # this is the format that axios uses
+    token = flask.request.args.get('root')
+    taxon_uris = flask.request.args.getlist("filter[]")
+    result = backend.search_with_taxon(token, taxon_uris)
+    print(result)
+    return jsonify(result)

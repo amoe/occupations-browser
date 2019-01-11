@@ -1,3 +1,22 @@
+MATCH (to1:Token {content: "keep"}),
+      (ta:Taxon {uri: "tag:solasistim.net,2018-12-28:occubrow/Vehicle/1"})
+OPTIONAL MATCH (to1)-[r:PRECEDES*..4]->(to2:Token)
+WHERE ANY((to2)-[:INSTANCE_OF]->(ta)
+RETURN (COLLECT(to1) + COLLECT(to2)) AS nodes, COLLECT(last(r)) AS rels
+
+MATCH (to1:Token {content: "keep"}),
+      (ta:Taxon {uri: "tag:solasistim.net,2018-12-28:occubrow/Vehicle/1"})
+OPTIONAL MATCH (to1)-[r:PRECEDES*..4]->(to2:Token)
+WHERE (to2)-[:INSTANCE_OF]->(ta)
+RETURN (COLLECT(to1) + COLLECT(to2)) AS nodes, COLLECT(last(r)) AS rels
+
+
+
+
+thinking about this
+
+we can do the simplest thing
+
 
 Alex wrote this...
     OPTION ONE

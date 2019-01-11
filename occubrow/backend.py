@@ -66,6 +66,13 @@ def rebuild_graph(results):
         )
 
     for rel in results['rels']:
+        u = rel.get_start_node()
+        v = rel.get_end_node()
+
+        # skip invalid rels that can come from some queries
+        if not (u in g and v in g):
+            continue
+
         g.add_edge(
             rel.get_start_node(),
             rel.get_end_node(),
@@ -336,5 +343,23 @@ class OccubrowBackend(object):
         return result.single().value('t')['content']
 
     # sparse tree with taxon
-    def search_with_taxon(self, token, taxon_uri):
-        return self.repository.pull_graph(GetTokenRootWithTaxonFilterQuery(token, taxon_uri))
+    def search_with_taxon(self, token, taxon_uris):
+        # just take the first one
+        taxon_uri = taxon_uris[0]
+
+        # g = rebuild_graph(
+        g = rebuild_graph(
+            self.repository.pull_graph(
+                GetTokenRootWithTaxonFilterQuery(token, taxon_uri)
+            )
+        )
+
+        # now reconnect the graph
+        root = get_node_by_attribute(g, 'content', token)
+        for node in g.nodes:
+            g.nodes[node]['strength'] = 0
+            if node != root: g.add_edge(root, node)
+            
+        g.nodes[root]['strength'] = None
+
+        return networkx.tree_data(g, root)
