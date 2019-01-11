@@ -1,3 +1,9 @@
+WITH ["tag:solasistim.net,2018-12-28:occubrow/Vehicle/1", "tag:solasistim.net,2018-12-28:occubrow/Bricks/1"] AS l
+MATCH (ta:Taxon)
+WHERE ta.uri IN l
+RETURN ta;
+
+
 MATCH (to1:Token {content: "keep"}),
       (ta:Taxon {uri: "tag:solasistim.net,2018-12-28:occubrow/Vehicle/1"})
 OPTIONAL MATCH (to1)-[r:PRECEDES*..4]->(to2:Token)
