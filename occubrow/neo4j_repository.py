@@ -41,9 +41,7 @@ class RealNeo4jRepository(object):
         self.driver = driver
 
     def pull_graph(self, canned_statement):
-        print("about to run statement")
         results = self.run_canned_statement(canned_statement)
-        print("got statement results")
         row = results.single()
         return occubrow.shim_graph.shim_subgraph_result(row)
 

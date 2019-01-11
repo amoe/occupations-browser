@@ -343,14 +343,10 @@ class OccubrowBackend(object):
         return result.single().value('t')['content']
 
     # sparse tree with taxon
-    def search_with_taxon(self, token, taxon_uris):
-        # just take the first one
-        taxon_uri = taxon_uris[0]
-
-        # g = rebuild_graph(
+    def search_with_taxons(self, token, taxon_uris):
         g = rebuild_graph(
             self.repository.pull_graph(
-                GetTokenRootWithTaxonFilterQuery(token, taxon_uri)
+                GetTokenRootWithTaxonFilterQuery(token, taxon_uris)
             )
         )
 

@@ -3,8 +3,14 @@ from occubrow.drawing import quickplot
 import networkx
 import pprint
 
+query_filters = [
+    "tag:solasistim.net,2018-12-28:occubrow/Place/1",
+    "tag:solasistim.net,2018-12-28:occubrow/Vehicle/1"
+]
+
+
 b = occubrow.system.get_backend()
-r = b.search_with_taxon('keep', ['tag:solasistim.net,2018-12-28:occubrow/Vehicle/1'])
+r = b.search_with_taxons('keep', query_filters)
 
 pprint.pprint(r)
 

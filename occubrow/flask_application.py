@@ -35,6 +35,5 @@ def get_token_query():
     # this is the format that axios uses
     token = flask.request.args.get('root')
     taxon_uris = flask.request.args.getlist("filter[]")
-    result = backend.search_with_taxon(token, taxon_uris)
-    print(result)
+    result = backend.search_with_taxons(token, taxon_uris)
     return jsonify(result)
