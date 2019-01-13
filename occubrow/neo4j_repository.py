@@ -43,6 +43,12 @@ class RealNeo4jRepository(object):
     def pull_graph(self, canned_statement):
         results = self.run_canned_statement(canned_statement)
         row = results.single()
+
+        # no rows were returned, the graph is empty.  the calling code can choose
+        # to handle this case specially
+        if row is None:
+            return {'nodes': [], 'rels': []}
+
         return occubrow.shim_graph.shim_subgraph_result(row)
 
     # wrapper to allow asserting calls on this type

@@ -5,13 +5,6 @@ from flask.json import jsonify
 app = flask.Flask("occubrow")
 backend = occubrow.system.get_backend()
 
-@app.route('/tree')
-def get_tree():
-    root = flask.request.args.get('root')
-    depth_limit = flask.request.args.get('depth_limit')
-
-    return jsonify(backend.get_token_tree(root, int(depth_limit)))
-
 @app.route('/taxonomy')
 def get_taxonomy():
     root = flask.request.args.get('root')
@@ -28,12 +21,23 @@ def get_random_root():
 @app.route('/taxonomy-roots')
 def get_taxonomy_roots():
     return jsonify(backend.get_taxonomy_roots())
-                   
 
 @app.route('/query')
 def get_token_query():
     # this is the format that axios uses
     token = flask.request.args.get('root')
+    depth_limit = int(flask.request.args.get('depth_limit'))
     taxon_uris = flask.request.args.getlist("filter[]")
-    result = backend.search_with_taxons(token, taxon_uris)
+
+    if taxon_uris:
+        result = backend.search_with_taxons(token, taxon_uris, depth_limit)
+    else:
+        result = backend.get_token_tree(token, depth_limit)
+
+    return jsonify(result)
+
+@app.route('/contexts')
+def get_contexts():
+    token = flask.request.args.get('token')
+    result = backend.get_contexts(token)
     return jsonify(result)

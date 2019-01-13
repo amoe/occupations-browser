@@ -238,18 +238,19 @@ MATCH (ta1:Taxon)
 OPTIONAL MATCH (ta1)-[:SUPERCATEGORY_OF*]->(ta2:Taxon)
 WHERE ta1.uri IN {taxon_uri_list}
 WITH {taxon_uri_list} + COLLECT(ta2.uri) AS validTaxonUris
-MATCH (to1:Token {content: {wanted_token}}), (to1)-[r:PRECEDES*..10]->(to2:Token), (to2)-[:INSTANCE_OF]->(ta:Taxon)
+MATCH (to1:Token {content: {wanted_token}}), (to1)-[r:PRECEDES*..%d]->(to2:Token), (to2)-[:INSTANCE_OF]->(ta:Taxon)
 WHERE ta.uri IN validTaxonUris
 RETURN COLLECT(to1) + COLLECT(to2) AS nodes, [] AS rels
 """
 
 class GetTokenRootWithTaxonFilterQuery(object):
-    def __init__(self, token, taxon_uri_list):
+    def __init__(self, token, taxon_uri_list, depth_limit):
         self.token = token
         self.taxon_uri_list = taxon_uri_list
+        self.depth_limit = depth_limit
 
     def get_cypher(self):
-        return GET_TOKEN_ROOT_WITH_TAXON_FILTER_QUERY
+        return GET_TOKEN_ROOT_WITH_TAXON_FILTER_QUERY % self.depth_limit
 
     def get_parameters(self):
         return {

@@ -343,12 +343,16 @@ class OccubrowBackend(object):
         return result.single().value('t')['content']
 
     # sparse tree with taxon
-    def search_with_taxons(self, token, taxon_uris):
+    def search_with_taxons(self, token, taxon_uris, depth_limit):
         g = rebuild_graph(
             self.repository.pull_graph(
-                GetTokenRootWithTaxonFilterQuery(token, taxon_uris)
+                GetTokenRootWithTaxonFilterQuery(token, taxon_uris, depth_limit)
             )
         )
+
+        # if the graph is empty then nothing was matched.  re-add the root
+        # node
+        g.add_node(0, content=token)
 
         # now reconnect the graph
         root = get_node_by_attribute(g, 'content', token)

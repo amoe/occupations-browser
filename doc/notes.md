@@ -1,3 +1,16 @@
+MATCH (ta1:Taxon)
+OPTIONAL MATCH (ta1)-[:SUPERCATEGORY_OF*]->(ta2:Taxon)
+WHERE ta1.uri IN []
+WITH [] + COLLECT(ta2.uri) AS validTaxonUris
+MATCH (to1:Token {content: "Andrew"}), (to1)-[r:PRECEDES*..10]->(to2:Token)
+WITH to1 AS to1, to2 as to2
+MATCH (to3)-[:INSTANCE_OF]->(ta:Taxon)
+WHERE ta.uri IN []
+RETURN COLLECT(to1) + COLLECT(to3) AS nodes, [] AS rels
+
+there is some problem here the problem being that the WHERE clauses just filters
+rows meaning that we don't get any returns for an empty graph.
+
 MATCH (to:Token {content: "keep"})<-[:CONTAINS]-(s:Sentence)
 RETURN s
 
