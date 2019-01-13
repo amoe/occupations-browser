@@ -257,3 +257,20 @@ class GetTokenRootWithTaxonFilterQuery(object):
             'taxon_uri_list': self.taxon_uri_list
         }
     
+
+GET_CONTEXTS_QUERY = """
+MATCH (to:Token {content: {wanted_token}})<-[:CONTAINS]-(s:Sentence)
+RETURN s
+"""
+
+class GetContextsQuery(object):
+    def __init__(self, token):
+        self.token = token
+
+    def get_cypher(self):
+        return GET_CONTEXTS_QUERY
+
+    def get_parameters(self):
+        return {
+            'wanted_token': self.token
+        }

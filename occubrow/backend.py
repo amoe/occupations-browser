@@ -9,7 +9,7 @@ from occubrow.canned_statements \
          CreateGroupNodeQuery, ClearAllDataQuery, AddAnnotationStatement, \
          GetEntireGraphQuery, GetEntireTokenGraphQuery, SlurpTaxonomiesQuery, \
          GetTokenTreeQuery, GetRandomTokenQuery, GetTaxonomyRootsQuery, \
-         GetTokenRootWithTaxonFilterQuery
+         GetTokenRootWithTaxonFilterQuery, GetContextsQuery
 import operator
 from logging import debug
 import occubrow.queries
@@ -359,3 +359,13 @@ class OccubrowBackend(object):
         g.nodes[root]['strength'] = None
 
         return networkx.tree_data(g, root)
+
+    def get_contexts(self, token):
+        result = self.repository.run_canned_statement(GetContextsQuery(token))
+        return [
+            {'uuid': n['uuid'],
+             'content': n['content']}
+             for n in result.value('s')
+        ]
+        
+    

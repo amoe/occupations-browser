@@ -1,3 +1,7 @@
+MATCH (to:Token {content: "keep"})<-[:CONTAINS]-(s:Sentence)
+RETURN s
+
+
 WITH ["tag:solasistim.net,2018-12-28:occubrow/Vehicle/1", "tag:solasistim.net,2018-12-28:occubrow/Bricks/1"] AS l
 MATCH (ta:Taxon)
 WHERE ta.uri IN l
