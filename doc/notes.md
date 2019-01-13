@@ -1,3 +1,92 @@
+<div class="page">
+    <widget-view :taxonomies="taxonomies" ref="widgetView"></widget-view>
+
+  <el-main>
+    <el-popover placement="bottom"
+                :title="popoverTitle"
+                width="200"
+                trigger="manual"
+                v-model="popoverVisible">
+      <div v-for="sentence in displayedContexts">
+        <span v-for="token in sentence.content">
+          <span v-on:click="recenter(token)"
+                class="context-token">{{token}}</span>&nbsp;
+        </span>
+      </div>
+    </el-popover>
+
+    <svg id="svg-frame" :width="width * 2" :height="height">
+      <graph-view v-if="isDataLoaded"
+                  v-on:node-clicked="handleNodeClicked"
+                  :graph-data="graphData"
+                  :width="width"
+                  :height="height"
+                  :x-margin="162"
+                  :y-margin="0"
+                  :depth-offset="120"
+                  :text-offset="22"
+                  :text-content-template="textContentTemplate"
+                  :breadth="360"
+                  ref="graphView"></graph-view>
+    </svg>
+  </el-main>
+
+  <el-footer>
+
+  <el-select v-model="chosenRoot"
+             id="root-selector"
+             filterable
+             remote
+             placeholder="Please enter a keyword"
+             :remote-method="remoteMethod"
+             :loading="loading">
+    <el-option v-for="item in filteredTokenSelection"
+               :key="item"
+               :label="item"
+               :value="item">
+    </el-option>
+  </el-select>
+
+    <div v-if="metrics">
+      <span>Order: {{metrics.order}}.</span>&nbsp;
+      <span>Size: {{metrics.size}}.</span>&nbsp;
+      <span>Depth limit: {{depthLimit}}.</span>
+      <!-- can't list max depth yet due to some communication problems -->
+    </div>
+    AGPL 2019
+  </el-footer>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 MATCH (ta1:Taxon)
 OPTIONAL MATCH (ta1)-[:SUPERCATEGORY_OF*]->(ta2:Taxon)
 WHERE ta1.uri IN []
