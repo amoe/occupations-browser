@@ -293,3 +293,37 @@ class GetMetricsQuery(object):
     def get_parameters(self):
         return {}
 
+SEARCH_TOKENS_QUERY = """
+MATCH (t:Token)
+WHERE toLower(t.content) CONTAINS toLower({substring})
+RETURN t.content AS content
+ORDER BY toLower(t.content) ASC
+"""
+
+class SearchTokensQuery(object):
+    def __init__(self, substring):
+        self.substring = substring
+
+    def get_cypher(self):
+        return SEARCH_TOKENS_QUERY
+
+    def get_parameters(self):
+        return {
+            'substring': self.substring
+        }
+
+GET_ALL_TOKENS_QUERY = """
+MATCH (t:Token)
+RETURN t.content AS content
+ORDER BY toLower(t.content) ASC
+"""
+
+class GetAllTokensQuery(object):
+    def __init__(self):
+        pass
+
+    def get_cypher(self):
+        return GET_ALL_TOKENS_QUERY
+
+    def get_parameters(self):
+        return {}

@@ -10,7 +10,8 @@ from occubrow.canned_statements \
          CreateGroupNodeQuery, ClearAllDataQuery, AddAnnotationStatement, \
          GetEntireGraphQuery, GetEntireTokenGraphQuery, SlurpTaxonomiesQuery, \
          GetTokenTreeQuery, GetRandomTokenQuery, GetTaxonomyRootsQuery, \
-         GetTokenRootWithTaxonFilterQuery, GetContextsQuery, GetMetricsQuery
+         GetTokenRootWithTaxonFilterQuery, GetContextsQuery, GetMetricsQuery, \
+         SearchTokensQuery, GetAllTokensQuery
 import operator
 from logging import debug
 import occubrow.queries
@@ -372,4 +373,12 @@ class OccubrowBackend(object):
              for n in result.value('s')
         ]
         
+
+    def get_all_tokens(self):
+        result = self.repository.run_canned_statement(GetAllTokensQuery())
+        return [r['content'] for r in result]
+        
+    def search_tokens(self, substring):
+        result = self.repository.run_canned_statement(SearchTokensQuery(substring))
+        return [r['content'] for r in result]
     

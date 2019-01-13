@@ -41,3 +41,13 @@ def get_contexts():
     token = flask.request.args.get('token')
     result = backend.get_contexts(token)
     return jsonify(result)
+
+@app.route('/tokens')
+def get_tokens():
+    substring = flask.request.args.get('substring')
+    if substring:
+        result = backend.search_tokens(substring)
+    else:
+        result = backend.get_all_tokens()
+
+    return jsonify(result)
