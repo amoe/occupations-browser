@@ -2,14 +2,15 @@ import neo4j
 import networkx
 import networkx.readwrite.json_graph
 import occubrow.errors as errors
-from occubrow.utility import get_node_by_attribute, dfs_tree_with_node_attributes
+from occubrow.utility \
+  import get_node_by_attribute, dfs_tree_with_node_attributes, is_null_graph
 from occubrow.drawing import quickplot
 from occubrow.canned_statements \
   import CreateCompoundNodeQuery, CreateCompoundLink, CreateGroupLink, \
          CreateGroupNodeQuery, ClearAllDataQuery, AddAnnotationStatement, \
          GetEntireGraphQuery, GetEntireTokenGraphQuery, SlurpTaxonomiesQuery, \
          GetTokenTreeQuery, GetRandomTokenQuery, GetTaxonomyRootsQuery, \
-         GetTokenRootWithTaxonFilterQuery, GetContextsQuery
+         GetTokenRootWithTaxonFilterQuery, GetContextsQuery, GetMetricsQuery
 import operator
 from logging import debug
 import occubrow.queries
@@ -333,10 +334,8 @@ class OccubrowBackend(object):
     
 
     def get_metrics(self):
-        return {
-            'order': 42,
-            'size': 60
-        }
+        r = self.repository.run_canned_statement(GetMetricsQuery())
+        return r.data()[0]
 
     def pick_root(self):
         result = self.repository.run_canned_statement(GetRandomTokenQuery())
@@ -352,7 +351,8 @@ class OccubrowBackend(object):
 
         # if the graph is empty then nothing was matched.  re-add the root
         # node
-        g.add_node(0, content=token)
+        if is_null_graph(g):
+            g.add_node(0, content=token)
 
         # now reconnect the graph
         root = get_node_by_attribute(g, 'content', token)

@@ -38,3 +38,6 @@ def get_node_by_attribute(g, attribute_name, attribute_value):
         raise Exception("ambiguous result")
 
     return result_set[0]
+
+def is_null_graph(g):
+    return g.number_of_nodes() == 0 and g.number_of_edges == 0

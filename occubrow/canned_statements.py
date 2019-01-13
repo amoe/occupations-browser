@@ -275,3 +275,21 @@ class GetContextsQuery(object):
         return {
             'wanted_token': self.token
         }
+
+GET_METRICS_QUERY = """
+MATCH (n)
+WITH COUNT(n) AS order
+MATCH ()-[r]->()
+RETURN order, COUNT(r) AS size
+"""
+
+class GetMetricsQuery(object):
+    def __init__(self):
+        pass
+
+    def get_cypher(self):
+        return GET_METRICS_QUERY
+
+    def get_parameters(self):
+        return {}
+
