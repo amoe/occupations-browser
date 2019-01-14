@@ -327,3 +327,25 @@ class GetAllTokensQuery(object):
 
     def get_parameters(self):
         return {}
+
+
+GET_CENTRALITY_QUERY = """
+CALL algo.closeness.stream('Token', 'PRECEDES')
+YIELD nodeId, centrality
+RETURN algo.getNodeById(nodeId).content AS node, centrality
+ORDER BY centrality %s
+LIMIT 10;
+"""
+
+class GetCentralityQuery(object):
+    def __init__(self, direction):
+        if direction == 'DESC' or direction == 'ASC':
+            self.direction = direction
+        else:
+            raise Exception('invalid direction')
+
+    def get_cypher(self):
+        return GET_CENTRALITY_QUERY % self.direction
+
+    def get_parameters(self):
+        return {}

@@ -11,7 +11,7 @@ from occubrow.canned_statements \
          GetEntireGraphQuery, GetEntireTokenGraphQuery, SlurpTaxonomiesQuery, \
          GetTokenTreeQuery, GetRandomTokenQuery, GetTaxonomyRootsQuery, \
          GetTokenRootWithTaxonFilterQuery, GetContextsQuery, GetMetricsQuery, \
-         SearchTokensQuery, GetAllTokensQuery
+         SearchTokensQuery, GetAllTokensQuery, GetCentralityQuery
 import operator
 from logging import debug
 import occubrow.queries
@@ -381,4 +381,7 @@ class OccubrowBackend(object):
     def search_tokens(self, substring):
         result = self.repository.run_canned_statement(SearchTokensQuery(substring))
         return [r['content'] for r in result]
-    
+
+    def get_centrality_statistics(self):
+        result = self.repository.run_canned_statement(GetCentralityQuery('DESC'))
+        return result.data()

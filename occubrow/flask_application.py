@@ -51,3 +51,7 @@ def get_tokens():
         result = backend.get_all_tokens()
 
     return jsonify(result)
+
+@app.route('/centrality')
+def get_centrality_statistics():
+    return jsonify(backend.get_centrality_statistics())
