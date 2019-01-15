@@ -35,17 +35,6 @@ def transform(g):
 
     result.add_edges_from(g.edges)
 
-    sources = [v for v, indegree in result.in_degree() if indegree == 0]
-
-    if not sources:
-        raise Exception('no root somehow')
-
-    if len(sources) != 1:
-        raise Exception('ambiguous root', len(sources))
-
-    root = sources[0]
-    result.nodes[root]['strength'] = None
-
     return result
 
 # Preprocessing step to strip punctuation, terrible
@@ -301,6 +290,9 @@ class OccubrowBackend(object):
         # intensive, and then to dfs_tree it to get the specific tree.
         g = rebuild_graph(self.repository.pull_graph(GetTokenTreeQuery(token, depth_limit)))
 
+        print(g.number_of_nodes())
+        print(g.number_of_edges())
+
         if g.number_of_nodes() == 0:
             raise Exception('Result tree was empty? 1')
 
@@ -311,6 +303,7 @@ class OccubrowBackend(object):
         g2 = transform(g)
 
         root = get_node_by_attribute(g2, 'content', token)
+        g2.nodes[root]['strength'] = None
         tree = dfs_tree_with_node_attributes(g2, root, depth_limit=depth_limit)
 
         print("Number of nodes in tree", tree.number_of_nodes())

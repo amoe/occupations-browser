@@ -40,4 +40,15 @@ def get_node_by_attribute(g, attribute_name, attribute_value):
     return result_set[0]
 
 def is_null_graph(g):
-    return g.number_of_nodes() == 0 and g.number_of_edges == 0
+    return g.number_of_nodes() == 0 and g.number_of_edges() == 0
+
+
+def remove_cycles(g):
+    cycles_left = True
+    while cycles_left:
+        try:
+            cycles = networkx.find_cycle(g)
+            print(cycles)
+            g.remove_edges_from(cycles)
+        except networkx.exception.NetworkXNoCycle as e:
+            cycles_left = False

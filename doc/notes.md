@@ -1,3 +1,4 @@
+/query?root=prisoner&depth_limit=3
 
 WHERE all(rel in relationships(path) WHERE rel.occurrences > 10)
 
