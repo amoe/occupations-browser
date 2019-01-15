@@ -1,3 +1,34 @@
+Data layer needs to be refactored to encapsulate a custom data function
+
+      <div class="sidebar">
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam non tempor mi, vitae blandit erat. Curabitur felis mauris, aliquet vel congue sit amet, scelerisque ac turpis. Phasellus scelerisque ipsum sed lorem posuere, ultricies rutrum metus eleifend. Cras non enim non sem ornare facilisis condimentum vitae diam. Donec sit amet quam feugiat, interdum tortor id, fermentum lorem. Pellentesque quis ullamcorper diam, ut lacinia ipsum. Duis vel ultrices ligula.</p>
+        <p>Proin tristique hendrerit lorem. Morbi aliquet sodales efficitur. Pellentesque imperdiet felis eros, at ultrices nunc dignissim at. Fusce non tristique augue, in interdum magna. Maecenas rhoncus ex eros, sed suscipit quam elementum eget. Maecenas vitae tincidunt eros, ac volutpat turpis. Curabitur imperdiet ut quam nec suscipit. Donec commodo ex convallis justo rhoncus, at vehicula ex dapibus. Fusce pellentesque arcu ac viverra interdum.</p>
+        <p>Quisque urna turpis, sodales ac vulputate at, pharetra sed turpis. Mauris maximus efficitur cursus. Aenean ullamcorper nunc non ipsum fermentum gravida. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In hac habitasse platea dictumst. Quisque euismod lectus ac neque tincidunt, quis auctor augue feugiat. Sed ac leo egestas, suscipit sapien ut, blandit nibh. Duis malesuada tempus hendrerit. Phasellus pulvinar ullamcorper faucibus.</p>
+      </div>
+
+<circle r="16" cx="0" cy="0" opacity="0.2" class="ghost-node" 
+        data-svg-origin="-16 -16" transform="matrix(1,0,0,1,0,0)"
+        style="cursor: move; touch-action: none; user-select: none; z-index: 1000; transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 39, 125, 0, 1);"><title>a</title></circle>
+
+Presentation outline
+
+Data model data models 
+Vue implementation
+notes on the implementation of graphs
+centrality measure and the thing
+licensing and technology
+
+Fix clicking and pressing enter on buttons
+Fix heightened window
+Taxonomy spec being wiped on drag
+Set serif to be closed by default
+Snap back shadows and do not register click
+Fix "no root somehow"
+Loading spinner
+Filtering large trees
+
+Narrow the data to the available stuff based on patterns from occupation csv.
+
 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam non tempor mi, vitae blandit erat. Curabitur felis mauris, aliquet vel congue sit amet, scelerisque ac turpis. Phasellus scelerisque ipsum sed lorem posuere, ultricies rutrum metus eleifend. Cras non enim non sem ornare facilisis condimentum vitae diam. Donec sit amet quam feugiat, interdum tortor id, fermentum lorem. Pellentesque quis ullamcorper diam, ut lacinia ipsum. Duis vel ultrices ligula.</p>
 
 <p>Proin tristique hendrerit lorem. Morbi aliquet sodales efficitur. Pellentesque imperdiet felis eros, at ultrices nunc dignissim at. Fusce non tristique augue, in interdum magna. Maecenas rhoncus ex eros, sed suscipit quam elementum eget. Maecenas vitae tincidunt eros, ac volutpat turpis. Curabitur imperdiet ut quam nec suscipit. Donec commodo ex convallis justo rhoncus, at vehicula ex dapibus. Fusce pellentesque arcu ac viverra interdum.</p>

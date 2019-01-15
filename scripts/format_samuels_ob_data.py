@@ -19,7 +19,7 @@ import re
 import functools
 import random
 
-SAMPLING_PROBABILITY = 0.01
+SAMPLING_PROBABILITY = 1.1
 
 
 def strip_semtag(val):
@@ -87,9 +87,13 @@ def handle_token(containing_sentence, row):
 success = 0
 errors = []
 
-def handle_sentence(group):
+def handle_sentence(group_index, group, predicate):
     global success
     global errors
+
+    if not predicate(group_index, group):
+        return
+
     sentence = soup.new_tag('sentence')
 
     for index, row in group.iterrows():
@@ -102,10 +106,22 @@ def handle_sentence(group):
 
     root.append(sentence)
 
+blah = set([])
+with open('/home/amoe/dev/occubrow/backend/scripts/relevant_groups.lst', 'r') as f2:
+    blah = set([int(x.rstrip()) for x in f2])
+    print(blah)
+
+def filter_pred(group_index, group):
+    global blah
+    return group_index in blah
+
+def unfiltered_pred(group_index, group):
+    return True
+
 with driver.session() as session:
-    for name, group in result:
+    for group_index, group in result:
         if random.random() < SAMPLING_PROBABILITY:
-            handle_sentence(group)
+            handle_sentence(group_index, group, predicate=unfiltered_pred)
 
 with open('samuels-annotated.xml', 'w') as f:
     f.write(soup.prettify())
