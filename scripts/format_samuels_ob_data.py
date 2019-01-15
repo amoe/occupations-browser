@@ -19,7 +19,7 @@ import re
 import functools
 import random
 
-SAMPLING_PROBABILITY = 1.1
+SAMPLING_PROBABILITY = 0.01
 
 
 def strip_semtag(val):
@@ -106,14 +106,14 @@ def handle_sentence(group_index, group, predicate):
 
     root.append(sentence)
 
-blah = set([])
-with open('/home/amoe/dev/occubrow/backend/scripts/relevant_groups.lst', 'r') as f2:
-    blah = set([int(x.rstrip()) for x in f2])
-    print(blah)
+# blah = set([])
+# with open('/home/amoe/dev/occubrow/backend/scripts/relevant_groups.lst', 'r') as f2:
+#     blah = set([int(x.rstrip()) for x in f2])
+#     print(blah)
 
-def filter_pred(group_index, group):
-    global blah
-    return group_index in blah
+# def filter_pred(group_index, group):
+#     global blah
+#     return group_index in blah
 
 def unfiltered_pred(group_index, group):
     return True

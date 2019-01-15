@@ -1,3 +1,11 @@
+        <div v-for="sentence in displayedContexts" class="context-popover">
+          <span v-for="token in sentence.content">
+            <span v-on:click="recenter(token)"
+                  class="context-token">{{token}}</span>&nbsp;
+      </span>
+    </div>
+
+
 MATCH (st:StopWord)
 WITH COLLECT(st.content) as stopWords
 CALL algo.closeness.stream('Token', 'PRECEDES')

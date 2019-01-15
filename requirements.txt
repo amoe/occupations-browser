@@ -1,3 +1,4 @@
+pandas==0.23.3
 neo4j==1.7.1
 boltkit==1.2.0
 networkx==2.1
