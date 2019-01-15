@@ -17,6 +17,10 @@ import bs4
 import neo4j
 import re
 import functools
+import random
+
+SAMPLING_PROBABILITY = 0.01
+
 
 def strip_semtag(val):
     v1 = re.sub(r'^[^\[]*\[', '', val)
@@ -83,41 +87,25 @@ def handle_token(containing_sentence, row):
 success = 0
 errors = []
 
+def handle_sentence(group):
+    global success
+    global errors
+    sentence = soup.new_tag('sentence')
+
+    for index, row in group.iterrows():
+        print(index)
+        try:
+            handle_token(sentence, row)
+            success = success + 1
+        except AmbiguousTagException as e:
+            errors.append(e)
+
+    root.append(sentence)
 
 with driver.session() as session:
     for name, group in result:
-        sentence = soup.new_tag('sentence')
-
-        for index, row in group.iterrows():
-            print(index)
-            try:
-                handle_token(sentence, row)
-                success = success + 1
-            except AmbiguousTagException as e:
-                errors.append(e)
-
-        root.append(sentence)
-
-        # Get back to the relatively pristine phrase with this.
-#        print(group['vard'].str.cat(sep=' '))
-        # From here we know the overall phrase (sentence)
-        # and we also know the taxonomical class of each token
-        # so all that remains is to produce an importable form
-
-        # What importable form can we produce?
-        # LOAD CSV format can be used.
-        # It would really be worth freezing the documentation for n4j and
-        # n4j pytohn driver.
-        # We can easily write a testable taxonomy importer.
-
-
-
-# So the problem with this is that once we have the data we need some way to
-# link it into the existing taxonomy.
-
-# So produce an XML-annotated set
-
-#"18000528-0074"
+        if random.random() < SAMPLING_PROBABILITY:
+            handle_sentence(group)
 
 with open('samuels-annotated.xml', 'w') as f:
     f.write(soup.prettify())
