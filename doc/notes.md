@@ -1,3 +1,6 @@
+
+WHERE all(rel in relationships(path) WHERE rel.occurrences > 10)
+
         <div v-for="sentence in displayedContexts" class="context-popover">
           <span v-for="token in sentence.content">
             <span v-on:click="recenter(token)"

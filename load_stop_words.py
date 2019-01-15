@@ -11,4 +11,6 @@ with open('stopwords.json', 'r') as f:
 for word in words:
     backend.register_stop_word(word)
 
+backend.register_stop_word('I')
+
 print("Loaded stop words.")
