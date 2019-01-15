@@ -1,3 +1,14 @@
+MATCH (st:StopWord)
+WITH COLLECT(st.content) as stopWords
+CALL algo.closeness.stream('Token', 'PRECEDES')
+YIELD nodeId, centrality
+WITH algo.getNodeById(nodeId).content as token, centrality
+WHERE NOT token in stopWords
+RETURN token AS node, centrality
+ORDER BY centrality DESC
+LIMIT 10;
+
+
 Data layer needs to be refactored to encapsulate a custom data function
 
       <div class="sidebar">

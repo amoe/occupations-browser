@@ -10,6 +10,7 @@ clear_n4j() {
 
 
 clear_n4j
+python3 load_stop_words.py
 python3 attempt_samuels_load.py ~/download/media_405073_en.xlsx
 python3 scripts/format_samuels_ob_data.py ~/dev/samdist/intermediate_data/m_nonl_combined.csv
 python3 import_sample_sentences.py samuels-annotated.xml

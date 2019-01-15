@@ -328,11 +328,14 @@ class GetAllTokensQuery(object):
     def get_parameters(self):
         return {}
 
-
 GET_CENTRALITY_QUERY = """
+MATCH (st:StopWord)
+WITH COLLECT(st.content) as stopWords
 CALL algo.closeness.stream('Token', 'PRECEDES')
 YIELD nodeId, centrality
-RETURN algo.getNodeById(nodeId).content AS node, centrality
+WITH algo.getNodeById(nodeId).content as token, centrality
+WHERE NOT token in stopWords
+RETURN token AS node, centrality
 ORDER BY centrality %s
 LIMIT 10;
 """
@@ -349,3 +352,17 @@ class GetCentralityQuery(object):
 
     def get_parameters(self):
         return {}
+
+REGISTER_STOP_WORD_QUERY = """
+MERGE (st:StopWord {content: {token}});
+"""
+
+class RegisterStopWordQuery(object):
+    def __init__(self, token):
+        self.token = token
+
+    def get_cypher(self):
+        return REGISTER_STOP_WORD_QUERY
+
+    def get_parameters(self):
+        return {'token': self.token}
