@@ -52,3 +52,19 @@ def remove_cycles(g):
             g.remove_edges_from(cycles)
         except networkx.exception.NetworkXNoCycle as e:
             cycles_left = False
+
+
+
+def diagnose_nontree(g, purported_root):
+    g2 = networkx.dfs_tree(g, purported_root)
+
+    print("EDGE COUNT=", g.number_of_edges())
+    print("EDGE COUNT=", g2.number_of_edges())
+    print("Missing edges in tree:", g.edges() - g2.edges())
+
+
+    print("NODE COUNT=", g.number_of_nodes())
+    print("NODE COUNT=", g2.number_of_nodes())
+    print("Missing nodes in tree:", g.nodes() - g2.nodes())
+
+    
