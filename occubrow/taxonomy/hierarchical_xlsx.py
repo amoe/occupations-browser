@@ -28,7 +28,6 @@ def get_useful_cell_info(row_values):
     count = 0
     first_index = None
 
-
     for index, value in enumerate(row_values):
         if value is not None:
             count += 1
@@ -52,10 +51,15 @@ while should_continue:
     level_indices = []
     for row in sheet:
         this_row_index = row[0].row
+        print(this_row_index)
         row_values = [x.value for x in row]
         info = get_useful_cell_info(row_values)
         first_index = info['first_index']
-        if first_index > current_row:
+
+        if first_index is None:
+            continue
+
+        if  first_index > current_row:
             should_continue = True
             continue
 
@@ -94,12 +98,17 @@ for level, table in enumerate(all_indices):
             g.add_edge(parent['content'], item['content'])
 
 
-print("nodes = %d", g.number_of_nodes())
-print("edges = %d", g.number_of_edges())
+# now reparent the graph
+
+
+print("nodes =", g.number_of_nodes())
+print("edges =", g.number_of_edges())
+
+
 
 for node, in_degree in g.in_degree():
     if in_degree == 0:
-        print("node is", node)
+
 
 g2 = networkx.dfs_tree(g, 'Occupation')
 print("nodes = %d", g2.number_of_nodes())
@@ -110,7 +119,7 @@ print("edges = %d", g2.number_of_edges())
 
 edge_set_1 = g.edges
 edge_set_2 = g2.edges
-print(edge_set_1 - edge_set_2)
+#print(edge_set_1 - edge_set_2)
 
 
 #json_data = networkx.readwrite.json_graph.tree_data(g2, 'Occupation')
