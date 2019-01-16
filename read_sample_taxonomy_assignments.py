@@ -2,12 +2,6 @@ import openpyxl
 import sys
 import occubrow.system
 
-
-backend = occubrow.system.get_backend()
-
-wb = openpyxl.load_workbook(sys.argv[1])
-sheet = wb.active
-
 def cell_to_record(row):
     return {
         'sentence': row[1].value.rstrip(),
@@ -19,9 +13,18 @@ def cell_to_record(row):
         }
     }
 
-for row in sheet.iter_rows(min_row=2):
-    record = cell_to_record(row)
+class TaxonomyAssignmentReader(object):
+    def run(self, path):
+        wb = openpyxl.load_workbook(path)
+        sheet = wb.active
 
-    for k, v in record['assignments'].items():
-        if v is not None:
-            
+        for row in sheet.iter_rows(min_row=2):
+            record = cell_to_record(row)
+
+            for k, v in record['assignments'].items():
+                if v is not None:
+                    print(k, v)
+
+if __name__ == '__main__':
+    obj = TaxonomyAssignmentReader()
+    obj.run(sys.argv[1])
