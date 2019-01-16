@@ -1,6 +1,7 @@
 import occubrow.backend
 from load_stop_words import load_stop_words
 from load_ab_sample_taxonomy import do_load
+from create_indexes import create_indexes
 
 backend = occubrow.system.get_backend()
 backend.clear_all_data()

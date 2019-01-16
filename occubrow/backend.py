@@ -384,8 +384,8 @@ class OccubrowBackend(object):
         result = self.repository.run_canned_statement(RegisterStopWordQuery(token))
         return result
 
-    def get_taxon_by_content(self, content):
-        result = self.repository.run_canned_statement(LookupTaxonQuery(content))
+    def get_taxon_by_content(self, content, key):
+        result = self.repository.run_canned_statement(LookupTaxonQuery(content, key))
         uri = result.value('uri')
 
         if len(uri) == 0:
