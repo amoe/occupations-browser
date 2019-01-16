@@ -39,7 +39,7 @@ backend = occubrow.system.get_backend()
 
 @functools.lru_cache(maxsize=None)
 def lookup_semtag_value_in_neo(semtag):
-    return backend.get_taxon_by_content(semtag)
+    return backend.get_taxon_by_content(semtag, 'theme')
 
 def unfiltered_pred(group_index, group):
     return True
