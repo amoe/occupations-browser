@@ -5,9 +5,14 @@ import networkx
 # we should be returning a new graph with the string value moved into an attribute
 
 class TaxonomySurrogateURIAssigner(object):
-    def assign(self, g):
+    def __init__(self, tag_date):
+        """
+        Please hardcode tag_date within the source in YYYY-MM-DD form.
+        """
+        self.tag_date = tag_date
         self.index = {}
-        
+
+    def assign_to_entire_graph(self, g):
         g2 = networkx.DiGraph()
 
         for n in g.nodes:
@@ -31,7 +36,7 @@ class TaxonomySurrogateURIAssigner(object):
         candidate = None
 
         while not candidate_found:
-            candidate = "tag:solasistim.net,2018-12-28:occubrow/%s/%d" % (s, n)
+            candidate = "tag:solasistim.net,%s:occubrow/%s/%d" % (self.tag_date, s, n)
             if candidate in self.index:
                 n += 1
                 continue

@@ -1,13 +1,15 @@
 import networkx
 import openpyxl
 import pprint
+from occubrow.taxonomy.uri_generator import TaxonomySurrogateURIAssigner
 
 # Booth-Armstrong file involves an excel sheet
 
 class HierarchicalXlsxTaxonomyLoader(object):
-    def __init__(self, path):
+    def __init__(self, path, tag_date):
         wb = openpyxl.load_workbook(path)
         self.sheet = wb.active
+        self.uri_generator = TaxonomySurrogateURIAssigner(tag_date)
 
     def get_useful_cell_info(self, row_values):
         count = 0
@@ -80,17 +82,23 @@ class HierarchicalXlsxTaxonomyLoader(object):
 
         for level, table in enumerate(all_indices):
             for item in table:
-                g.add_node(item['content'])
+                content = item['content']
+                g.add_node(
+                    self.uri_generator.make_tag_uri(content), content=content
+                )
 
                 if level > 0:
                     parent = self.find_parent(all_indices, item['row_index'], level)
-                    g.add_edge(parent['content'], item['content'])
+                    u = self.uri_generator.lookup(parent['content'])
+                    v = self.uri_generator.lookup(item['content'])
+                    g.add_edge(u, v)
 
-        g.add_node(reparent_node)
+        reparent_node_uri = self.uri_generator.make_tag_uri(reparent_node)
+        g.add_node(reparent_node_uri, content=reparent_node)
 
         # now reparent the graph
         for node, in_degree in g.in_degree():
-            if in_degree == 0 and node != reparent_node:
-                g.add_edge(reparent_node, node)
+            if in_degree == 0 and node != reparent_node_uri:
+                g.add_edge(reparent_node_uri, node)
 
-        return g
+        return g, reparent_node_uri
