@@ -12,7 +12,7 @@ from occubrow.canned_statements \
          GetTokenTreeQuery, GetRandomTokenQuery, GetTaxonomyRootsQuery, \
          GetTokenRootWithTaxonFilterQuery, GetContextsQuery, GetMetricsQuery, \
          SearchTokensQuery, GetAllTokensQuery, GetCentralityQuery, \
-         RegisterStopWordQuery
+         RegisterStopWordQuery, LookupTaxonQuery
 import operator
 from logging import debug
 import occubrow.queries
@@ -383,3 +383,16 @@ class OccubrowBackend(object):
     def register_stop_word(self, token):
         result = self.repository.run_canned_statement(RegisterStopWordQuery(token))
         return result
+
+    def get_taxon_by_content(self, content):
+        result = self.repository.run_canned_statement(LookupTaxonQuery(content))
+        uri = result.value('uri')
+
+        if len(uri) == 0:
+            return None
+
+        if len(uri) != 1:
+            raise errors.AmbiguousTaxonException(content)
+
+        return uri[0]
+

@@ -39,7 +39,7 @@ def get_concat_id(seq, index):
 
 class SamuelsLoader(object):
     def load(self, path):
-        wb = openpyxl.load_workbook(sys.argv[1])
+        wb = openpyxl.load_workbook(path)
         sheet = wb.active
         g = networkx.DiGraph()
 

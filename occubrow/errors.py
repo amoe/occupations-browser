@@ -7,7 +7,8 @@ class NoRootsFoundError(Exception):
 class AmbiguousRootError(Exception):
     pass
 
-
 class AnnotationNotCreatedError(Exception):
     pass
 
+class AmbiguousTaxonException(Exception):
+    pass

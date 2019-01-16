@@ -18,93 +18,14 @@ import neo4j
 import re
 import functools
 import random
-
-SAMPLING_PROBABILITY = 0.01
-
+import occubrow.system
 
 def strip_semtag(val):
     v1 = re.sub(r'^[^\[]*\[', '', val)
     v2 = re.sub(r'\]$', '', v1)
     return v2
 
-
-driver = neo4j.GraphDatabase.driver("bolt://localhost:7688", auth=('neo4j', 'password'))
-
-query = """
-    MATCH (ta:Taxon {content: {wanted_content}}) RETURN ta.uri AS uri
-"""
-
-combined_csv_path = sys.argv[1]
-df = pandas.read_csv(combined_csv_path)
-
-result = df.groupby('chunk')
-
-soup = bs4.BeautifulSoup(features='xml')
-
-root = soup.new_tag("root")
-soup.append(root)
-
-
-class AmbiguousTagException(Exception):
-    pass
-
-@functools.lru_cache(maxsize=None)
-def lookup_semtag_value_in_neo(semtag):
-    stripped = strip_semtag(semtag)
-    result = session.run(query, {'wanted_content': stripped})
-    uri = result.value('uri')
-
-    if len(uri) == 0:
-        return None
-
-    if len(uri) != 1:
-        raise AmbiguousTagException(semtag)
-
-    return uri[0]
-
-
-
-def handle_token(containing_sentence, row):
-    semtag = row['SEMTAG3']
-    vard = row['vard']
-
-    if pandas.isna(semtag):
-        containing_sentence.append(vard)
-    else:
-        uri = lookup_semtag_value_in_neo(semtag)
-
-        if uri:
-            annotation_tag = soup.new_tag("annotation")
-            annotation_tag['ref'] = uri
-            annotation_tag.string = vard
-            containing_sentence.append(annotation_tag)
-        else:
-            containing_sentence.append(vard)
-
-    containing_sentence.append(" ")
-
-
-success = 0
-errors = []
-
-def handle_sentence(group_index, group, predicate):
-    global success
-    global errors
-
-    if not predicate(group_index, group):
-        return
-
-    sentence = soup.new_tag('sentence')
-
-    for index, row in group.iterrows():
-        print(index)
-        try:
-            handle_token(sentence, row)
-            success = success + 1
-        except AmbiguousTagException as e:
-            errors.append(e)
-
-    root.append(sentence)
+backend = occubrow.system.get_backend()
 
 # blah = set([])
 # with open('/home/amoe/dev/occubrow/backend/scripts/relevant_groups.lst', 'r') as f2:
@@ -115,16 +36,74 @@ def handle_sentence(group_index, group, predicate):
 #     global blah
 #     return group_index in blah
 
+
+@functools.lru_cache(maxsize=None)
+def lookup_semtag_value_in_neo(semtag):
+    return backend.get_taxon_by_content(semtag)
+
 def unfiltered_pred(group_index, group):
     return True
 
-with driver.session() as session:
-    for group_index, group in result:
-        if random.random() < SAMPLING_PROBABILITY:
-            handle_sentence(group_index, group, predicate=unfiltered_pred)
+class OBSamuelsCSVLoader(object):
+    def __init__(self, sampling_probability):
+        self.success = 0
+        self.errors = []
+        self.sampling_probability = sampling_probability
 
-with open('samuels-annotated.xml', 'w') as f:
-    f.write(soup.prettify())
+    def handle_token(self, containing_sentence, row):
+        semtag = row['SEMTAG3']
+        vard = row['vard']
 
-print("Successful lookup: ", success)
-print("Errors: ", len(errors))
+        if pandas.isna(semtag):
+            containing_sentence.append(vard)
+        else:
+            uri = lookup_semtag_value_in_neo(strip_semtag(semtag))
+
+            if uri:
+                annotation_tag = self.soup.new_tag("annotation")
+                annotation_tag['ref'] = uri
+                annotation_tag.string = vard
+                containing_sentence.append(annotation_tag)
+            else:
+                containing_sentence.append(vard)
+
+        containing_sentence.append(" ")
+
+
+    def handle_sentence(self, group_index, group, predicate):
+        if not predicate(group_index, group):
+            return
+
+        sentence = self.soup.new_tag('sentence')
+
+        for index, row in group.iterrows():
+            print(index)
+            try:
+                self.handle_token(sentence, row)
+                self.success = self.success + 1
+            except occubrow.errors.AmbiguousTaxonException as e:
+                self.errors.append(e)
+
+        return sentence
+
+    def run(self, input_path, output_path, predicate=None):
+        if predicate is None:
+            predicate = unfiltered_pred
+
+        df = pandas.read_csv(input_path)
+        result = df.groupby('chunk')
+        self.soup = bs4.BeautifulSoup(features='xml')
+        root = self.soup.new_tag("root")
+        self.soup.append(root)
+
+        for group_index, group in result:
+            if random.random() < self.sampling_probability:
+                sentence = self.handle_sentence(group_index, group, predicate=unfiltered_pred)
+                root.append(sentence)
+
+        with open(output_path, 'w') as f:
+            f.write(self.soup.prettify())
+
+        print("Successful lookup: ", self.success)
+        print("Errors: ", len(self.errors))
+

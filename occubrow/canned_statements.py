@@ -367,3 +367,19 @@ class RegisterStopWordQuery(object):
 
     def get_parameters(self):
         return {'token': self.token}
+
+
+LOOKUP_TAXON_QUERY = """
+    MATCH (ta:Taxon {content: {wanted_content}}) RETURN ta.uri AS uri
+"""
+
+class LookupTaxonQuery(object):
+    def __init__(self, wanted_content):
+        self.wanted_content = wanted_content
+
+    def get_cypher(self):
+        return LOOKUP_TAXON_QUERY
+
+    def get_parameters(self):
+        return {'wanted_content': self.wanted_content}
+        
