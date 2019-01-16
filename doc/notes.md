@@ -1,8 +1,5 @@
-
 taxonomy of status
 inst
-
-
 
 do_load("/home/amoe/dev/occubrow/backend/scripts/modified_sample_occupation_taxonomy.xlsx", )
 

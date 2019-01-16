@@ -19,5 +19,3 @@ def cell_to_record(row):
 for row in sheet.iter_rows(min_row=2):
     record = cell_to_record(row)
     print(record)
-
-    

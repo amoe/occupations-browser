@@ -6,7 +6,7 @@ from occubrow.corpus.import_sample_sentences import import_annotation_file
 import sys
 import neo4j
 
-SAMPLING_PROBABILITY = 0.0001
+SAMPLING_PROBABILITY = 1.1
 
 driver = neo4j.GraphDatabase.driver("bolt://localhost:7688", auth=('neo4j', 'password'))
 ti = taxonomy_inserter.TaxonomyInserter(driver)
