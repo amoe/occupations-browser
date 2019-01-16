@@ -1,12 +1,17 @@
 import occubrow.backend
 from load_stop_words import load_stop_words
 from load_ab_sample_taxonomy import do_load
-from create_indexes import create_indexes
 from read_sample_taxonomy_assignments import TaxonomyAssignmentReader
 import occubrow.taxonomy.taxonomy_inserter
 import neo4j
+from occubrow.neo4j_schema_utilities \
+  import reset_schema, create_constraints, create_indexes
 
 driver = neo4j.GraphDatabase.driver("bolt://localhost:7688", auth=('neo4j', 'password'))
+
+reset_schema(driver)
+create_constraints(driver)
+create_indexes(driver)
 
 backend = occubrow.system.get_backend()
 backend.clear_all_data()
@@ -38,5 +43,4 @@ reader = TaxonomyAssignmentReader(backend)
 reader.run("sample_data/modified_sample_taxonomy_assignments.xlsx")
 
 load_stop_words()
-create_indexes()
 

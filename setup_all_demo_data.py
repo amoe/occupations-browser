@@ -4,9 +4,15 @@ from occubrow.taxonomy.taxonomy_inserter import TaxonomyInserter
 from occubrow.taxonomy.uri_generator import TaxonomySurrogateURIAssigner
 import neo4j
 from occubrow.corpus.import_sample_sentences import import_annotation_file
-from create_indexes import create_indexes
+from occubrow.neo4j_schema_utilities \
+  import reset_schema, create_constraints, create_indexes
 
 driver = neo4j.GraphDatabase.driver("bolt://localhost:7688", auth=('neo4j', 'password'))
+
+reset_schema(driver)
+create_constraints(driver)
+create_indexes(driver)
+
 obj = TaxonomyInserter(driver)
 
 taxonomy_graphs = {
@@ -34,5 +40,3 @@ print("Importing annotated text")
 
 # import the sample annotated tokens
 import_annotation_file("sample_sentences.xml")
-
-create_indexes()

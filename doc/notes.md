@@ -1,3 +1,5 @@
+2019-01-16
+
 kill path when taxonomy changed
 
 query?root=keep&filter[]=tag:solasistim.net,2019-01-15:occubrow%2FRiver%2F2&depth_limit=4 
@@ -5,8 +7,6 @@ query?root=keep&filter[]=tag:solasistim.net,2019-01-15:occubrow%2FRiver%2F2&dept
     MATCH (to:Token {content: 'instrument'}),
           (ta:Taxon {uri: 'tag:solasistim.net,2019-01-16:occubrow/Scientific Instruments/1'})
     CREATE (to)-[:INSTANCE_OF {context: "foo"}]->(ta);
-
-
 
 taxonomy of status
 inst

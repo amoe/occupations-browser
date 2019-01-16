@@ -3,14 +3,22 @@ import occubrow.taxonomy.taxonomy_inserter
 from occubrow.formats.thematic_categories_xlsx import SamuelsLoader
 from occubrow.corpus.ob_samuels_csv import OBSamuelsCSVLoader
 from occubrow.corpus.import_sample_sentences import import_annotation_file
-from create_indexes import create_indexes
 from load_stop_words import load_stop_words
 import sys
 import neo4j
+from occubrow.neo4j_schema_utilities \
+  import reset_schema, create_constraints, create_indexes
 
+# roughly optimal for demo purposes
 SAMPLING_PROBABILITY = 0.001
 
 driver = neo4j.GraphDatabase.driver("bolt://localhost:7688", auth=('neo4j', 'password'))
+
+reset_schema(driver)
+create_constraints(driver)
+create_indexes(driver)
+
+
 ti = occubrow.taxonomy.taxonomy_inserter.TaxonomyInserter(driver)
 
 backend = occubrow.system.get_backend()
@@ -27,4 +35,3 @@ loader2.run("/home/amoe/dev/samdist/intermediate_data/m_nonl_combined.csv", 'sam
 import_annotation_file('samuels-annotated.xml')
 
 load_stop_words()
-create_indexes()
