@@ -104,7 +104,8 @@ class ClearAllDataQuery(CannedStatement):
 
 ADD_ANNOTATION_QUERY = """
     MATCH (to:Token {content: {token}}),
-          (ta:Taxon {uri: {taxon_reference}})
+          (ta:Taxon {uri: {taxon_reference}}),
+          (s:Sentence {uuid: {sentence_id}})
     CREATE (to)-[:INSTANCE_OF {context: {sentence_id}}]->(ta)
 """
 

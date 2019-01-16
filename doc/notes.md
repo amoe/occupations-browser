@@ -1,3 +1,9 @@
+    MATCH (to:Token {content: 'instrument'}),
+          (ta:Taxon {uri: 'tag:solasistim.net,2019-01-16:occubrow/Scientific Instruments/1'})
+    CREATE (to)-[:INSTANCE_OF {context: "foo"}]->(ta);
+
+
+
 taxonomy of status
 inst
 

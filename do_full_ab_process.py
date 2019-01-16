@@ -11,24 +11,31 @@ driver = neo4j.GraphDatabase.driver("bolt://localhost:7688", auth=('neo4j', 'pas
 backend = occubrow.system.get_backend()
 backend.clear_all_data()
 
+# despicable hack these all now have dates that have to be different because the
+# uri is no longer a key, 'key' attr is used so uris can duplicate :/
+
 ti = occubrow.taxonomy.taxonomy_inserter.TaxonomyInserter(driver)
 
+g = do_load("/home/amoe/dev/occubrow/backend/scripts/activities_modified.xlsx", '2019-01-14', 'Activities')
+ti.load_taxonomy(g, 'activity')
 
-g = do_load("/home/amoe/dev/occubrow/backend/scripts/activities_modified.xlsx", 'Activities')
-ti.load_taxonomy(g, 'activities')
-
-g = do_load("/home/amoe/download/Dave/Place.xlsx", 'Place')
+g = do_load("/home/amoe/download/Dave/Place.xlsx", '2019-01-15', 'Place')
 ti.load_taxonomy(g, 'place')
 
-g = do_load("/home/amoe/download/Dave/Object.xlsx", 'Object')
+g = do_load("/home/amoe/download/Dave/Object.xlsx", '2019-01-16', 'Object')
 ti.load_taxonomy(g, 'object')
 
-g = do_load("/home/amoe/dev/occubrow/backend/scripts/modified_sample_occupation_taxonomy.xlsx", 'Occupation')
+g = do_load("/home/amoe/dev/occubrow/backend/scripts/modified_sample_occupation_taxonomy.xlsx", '2019-01-17', 'Occupation')
 ti.load_taxonomy(g, 'occupation')
 
-reader = TaxonomyAssignmentReader()
-reader.run("/home/amoe/dev/occubrow/backend/scripts/modified_sample_taxonomy_assignments.xlsx")
+# It doesn't matter that this is totally broken as none of them are ever 
+# actually used
 
+g = do_load("/home/amoe/dev/occubrow/backend/scripts/statuses_modified.xlsx", '2019-01-18', 'Status')
+ti.load_taxonomy(g, 'status')
+
+reader = TaxonomyAssignmentReader(backend)
+reader.run("/home/amoe/dev/occubrow/backend/scripts/modified_sample_taxonomy_assignments.xlsx")
 
 load_stop_words()
 create_indexes()
