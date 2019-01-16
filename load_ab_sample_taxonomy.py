@@ -17,9 +17,4 @@ def do_load(path, artificial_root_content):
     if not ok: raise Exception('pod bay doors')
 
 
-do_load("/home/amoe/download/Dave/Activities.xlsx", 'Activities')
-do_load("/home/amoe/download/Dave/Place.xlsx", 'Place')
-do_load("/home/amoe/download/Dave/Object.xlsx", 'Object')
-do_load("/home/amoe/download/Dave/Instiutions.xlsx", None)
-do_load("/home/amoe/dev/occubrow/backend/scripts/modified_sample_occupation_taxonomy.xlsx", 'Occupation')
 
