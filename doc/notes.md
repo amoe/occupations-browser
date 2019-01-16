@@ -1,3 +1,5 @@
+kill path when taxonomy changed
+
 query?root=keep&filter[]=tag:solasistim.net,2019-01-15:occubrow%2FRiver%2F2&depth_limit=4 
 
     MATCH (to:Token {content: 'instrument'}),
