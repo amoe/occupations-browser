@@ -16,26 +16,26 @@ backend.clear_all_data()
 
 ti = occubrow.taxonomy.taxonomy_inserter.TaxonomyInserter(driver)
 
-g = do_load("/home/amoe/dev/occubrow/backend/scripts/activities_modified.xlsx", '2019-01-14', 'Activities')
+g = do_load("sample_data/activities_modified.xlsx", '2019-01-14', 'Activities')
 ti.load_taxonomy(g, 'activity')
 
-g = do_load("/home/amoe/download/Dave/Place.xlsx", '2019-01-15', 'Place')
+g = do_load("sample_data/Place.xlsx", '2019-01-15', 'Place')
 ti.load_taxonomy(g, 'place')
 
-g = do_load("/home/amoe/download/Dave/Object.xlsx", '2019-01-16', 'Object')
+g = do_load("sample_data/Object.xlsx", '2019-01-16', 'Object')
 ti.load_taxonomy(g, 'object')
 
-g = do_load("/home/amoe/dev/occubrow/backend/scripts/modified_sample_occupation_taxonomy.xlsx", '2019-01-17', 'Occupation')
+g = do_load("sample_data/modified_sample_occupation_taxonomy.xlsx", '2019-01-17', 'Occupation')
 ti.load_taxonomy(g, 'occupation')
 
 # It doesn't matter that this is totally broken as none of them are ever 
 # actually used
 
-g = do_load("/home/amoe/dev/occubrow/backend/scripts/statuses_modified.xlsx", '2019-01-18', 'Status')
+g = do_load("sample_data/statuses_modified.xlsx", '2019-01-18', 'Status')
 ti.load_taxonomy(g, 'status')
 
 reader = TaxonomyAssignmentReader(backend)
-reader.run("/home/amoe/dev/occubrow/backend/scripts/modified_sample_taxonomy_assignments.xlsx")
+reader.run("sample_data/modified_sample_taxonomy_assignments.xlsx")
 
 load_stop_words()
 create_indexes()
