@@ -3,7 +3,7 @@ import pprint
 from taxonomy_inserter import TaxonomyInserter
 from occubrow.taxonomy.uri_generator import TaxonomySurrogateURIAssigner
 import neo4j
-from import_sample_sentences import import_annotation_file
+from occubrow.corpus.import_sample_sentences import import_annotation_file
 
 driver = neo4j.GraphDatabase.driver("bolt://localhost:7688", auth=('neo4j', 'password'))
 obj = TaxonomyInserter(driver)
@@ -23,7 +23,7 @@ with driver.session() as s:
 
 print("Importing taxonomy graphs")
 
-surrogate = TaxonomySurrogateURIAssigner()
+surrogate = TaxonomySurrogateURIAssigner('2019-01-16')
 
 # import all of the taxonomies
 for g in taxonomy_graphs:
