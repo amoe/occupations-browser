@@ -15,6 +15,3 @@ def do_load(path, artificial_root_content):
     print(g.number_of_edges())
     ok = occubrow.utility.diagnose_nontree(g, root_uri)
     if not ok: raise Exception('pod bay doors')
-
-
-

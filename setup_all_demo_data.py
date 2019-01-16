@@ -1,6 +1,6 @@
 import create_sample_taxonomy_graphs
 import pprint
-from taxonomy_inserter import TaxonomyInserter
+from occubrow.taxonomy.taxonomy_inserter import TaxonomyInserter
 from occubrow.taxonomy.uri_generator import TaxonomySurrogateURIAssigner
 import neo4j
 from occubrow.corpus.import_sample_sentences import import_annotation_file

@@ -7,9 +7,9 @@ backend.clear_all_data()
 
 load_stop_words()
 
-
+do_load("/home/amoe/dev/occubrow/backend/scripts/activities_modified.xlsx", 'Activities')
 do_load("/home/amoe/download/Dave/Place.xlsx", 'Place')
 do_load("/home/amoe/download/Dave/Object.xlsx", 'Object')
-do_load("/home/amoe/download/Dave/Instiutions.xlsx", None)
 do_load("/home/amoe/dev/occubrow/backend/scripts/modified_sample_occupation_taxonomy.xlsx", 'Occupation')
+
 

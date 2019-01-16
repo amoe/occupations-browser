@@ -1,5 +1,5 @@
 import occubrow.system
-import taxonomy_inserter
+import occubrow.taxonomy.taxonomy_inserter
 from occubrow.formats.thematic_categories_xlsx import SamuelsLoader
 from occubrow.corpus.ob_samuels_csv import OBSamuelsCSVLoader
 from occubrow.corpus.import_sample_sentences import import_annotation_file
@@ -9,7 +9,7 @@ import neo4j
 SAMPLING_PROBABILITY = 1.1
 
 driver = neo4j.GraphDatabase.driver("bolt://localhost:7688", auth=('neo4j', 'password'))
-ti = taxonomy_inserter.TaxonomyInserter(driver)
+ti = occubrow.taxonomy_inserter.TaxonomyInserter(driver)
 
 backend = occubrow.system.get_backend()
 backend.clear_all_data()
