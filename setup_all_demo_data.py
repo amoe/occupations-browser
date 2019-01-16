@@ -14,7 +14,6 @@ taxonomy_graphs = [
     create_sample_taxonomy_graphs.get_sample_object_graph()
 ]
 
-
 print("Clearing existing database")
 
 # clear database
