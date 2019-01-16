@@ -26,7 +26,7 @@ class TaxonomyAssignmentReader(object):
         for row in sheet.iter_rows(min_row=2):
             record = cell_to_record(row)
             tokens = nltk.word_tokenize(record['sentence'])
-            sentence_id = self.backend.add_sentence_with_tokens(tokens)
+            sentence_id = self.backend.add_sentence(record['sentence'])
 
             for k, v in record['assignments'].items():
                 if v is not None:
