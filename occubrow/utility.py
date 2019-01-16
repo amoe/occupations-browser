@@ -60,11 +60,18 @@ def diagnose_nontree(g, purported_root):
 
     print("EDGE COUNT=", g.number_of_edges())
     print("EDGE COUNT=", g2.number_of_edges())
-    print("Missing edges in tree:", g.edges() - g2.edges())
+    edge_diff = g.edges() - g2.edges()
+    print("Missing edges in tree:", edge_diff)
 
 
     print("NODE COUNT=", g.number_of_nodes())
     print("NODE COUNT=", g2.number_of_nodes())
-    print("Missing nodes in tree:", g.nodes() - g2.nodes())
+    node_diff = g.nodes() - g2.nodes()
+    print("Missing nodes in tree:", node_diff)
+
+
+    if edge_diff or node_diff:
+        return False
+    return True
 
     

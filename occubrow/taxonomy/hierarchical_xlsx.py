@@ -55,7 +55,6 @@ class HierarchicalXlsxTaxonomyLoader(object):
             level_indices = []
             for row in self.sheet:
                 this_row_index = row[0].row
-                print(this_row_index)
                 row_values = [x.value for x in row]
                 info = self.get_useful_cell_info(row_values)
                 first_index = info['first_index']
@@ -93,12 +92,18 @@ class HierarchicalXlsxTaxonomyLoader(object):
                     v = self.uri_generator.lookup(item['content'])
                     g.add_edge(u, v)
 
-        reparent_node_uri = self.uri_generator.make_tag_uri(reparent_node)
-        g.add_node(reparent_node_uri, content=reparent_node)
+        if reparent_node:
+            reparent_node_uri = self.uri_generator.make_tag_uri(reparent_node)
+            g.add_node(reparent_node_uri, content=reparent_node)
 
-        # now reparent the graph
-        for node, in_degree in g.in_degree():
-            if in_degree == 0 and node != reparent_node_uri:
-                g.add_edge(reparent_node_uri, node)
+            # now reparent the graph
+            for node, in_degree in g.in_degree():
+                if in_degree == 0 and node != reparent_node_uri:
+                    g.add_edge(reparent_node_uri, node)
 
-        return g, reparent_node_uri
+            root_uri = reparent_node_uri
+        else:
+            sources = [v for v, indegree in g.in_degree() if indegree == 0]
+            root_uri = sources[0]
+            
+        return g, root_uri

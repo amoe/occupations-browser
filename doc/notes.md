@@ -1,3 +1,11 @@
+
+taxonomy of status
+inst
+
+
+
+do_load("/home/amoe/dev/occubrow/backend/scripts/modified_sample_occupation_taxonomy.xlsx", )
+
 /query?root=prisoner&depth_limit=3
 
 WHERE all(rel in relationships(path) WHERE rel.occurrences > 10)
