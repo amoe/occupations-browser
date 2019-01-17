@@ -1,5 +1,9 @@
 4fd86eae-db97-4682-ad13-3c0a6a60dfb4
 
+        title       = {{brat}: a Web-based Tool
+                for {NLP}-Assisted Text Annotation},
+        booktitle   = {Proceedings of the Demonstrati
+
 2019-01-16
 
 kill path when taxonomy changed
@@ -413,51 +417,9 @@ properly
 
 so the next step is to modify the 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-j
 depth = 0, y = 0
 depth = 1, y = 90
 depth = 2, y = 180
-
 
 
 Radius is actually just the regular radius.
@@ -482,6 +444,9 @@ https://neo4j.com/blog/bring-order-to-chaos-graph-based-journey-textual-data-to-
 Algorithms:
 Centrality
 Community detection
+   _Heathrow Wi-Fi             Infra  60    54 Mbit/s  52      ▂▄__  --          
+c369aaa8-7152-494c-ab88-cee38dcc12f9
+
 Path finding (random walk?)
 
 
@@ -630,42 +595,6 @@ graphDataFromStore property
             this.tweenedHierarchy = newData;
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 2019-01-04
 
 going to neo4j
@@ -695,58 +624,6 @@ Action items list from alex:
 * Animate nodes to new re-centred layout
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 2019-01-03
 
 Get all sentences tagged with the 'Manage' taxon.
@@ -773,31 +650,6 @@ specificity.  It will actually refer to its uri.  We will need to be able to get
 the defined path of our URI.  We want getQuery() to be returning the uri.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 BLAH
 
 Question being: How do I get the list of anything, for each taxon-selector?
@@ -806,25 +658,6 @@ Question being: How do I get the list of anything, for each taxon-selector?
 2018-12-31
 
 Need to check out the values from findvalidchildren.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 when we add a compound widget we have an error, can't happen
 this is caused by the following
@@ -866,39 +699,6 @@ filteredChildren?
 
 mark up other things in document
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 2018-12-27
 
 "keep the St. Andrew, public-house, Gower-street, Portman-square"
@@ -911,7 +711,6 @@ We can manually create tags in the database by tagging all things of a certain k
 
 occupation / object / place
 
-
 what would that be?   place = {public-house, Gower-Street, Portman-square}
 
 
@@ -922,21 +721,6 @@ object = {waggon, shop, apparel, bricks}
 
 Unfortunately since this doesn't have multiple levels, it doesn't demonstrate
 the taxonomy in any reasonable way.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 2018-12-24
@@ -965,8 +749,6 @@ tree_data is using a special dfs method this seems to work ok
     </div>
 
 
-
-
 2018-12-06
 
 
@@ -993,14 +775,6 @@ selected filters so far.  Given this list of IDs -- which forms a path -- we can
 find all direct children.
 
 This can be tested, even.
-
-
-
-
-
-
-
-
 
 2018-11-27
 
@@ -1052,30 +826,6 @@ It's obvious that
 https://www.npmjs.com/package/amoe-butterworth-widgets
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 2018-11-20
 
 killbox for each level
@@ -1125,72 +875,11 @@ The blank widget button still exists
 
 Speccing for next sprint:
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 2018-11-14
 
 Having done the proof of concept for the taxonomy export root finder.  The next
 step is to actually find out how to export the taxonomy.  Only then can the widgets
 load it.
-
-
-
 
 When we need to mock out the interface, we need to use MagicMock to mock the session
 
@@ -1305,12 +994,7 @@ https://pypi.org/project/Owlready2/
 
 WSD as token -- all tokens are identical  although instances can be distinguished
 
-
-
 2018-11-09
-
-
-
 
 We can't figure out how to get the 
 
@@ -1337,11 +1021,6 @@ for phrase in phrases:
         print(phrase[index])
         print(phrase[index + 1])
 
-
-
-
-
-
 2018-11-08
 
         cypher_params = {
@@ -1356,10 +1035,6 @@ for phrase in phrases:
         
         self.repository.run_statement(cypher_params)
 
-
-
-
-
 Now that we own the N4J interface, we need to be able to declare what database
 structure we want to get after the import happens, but in order to do that
 we need to be extracting the graph labels as well as the properties.
@@ -1372,31 +1047,6 @@ The tarfile doesn't open successfully, so maybe it didn't download the first tim
 A node can have multiple labels; but perhaps we just don't support that use-case
 
 So whatt about 'prepared statements'
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 2018-11-07
@@ -1422,49 +1072,6 @@ Relationship needs four methods:
 pull_graph now returns a dict where the values are lists of Nodes and
 Relationships.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 https://www.huygens.knaw.nl/timbuctoo/?lang=en
 https://www.w3.org/TR/prov-o/
 ontotext
@@ -1477,7 +1084,6 @@ NER-tagged text & ontological assignment in Dbpedia
 dbpedia python3 auto-classify
 
 2018-11-06
-
 
 assert_graph is going to check that the two graphs are isomorphic
 
@@ -1510,7 +1116,6 @@ instance_info = controller.start()
 print("Instance info is", instance_info)
 #driver = neo4j.GraphDatabase.driver(bolt_uri)
 #controller.stop()
-
 
     # names = set()
     # print = names.add
