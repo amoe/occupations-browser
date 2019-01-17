@@ -1,3 +1,35 @@
+MATCH (ta1:Taxon)
+OPTIONAL MATCH (ta1)-[:SUPERCATEGORY_OF*]->(ta2:Taxon)
+WHERE ta1.uri IN ["tag:solasistim.net,2018-12-28:occubrow/Theme/0101"]
+WITH ["tag:solasistim.net,2018-12-28:occubrow/Theme/0101"] + COLLECT(ta2.uri) AS validTaxonUris
+MATCH (to1:Token {content: "house"}), path = (to1)-[r:PRECEDES*..4]->(to2:Token), (to2)-[:INSTANCE_OF]->(ta:Taxon)
+WHERE all(rel in relationships(path) WHERE rel.occurrences > 20000)
+RETURN COLLECT(to1) + COLLECT(to2) AS nodes, [] AS rels
+
+
+OPTIONAL MATCH path = (to1)-[r:PRECEDES*..%d]->(to2:Token)
+WHERE all(rel in relationships(path) WHERE rel.occurrences > {threshold})
+
+
+MATCH (to1:Token {content: {})
+OPTIONAL MATCH path = (to1)-[r:PRECEDES*..%d]->(to2:Token)
+WHERE all(rel in relationships(path) WHERE rel.occurrences > {threshold})
+RETURN (COLLECT(to1) + COLLECT(to2)) AS nodes, COLLECT(last(r)) AS rels
+
+
+new DataGateway(
+                () => {},
+                () => {},
+                (r: AxiosError) => {
+                    const url = r.request.responseURL;
+                    const error = r.request.statusText;
+                    
+                    this.$notify.error({
+                        title: 'Error',
+                        message: url + ": " + error
+                    });
+                })
+
 4fd86eae-db97-4682-ad13-3c0a6a60dfb4
 
         title       = {{brat}: a Web-based Tool

@@ -285,10 +285,10 @@ class OccubrowBackend(object):
         with open('/tmp/export-%s.json' % datetime.datetime.utcnow(), 'w') as f:
             json.dump(data, f, indent=4)
 
-    def get_token_tree(self, token, depth_limit):
+    def get_token_tree(self, token, depth_limit, cooccurrence_threshold):
         # Basic strategy is to pull the entire tree, which can be memory
         # intensive, and then to dfs_tree it to get the specific tree.
-        g = rebuild_graph(self.repository.pull_graph(GetTokenTreeQuery(token, depth_limit)))
+        g = rebuild_graph(self.repository.pull_graph(GetTokenTreeQuery(token, depth_limit, cooccurrence_threshold)))
 
         print(g.number_of_nodes())
         print(g.number_of_edges())
@@ -337,10 +337,12 @@ class OccubrowBackend(object):
         return result.single().value('t')['content']
 
     # sparse tree with taxon
-    def search_with_taxons(self, token, taxon_uris, depth_limit):
+    def search_with_taxons(self, token, taxon_uris, depth_limit, cooccurrence_threshold):
         g = rebuild_graph(
             self.repository.pull_graph(
-                GetTokenRootWithTaxonFilterQuery(token, taxon_uris, depth_limit)
+                GetTokenRootWithTaxonFilterQuery(
+                    token, taxon_uris, depth_limit, cooccurrence_threshold
+                )
             )
         )
 

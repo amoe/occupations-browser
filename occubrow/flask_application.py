@@ -28,11 +28,13 @@ def get_token_query():
     token = flask.request.args.get('root')
     depth_limit = int(flask.request.args.get('depth_limit'))
     taxon_uris = flask.request.args.getlist("filter[]")
+    cooccurrence_threshold = int(flask.request.args.get('cooccurrence_threshold'))
+
 
     if taxon_uris:
-        result = backend.search_with_taxons(token, taxon_uris, depth_limit)
+        result = backend.search_with_taxons(token, taxon_uris, depth_limit, cooccurrence_threshold)
     else:
-        result = backend.get_token_tree(token, depth_limit)
+        result = backend.get_token_tree(token, depth_limit, cooccurrence_threshold)
 
     return jsonify(result)
 

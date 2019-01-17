@@ -184,14 +184,15 @@ class SlurpTaxonomiesQuery(CannedStatement):
 GET_TOKEN_TREE_QUERY_TEMPLATE = """
 MATCH (to1:Token {content: {root}})
 OPTIONAL MATCH path = (to1)-[r:PRECEDES*..%d]->(to2:Token)
-WHERE all(rel in relationships(path) WHERE rel.occurrences > 0)
+WHERE all(rel in relationships(path) WHERE rel.occurrences >= {threshold})
 RETURN (COLLECT(to1) + COLLECT(to2)) AS nodes, COLLECT(last(r)) AS rels
 """
 
 class GetTokenTreeQuery(CannedStatement):
-    def __init__(self, root, depth_limit):
+    def __init__(self, root, depth_limit, cooccurrence_threshold):
         self.root = root
         self.depth_limit = depth_limit
+        self.cooccurrence_threshold = cooccurrence_threshold;
 
     def get_cypher(self):
         # Not the safest thing ever but this will die with TypeError on 
@@ -199,7 +200,7 @@ class GetTokenTreeQuery(CannedStatement):
         return GET_TOKEN_TREE_QUERY_TEMPLATE % (self.depth_limit,)
 
     def get_parameters(self):
-        return {'root': self.root}
+        return {'root': self.root, 'threshold': self.cooccurrence_threshold}
 
 
 # fast and wrong query
@@ -240,16 +241,17 @@ MATCH (ta1:Taxon)
 OPTIONAL MATCH (ta1)-[:SUPERCATEGORY_OF*]->(ta2:Taxon)
 WHERE ta1.uri IN {taxon_uri_list}
 WITH {taxon_uri_list} + COLLECT(ta2.uri) AS validTaxonUris
-MATCH (to1:Token {content: {wanted_token}}), (to1)-[r:PRECEDES*..%d]->(to2:Token), (to2)-[:INSTANCE_OF]->(ta:Taxon)
-WHERE ta.uri IN validTaxonUris
+MATCH (to1:Token {content: {wanted_token}}), path = (to1)-[r:PRECEDES*..%d]->(to2:Token), (to2)-[:INSTANCE_OF]->(ta:Taxon)
+WHERE all(rel in relationships(path) WHERE rel.occurrences > {threshold}) AND ta.uri IN validTaxonUris
 RETURN COLLECT(to1) + COLLECT(to2) AS nodes, [] AS rels
 """
 
 class GetTokenRootWithTaxonFilterQuery(object):
-    def __init__(self, token, taxon_uri_list, depth_limit):
+    def __init__(self, token, taxon_uri_list, depth_limit, cooccurrence_threshold):
         self.token = token
         self.taxon_uri_list = taxon_uri_list
         self.depth_limit = depth_limit
+        self.cooccurrence_threshold = cooccurrence_threshold
 
     def get_cypher(self):
         return GET_TOKEN_ROOT_WITH_TAXON_FILTER_QUERY % self.depth_limit
@@ -257,7 +259,8 @@ class GetTokenRootWithTaxonFilterQuery(object):
     def get_parameters(self):
         return {
             'wanted_token': self.token,
-            'taxon_uri_list': self.taxon_uri_list
+            'taxon_uri_list': self.taxon_uri_list,
+            'threshold': self.cooccurrence_threshold
         }
     
 
