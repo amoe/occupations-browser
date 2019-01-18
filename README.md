@@ -4,9 +4,9 @@
 
 Other repositories that are related:
 
-* [https://github.com/amoe/amoe-butterworth-widgets]
-* [https://github.com/amoe/occubrow-graph-view]
-* [https://github.com/amoe/occubrow-ui]
+* <https://github.com/amoe/amoe-butterworth-widgets>
+* <https://github.com/amoe/occubrow-graph-view>
+* <https://github.com/amoe/occubrow-ui>
 
 ## Setup & deployment instructions
 
