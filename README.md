@@ -29,3 +29,4 @@ Scenario setup scripts should follow the following template:
 5. Import annotated corpus
 6. Create indexes
 
+License: AGPL.  2019.
