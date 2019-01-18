@@ -1,3 +1,17 @@
+# OCCUBROW
+
+## Other repositories
+
+Other repositories that are related:
+
+* [https://github.com/amoe/amoe-butterworth-widgets]
+* [https://github.com/amoe/occubrow-graph-view]
+* [https://github.com/amoe/occubrow-ui]
+
+## Setup & deployment instructions
+
+Coming soon!
+
 ## Notes regarding 'key' property
 
 A property 'key' was added on the Taxon node.  This is to distinguish taxons.
