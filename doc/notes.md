@@ -1,3 +1,11 @@
+
+
+
+https://www.w3.org/TR/annotation-model/
+florian thiery
+
+https://pdfs.semanticscholar.org/6056/afc3c25fcf0e9b3e677c04ea4bc34b8151ab.pdf
+
 MATCH (ta1:Taxon)
 OPTIONAL MATCH (ta1)-[:SUPERCATEGORY_OF*]->(ta2:Taxon)
 WHERE ta1.uri IN ["tag:solasistim.net,2018-12-28:occubrow/Theme/0101"]
