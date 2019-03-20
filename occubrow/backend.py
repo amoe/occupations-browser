@@ -1,6 +1,16 @@
 import neo4j
 import networkx
 import networkx.readwrite.json_graph
+import operator
+from logging import debug
+import occubrow.queries
+import json
+import datetime
+import pdb
+import nltk
+import string
+import pprint
+
 import occubrow.errors as errors
 from occubrow.utility \
   import get_node_by_attribute, dfs_tree_with_node_attributes, is_null_graph
@@ -13,15 +23,8 @@ from occubrow.canned_statements \
          GetTokenRootWithTaxonFilterQuery, GetContextsQuery, GetMetricsQuery, \
          SearchTokensQuery, GetAllTokensQuery, GetCentralityQuery, \
          RegisterStopWordQuery, LookupTaxonQuery
-import operator
-from logging import debug
-import occubrow.queries
-import json
-import datetime
-import pdb
-import nltk
-import string
-import pprint
+import occubrow.mmconverter.process
+
 
 # Used by get_token_tree, this should transform to the format 'TokenDatum'
 # defined in occubrow-graph-view's interfaces.ts file.
@@ -400,4 +403,9 @@ class OccubrowBackend(object):
         return uri[0]
 
     def query_micromacro(self, query_spec):
-        return self.micromacro_gateway.query(query_spec)
+        """
+        Calls through to micromacro and massage the result to a JSON tree.
+        """
+        converter = occubrow.mmconverter.process.MicromacroConverter()
+        query_result = self.micromacro_gateway.query(query_spec)
+        return converter.convert(query_result)

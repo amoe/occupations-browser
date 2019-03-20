@@ -39,6 +39,7 @@ def get_node_by_attribute(g, attribute_name, attribute_value):
 
     return result_set[0]
 
+
 def is_null_graph(g):
     return g.number_of_nodes() == 0 and g.number_of_edges() == 0
 
@@ -52,7 +53,6 @@ def remove_cycles(g):
             g.remove_edges_from(cycles)
         except networkx.exception.NetworkXNoCycle as e:
             cycles_left = False
-
 
 
 def diagnose_nontree(g, purported_root):
@@ -74,4 +74,12 @@ def diagnose_nontree(g, purported_root):
         return False
     return True
 
+
+def is_iterable(value):
+    try:
+        iter(value)
+        return True
+    except TypeError:
+        return False
+    
     
