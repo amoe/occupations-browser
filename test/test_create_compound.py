@@ -5,6 +5,7 @@ from occubrow.test_utility import make_backend, ncreated, rcreated
 from occubrow.neo4j_repository import RealNeo4jRepository
 from occubrow.canned_statements import CreateCompoundNodeQuery, CreateCompoundLink
 from unittest.mock import Mock, call
+import occubrow.system
 import pytest
 import pprint
 
@@ -38,7 +39,10 @@ EXPECTED_DATA = {
 
 def test_create_compound():
     repository = Mock()
-    backend = OccubrowBackend(repository, identifier_function=lambda: MOCKED_UUID)
+    backend = occubrow.system.get_backend({
+        'repository': repository,
+        'identifier_function': lambda: MOCKED_UUID
+    })
 
     # Make sure assertions pass
     repository.run_canned_statement.side_effect = [
@@ -50,7 +54,11 @@ def test_create_compound():
 
 def test_correct_neo4j_calls_happened():
     repository = Mock()
-    backend = OccubrowBackend(repository, identifier_function=lambda: MOCKED_UUID)
+    backend = occubrow.system.get_backend({
+        'repository': repository,
+        'identifier_function': lambda: MOCKED_UUID
+    })
+
     repository.run_canned_statement.side_effect = [
         ncreated(1), rcreated(1), rcreated(1), rcreated(1)
     ]
@@ -68,7 +76,11 @@ def test_correct_neo4j_calls_happened():
 @pytest.mark.functional
 def test_compounds_are_inserted_to_db(neo4j_driver):
     repository = RealNeo4jRepository(neo4j_driver)
-    backend = OccubrowBackend(repository, get_predictable_uuid_generator())
+    backend = occubrow.system.get_backend({
+        'repository': repository,
+        'identifier_function': get_predictable_uuid_generator()
+    })
+
     backend.add_sentence_with_tokens(['Dog', 'and', 'Duck'])
     backend.create_compound(['Dog', 'and', 'Duck'])
     backend.dump_internal_graph()
