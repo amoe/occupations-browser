@@ -1,6 +1,8 @@
 import pytest
 import occubrow.system
 import unittest.mock
+import occubrow.test_utility
+from occubrow.neo4j_repository import RealNeo4jRepository
 
 DEMO_QUERY = {
     "table": "ob-all5",
@@ -55,7 +57,8 @@ DEMO_QUERY = {
     "isCached": False
 }
 
-def test_foo():
-    b = occubrow.system.get_backend()
+def test_foo(neo4j_driver):
+    repository = RealNeo4jRepository(neo4j_driver)
+    b = occubrow.test_utility.make_backend(repository)
     mock = unittest.mock.Mock()
     assert True
