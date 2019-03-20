@@ -4,7 +4,6 @@ from occubrow.identifier_functions import get_predictable_uuid_generator
 from occubrow.neo4j_repository import RealNeo4jRepository
 import occubrow.system
 
-
 EXPECTED_DATA = {
     'directed': True,
     'graph': {},
@@ -43,9 +42,8 @@ def test_sentence_import(neo4j_driver):
     repository = RealNeo4jRepository(neo4j_driver)
     backend = occubrow.system.get_backend({
         'repository': repository,
-        'identifier_function': get_predictable_uuid_generator
+        'identifier_function': get_predictable_uuid_generator()
     })
-
 
     backend.add_sentence_with_tokens(sample_sentence)
     assert backend.graph_matches(EXPECTED_DATA)
