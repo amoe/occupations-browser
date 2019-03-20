@@ -84,9 +84,9 @@ EXPECTED_DATA_AFTER_GROUP_CREATION = {
 def test_groups_are_inserted_to_db(neo4j_driver):
     repository = RealNeo4jRepository(neo4j_driver)
     backend = occubrow.system.get_backend({
-        'identifier_function': get_predictable_uuid_generator
+        'repository': repository,
+        'identifier_function': get_predictable_uuid_generator()
     })
-
 
     backend.add_sentence_with_tokens(['The', 'oyl', 'man', 'brought', 'the', 'oil'])
     backend.create_group(['oyl', 'oil'])

@@ -78,7 +78,7 @@ def test_compounds_are_inserted_to_db(neo4j_driver):
     repository = RealNeo4jRepository(neo4j_driver)
     backend = occubrow.system.get_backend({
         'repository': repository,
-        'identifier_function': get_predictable_uuid_generator
+        'identifier_function': get_predictable_uuid_generator()
     })
 
     backend.add_sentence_with_tokens(['Dog', 'and', 'Duck'])
