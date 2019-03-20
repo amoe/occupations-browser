@@ -114,17 +114,21 @@ MOCKED_RESULT = [
     }
 ]
 
+EXPECTED_RESULT = {'children': [{'content': 'Broad', 'id': 'Broad'}],
+                   'content': 'Mary',
+                   'id': 'Mary'}
 
 def test_postprocesses_results():
-    mock = unittest.mock.Mock()
-    mock.query.return_value = MOCKED_RESULT
+    mm_gateway = unittest.mock.Mock()
+    mm_gateway.query.return_value = MOCKED_RESULT
 
     b = occubrow.system.get_backend({
-        'micromacro_gateway': mock
+        'repository': unittest.mock.Mock(),
+        'micromacro_gateway': mm_gateway
     })
 
     result = b.query_micromacro(DEMO_QUERY)
-    assert result == MOCKED_RESULT
+    assert result == EXPECTED_RESULT
 
 @pytest.mark.skip("""
 We can't really test this at the moment, because it needs the infrastructure
