@@ -399,3 +399,5 @@ class OccubrowBackend(object):
 
         return uri[0]
 
+    def query_micromacro(self, query_spec):
+        return self.micromacro_gateway.query(query_spec)

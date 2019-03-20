@@ -10,7 +10,9 @@ Other repositories that are related:
 
 ## Setup & deployment instructions
 
-Coming soon!
+Start the server:
+
+    make run_backend
 
 ## Notes regarding 'key' property
 
