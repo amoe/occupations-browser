@@ -13,7 +13,6 @@ matrix:
         - echo $PATH
         - /usr/local/lib/jvm/openjdk11/bin/java -version
         - /usr/bin/java -version
-        - pytest test.py
         - source ./jdk_switcher.sh
         - jdk_switcher use openjdk8
         - source ./custom_path.sh
