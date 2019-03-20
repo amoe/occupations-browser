@@ -2,6 +2,7 @@ import pytest
 import occubrow.system
 import unittest.mock
 import occubrow.test_utility
+import pprint
 from occubrow.neo4j_repository import RealNeo4jRepository
 
 DEMO_QUERY = {
@@ -57,8 +58,10 @@ DEMO_QUERY = {
     "isCached": False
 }
 
-def test_foo(neo4j_driver):
+@pytest.mark.functional
+def test_returns_results(neo4j_driver):
     repository = RealNeo4jRepository(neo4j_driver)
     b = occubrow.test_utility.make_backend(repository)
-    mock = unittest.mock.Mock()
-    assert True
+    result = b.query_micromacro(DEMO_QUERY)
+    pprint.pprint(result)
+    assert result
