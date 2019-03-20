@@ -126,6 +126,10 @@ def test_postprocesses_results():
     result = b.query_micromacro(DEMO_QUERY)
     assert result == MOCKED_RESULT
 
+@pytest.mark.skip("""
+We can't really test this at the moment, because it needs the infrastructure
+of an entire micromacro server.
+""")
 @pytest.mark.functional
 def test_returns_results(neo4j_driver):
     repository = RealNeo4jRepository(neo4j_driver)
