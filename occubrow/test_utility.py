@@ -5,6 +5,7 @@ import networkx
 import occubrow.backend
 from occubrow.identifier_functions import random_uuid
 from occubrow.backend import strict_eq
+import occubrow.gateway.micromacro
 
 def tree_matches(t1, t2):
     g1 = networkx.tree_graph(t1)
@@ -19,7 +20,10 @@ def make_backend(repository):
     the exception of the repository which may be passed in.  This can be used
     by both unit and functional tests.
     """
-    return occubrow.backend.OccubrowBackend(repository, identifier_function=random_uuid)
+    return occubrow.backend.OccubrowBackend(
+        repository, identifier_function=random_uuid,
+        micromacro_gateway=occubrow.gateway.micromacro.MicromacroGateway()
+    )
 
 
 # Mocking out a crazy API from N-P-D whereby we have to satisfy the chained call:

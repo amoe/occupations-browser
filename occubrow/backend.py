@@ -123,9 +123,10 @@ def find_root_by_content(g, wanted):
 
 
 class OccubrowBackend(object):
-    def __init__(self, repository, identifier_function):
+    def __init__(self, repository, identifier_function, micromacro_gateway):
         self.repository = repository
         self.identifier_function = identifier_function
+        self.micromacro_gateway = micromacro_gateway
 
     def get_taxonomy_roots(self):
         result = self.repository.run_canned_statement(GetTaxonomyRootsQuery())

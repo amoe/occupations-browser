@@ -5,12 +5,19 @@ from occubrow.test_utility import make_backend, ncreated, rcreated
 from occubrow.neo4j_repository import RealNeo4jRepository
 from unittest.mock import Mock, call
 from occubrow.canned_statements import CreateGroupNodeQuery, CreateGroupLink
+import occubrow.system
 import pytest
 import pprint
 
+def get_mocked_uuid_backend(repository, the_uuid):
+    return occubrow.system.get_backend({
+        'repository': repository,
+        'identifier_function': lambda: the_uuid
+    })
+
 def test_create_group():
     repository = Mock()
-    backend = OccubrowBackend(repository, identifier_function=lambda: MOCKED_UUID)
+    backend = get_mocked_uuid_backend(repository, MOCKED_UUID)
 
     # Make sure assertions pass
     repository.run_canned_statement.side_effect = [
@@ -22,7 +29,8 @@ def test_create_group():
 
 def test_correct_neo4j_calls_happened():
     repository = Mock()
-    backend = OccubrowBackend(repository, identifier_function=lambda: MOCKED_UUID)
+    backend = get_mocked_uuid_backend(repository, MOCKED_UUID)
+
     repository.run_canned_statement.side_effect = [
         ncreated(1), rcreated(1), rcreated(1)
     ]
@@ -75,7 +83,11 @@ EXPECTED_DATA_AFTER_GROUP_CREATION = {
 @pytest.mark.functional
 def test_groups_are_inserted_to_db(neo4j_driver):
     repository = RealNeo4jRepository(neo4j_driver)
-    backend = OccubrowBackend(repository, get_predictable_uuid_generator())
+    backend = occubrow.system.get_backend({
+        'identifier_function': get_predictable_uuid_generator
+    })
+
+
     backend.add_sentence_with_tokens(['The', 'oyl', 'man', 'brought', 'the', 'oil'])
     backend.create_group(['oyl', 'oil'])
     backend.dump_internal_graph()
