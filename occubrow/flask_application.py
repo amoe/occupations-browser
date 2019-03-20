@@ -68,11 +68,11 @@ def get_centrality_statistics():
 @app.route('/micromacro-query', methods=['POST'])
 def create_micromacro_query():
     # Flask will auto absolutize this.
-    headers = {
-        'Location': '/micromacro-query/1'
-    }
+    headers = {'Location': '/micromacro-query/1'}
+    query_spec = flask.request.get_json()
+    cache['1'] = backend.query_micromacro(query_spec)
     return flask.Response(status=201, headers=headers)
 
-@app.route('/micromacro-query/<identifier>')
+@app.route('/micromacro-query/<identifier>', methods=['GET'])
 def get_micromacro_query(identifier):
     return jsonify(cache[identifier])
