@@ -84,3 +84,17 @@ def is_iterable(value):
         return False
     
     
+
+
+def find_root_by_content(g, wanted):
+   sources = [v for v, indegree in g.in_degree() if indegree == 0]
+   valid_sources = [n for n, content in g.nodes(data='content') if content == wanted]
+
+   if not valid_sources:
+       raise errors.NoRootsFoundError()
+
+   if len(valid_sources) != 1:
+       raise errors.AmbiguousRootError()
+
+   return valid_sources[0]
+

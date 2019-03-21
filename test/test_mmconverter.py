@@ -3,6 +3,8 @@ import pprint
 import unittest.mock
 import occubrow.mmconverter.process
 import occubrow.system
+from  occubrow.utility import find_root_by_content
+from occubrow.test_utility import tree_matches
 
 MOCKED_QUERY_RESULT = [
     {
@@ -60,9 +62,10 @@ MOCKED_QUERY_RESULT = [
     }
 ]
 
-EXPECTED_RESULT = {'children': [{'content': 'Broad', 'id': 'Broad'}],
+EXPECTED_RESULT = {'children': [{'content': 'Broad', 'id': 2, 'strength': 1}],
                    'content': 'Mary',
-                   'id': 'Mary'}
+                   'id': 1,
+                   'strength': 1}
 
 def test_graph_is_retrieved():
      mock = unittest.mock.Mock()
@@ -76,6 +79,6 @@ def test_tree_is_retrieved():
      mock.query.return_value = MOCKED_QUERY_RESULT
      backend = occubrow.system.get_backend({'micromacro_gateway': mock})
      graph = backend.query_micromacro({})
-     tree = backend.massage_for_depth('Mary', 2, 0)
-     assert tree
+     tree = backend.massage_for_depth(graph, find_root_by_content(graph, 'Mary'), 2, 0)
+     assert tree_matches(tree, EXPECTED_RESULT)
     

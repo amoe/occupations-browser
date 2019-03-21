@@ -7,7 +7,7 @@ import occubrow.errors
 from occubrow.mmconverter.domain import span_from_json
 from occubrow.utility \
   import dfs_tree_with_node_attributes, is_iterable, remove_cycles, \
-         diagnose_nontree
+         diagnose_nontree, find_root_by_content
 
 
 # just accepting a callback here to allow deferring decision about whether to
@@ -45,8 +45,6 @@ class MicromacroConverter(object):
             aid = self.assign_or_fetch_id(antecedent.with_value)
             pid = self.assign_or_fetch_id(postcedent.with_value)
 
-            print("aid is", aid, "pid is", pid)
-            
             g.add_node(aid, content=antecedent.with_value, strength=1)
             g.add_node(pid, content=postcedent.with_value, strength=1)
             g.add_edge(aid, pid)
@@ -64,7 +62,6 @@ class MicromacroConverter(object):
     def narrow_graph_to_tree(
         self, graph, chosen_source, depth_limit, coocurrence_threshold
     ):
-        chosen_source = random.choice(list(graph))
         g2 = dfs_tree_with_node_attributes(graph, chosen_source, depth_limit=depth_limit)
         data = networkx.tree_data(g2, root=chosen_source)
         return data
