@@ -70,8 +70,13 @@ def create_micromacro_query():
     # Flask will auto absolutize this.
     headers = {'Location': '/micromacro-query/1'}
     query_spec = flask.request.get_json()
-    cache['1'] = backend.query_micromacro(query_spec)
-    return flask.Response(status=201, headers=headers)
+
+    try:
+        result = backend.query_micromacro(query_spec)
+        cache['1'] = result
+        return flask.Response(status=201, headers=headers)
+    except occubrow.errors.CannotContactMicromacroError as e:
+        return flask.Response(status=502)
 
 @app.route('/micromacro-query/<identifier>', methods=['GET'])
 def get_micromacro_query(identifier):
