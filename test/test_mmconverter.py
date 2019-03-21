@@ -70,14 +70,20 @@ EXPECTED_RESULT = {'children': [{'content': 'Broad', 'id': 2, 'strength': 1}],
 def test_graph_is_retrieved():
      mock = unittest.mock.Mock()
      mock.query.return_value = MOCKED_QUERY_RESULT
-     backend = occubrow.system.get_backend({'micromacro_gateway': mock})
+     backend = occubrow.system.get_backend({
+          'micromacro_gateway': mock,
+          'repository': unittest.mock.Mock()
+     })
      graph = backend.query_micromacro({})
      assert graph.number_of_nodes() == 2
 
 def test_tree_is_retrieved():
      mock = unittest.mock.Mock()
      mock.query.return_value = MOCKED_QUERY_RESULT
-     backend = occubrow.system.get_backend({'micromacro_gateway': mock})
+     backend = occubrow.system.get_backend(
+          {'micromacro_gateway': mock, 
+          'repository': unittest.mock.Mock()}
+     )
      graph = backend.query_micromacro({})
      tree = backend.massage_for_depth(graph, find_root_by_content(graph, 'Mary'), 2, 0)
      assert tree_matches(tree, EXPECTED_RESULT)
