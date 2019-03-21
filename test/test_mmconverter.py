@@ -65,7 +65,7 @@ EXPECTED_RESULT = {'children': [{'content': 'Broad', 'id': 'Broad'}],
 
 def test_tree_is_constructed():
      converter = occubrow.mmconverter.process.MicromacroConverter()
-     tree = converter.convert(MOCKED_RESULT)
+     tree = converter.get_tree(MOCKED_RESULT)
      assert tree == EXPECTED_RESULT
      
     

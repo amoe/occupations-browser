@@ -1,6 +1,7 @@
 import networkx
 import pprint
 import pdb
+import random
 
 import occubrow.errors
 from occubrow.mmconverter.domain import span_from_json
@@ -18,11 +19,18 @@ def process_spans(structure, handle_spans):
         handle_spans(spans)
 
 class MicromacroConverter(object):
-    def convert(self, structure):
-        """
-        Convert JSON data received from the Micromacro /query/select endpoint
-        to a JSON-serialized tree structure suitable for visualization.
-        """
+    token_sequence = 0
+    token_index = {}
+
+
+    def assign_or_fetch_id(self, token):
+        if token in self.token_index:
+            return self.token_index[token]
+        else:
+            self.token_sequence += 1
+            self.token_index[token] = self.token_sequence
+
+    def get_graph(self, structure):
         assert is_iterable(structure)
 
         g = networkx.DiGraph()
@@ -34,21 +42,24 @@ class MicromacroConverter(object):
             antecedent = all_spans[index]
             postcedent = all_spans[index + 1]
 
-            g.add_node(antecedent.with_value, content=antecedent.with_value)
-            g.add_node(postcedent.with_value, content=postcedent.with_value)
-            g.add_edge(antecedent.with_value, postcedent.with_value)
+            aid = self.assign_or_fetch_id(antecedent.with_value)
+            pid = self.assign_or_fetch_id(postcedent.with_value)
 
-#        remove_cycles(g)
+            g.add_node(aid, content=antecedent.with_value, strength=1)
+            g.add_node(pid, content=postcedent.with_value, strength=1)
+            g.add_edge(aid, pid)
 
+        return g
+    
+    def get_tree(self, structure):
+        """
+        Convert JSON data received from the Micromacro /query/select endpoint
+        to a JSON-serialized tree structure suitable for visualization.
+        """
+        g = self.get_graph(structure)
+        chosen_source = random.choice(list(g))
 
-        sources = [v for v, indegree in g.in_degree() if indegree == 0]
-        if not sources:
-            raise occubrow.errors.NoRootsFoundError()
-
-        g2 = dfs_tree_with_node_attributes(g, sources[0], depth_limit=None)
-
-#        diagnose_nontree(g2, sources[0])
-
-        data = networkx.tree_data(g2, root=sources[0])
-
+        g2 = dfs_tree_with_node_attributes(g, chosen_source, depth_limit=2)
+        data = networkx.tree_data(g2, root=chosen_source)
+        pprint.pprint(data)
         return data

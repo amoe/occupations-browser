@@ -25,7 +25,6 @@ from occubrow.canned_statements \
          RegisterStopWordQuery, LookupTaxonQuery
 import occubrow.mmconverter.process
 
-
 # Used by get_token_tree, this should transform to the format 'TokenDatum'
 # defined in occubrow-graph-view's interfaces.ts file.
 def transform(g):
@@ -408,4 +407,4 @@ class OccubrowBackend(object):
         """
         converter = occubrow.mmconverter.process.MicromacroConverter()
         query_result = self.micromacro_gateway.query(query_spec)
-        return converter.convert(query_result)
+        return converter.get_tree(query_result)
