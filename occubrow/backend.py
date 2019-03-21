@@ -13,7 +13,9 @@ import pprint
 
 import occubrow.errors as errors
 from occubrow.utility \
-  import get_node_by_attribute, dfs_tree_with_node_attributes, is_null_graph
+  import get_node_by_attribute, dfs_tree_with_node_attributes, is_null_graph, \
+         find_root_by_content
+
 from occubrow.drawing import quickplot
 from occubrow.canned_statements \
   import CreateCompoundNodeQuery, CreateCompoundLink, CreateGroupLink, \
