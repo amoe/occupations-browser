@@ -1,8 +1,12 @@
 import networkx
-from occubrow.mmconverter.domain import span_from_json
-from occubrow.utility import dfs_tree_with_node_attributes, is_iterable
 import pprint
 import pdb
+
+import occubrow.errors
+from occubrow.mmconverter.domain import span_from_json
+from occubrow.utility \
+  import dfs_tree_with_node_attributes, is_iterable, remove_cycles, \
+         diagnose_nontree
 
 
 # just accepting a callback here to allow deferring decision about whether to
@@ -34,8 +38,17 @@ class MicromacroConverter(object):
             g.add_node(postcedent.with_value, content=postcedent.with_value)
             g.add_edge(antecedent.with_value, postcedent.with_value)
 
+#        remove_cycles(g)
+
+
         sources = [v for v, indegree in g.in_degree() if indegree == 0]
+        if not sources:
+            raise occubrow.errors.NoRootsFoundError()
+
         g2 = dfs_tree_with_node_attributes(g, sources[0], depth_limit=None)
+
+#        diagnose_nontree(g2, sources[0])
+
         data = networkx.tree_data(g2, root=sources[0])
 
         return data

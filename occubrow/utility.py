@@ -45,11 +45,14 @@ def is_null_graph(g):
 
 
 def remove_cycles(g):
+    """
+    Remove cycles from graph g.  Modifies g in-place.
+    """
     cycles_left = True
     while cycles_left:
         try:
             cycles = networkx.find_cycle(g)
-            print(cycles)
+            #print(cycles)
             g.remove_edges_from(cycles)
         except networkx.exception.NetworkXNoCycle as e:
             cycles_left = False
@@ -63,12 +66,10 @@ def diagnose_nontree(g, purported_root):
     edge_diff = g.edges() - g2.edges()
     print("Missing edges in tree:", edge_diff)
 
-
     print("NODE COUNT=", g.number_of_nodes())
     print("NODE COUNT=", g2.number_of_nodes())
     node_diff = g.nodes() - g2.nodes()
     print("Missing nodes in tree:", node_diff)
-
 
     if edge_diff or node_diff:
         return False
