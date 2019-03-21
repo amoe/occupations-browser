@@ -22,13 +22,13 @@ class MicromacroConverter(object):
     token_sequence = 0
     token_index = {}
 
-
     def assign_or_fetch_id(self, token):
         if token in self.token_index:
             return self.token_index[token]
         else:
             self.token_sequence += 1
             self.token_index[token] = self.token_sequence
+            return self.token_sequence
 
     def get_graph(self, structure):
         assert is_iterable(structure)
@@ -45,6 +45,8 @@ class MicromacroConverter(object):
             aid = self.assign_or_fetch_id(antecedent.with_value)
             pid = self.assign_or_fetch_id(postcedent.with_value)
 
+            print("aid is", aid, "pid is", pid)
+            
             g.add_node(aid, content=antecedent.with_value, strength=1)
             g.add_node(pid, content=postcedent.with_value, strength=1)
             g.add_edge(aid, pid)

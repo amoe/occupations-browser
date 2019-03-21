@@ -1,8 +1,10 @@
 import pytest
-import occubrow.mmconverter.process
 import pprint
+import unittest.mock
+import occubrow.mmconverter.process
+import occubrow.system
 
-MOCKED_RESULT = [
+MOCKED_QUERY_RESULT = [
     {
         "id": "17410828.xml",
         "123": 213.0,
@@ -62,10 +64,11 @@ EXPECTED_RESULT = {'children': [{'content': 'Broad', 'id': 'Broad'}],
                    'content': 'Mary',
                    'id': 'Mary'}
 
-
-def test_tree_is_constructed():
-     converter = occubrow.mmconverter.process.MicromacroConverter()
-     tree = converter.get_tree(MOCKED_RESULT)
-     assert tree == EXPECTED_RESULT
+def test_graph_is_retrieved():
+     mock = unittest.mock.Mock()
+     mock.query.return_value = MOCKED_QUERY_RESULT
+     backend = occubrow.system.get_backend({'micromacro_gateway': mock})
+     graph = backend.query_micromacro({})
+     assert graph.number_of_nodes() == 2
      
     
