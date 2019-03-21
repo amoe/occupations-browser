@@ -403,8 +403,13 @@ class OccubrowBackend(object):
 
     def query_micromacro(self, query_spec):
         """
-        Calls through to micromacro and massage the result to a JSON tree.
+        Calls through to micromacro and return the result as a graph, which
+        could be very large.
         """
         converter = occubrow.mmconverter.process.MicromacroConverter()
         query_result = self.micromacro_gateway.query(query_spec)
-        return converter.get_tree(query_result)
+        return converter.get_graph(query_result)
+
+    def massage_for_depth(self, graph, token, depth_limit, cooccurrence_threshold):
+        converter = occubrow.mmconverter.process.MicromacroConverter()
+        return converter.narrow_graph_to_tree(graph, token, depth_limit, cooccurrence_threshold)

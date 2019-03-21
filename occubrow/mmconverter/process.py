@@ -51,15 +51,18 @@ class MicromacroConverter(object):
 
         return g
     
-    def get_tree(self, structure):
+    def get_tree_from_micromacro_result(self, structure):
         """
         Convert JSON data received from the Micromacro /query/select endpoint
         to a JSON-serialized tree structure suitable for visualization.
         """
         g = self.get_graph(structure)
-        chosen_source = random.choice(list(g))
+        return self.narrow_graph_to_tree(g, random.choice(list(g)), 2)
 
-        g2 = dfs_tree_with_node_attributes(g, chosen_source, depth_limit=2)
+    def narrow_graph_to_tree(
+        self, graph, chosen_source, depth_limit, coocurrence_threshold
+    ):
+        chosen_source = random.choice(list(graph))
+        g2 = dfs_tree_with_node_attributes(graph, chosen_source, depth_limit=depth_limit)
         data = networkx.tree_data(g2, root=chosen_source)
-        pprint.pprint(data)
         return data

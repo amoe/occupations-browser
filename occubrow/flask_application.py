@@ -80,4 +80,16 @@ def create_micromacro_query():
 
 @app.route('/micromacro-query/<identifier>', methods=['GET'])
 def get_micromacro_query(identifier):
-    return jsonify(cache[identifier])
+    # we support these
+    token = flask.request.args.get('root')
+    depth_limit = int(flask.request.args.get('depth_limit', 2))
+    cooccurrence_threshold = int(flask.request.args.get('cooccurrence_threshold', 0))
+
+    return jsonify(
+        backend.massage_for_depth(
+            cache[identifier],
+            token,
+            depth_limit,
+            cooccurrence_threshold
+        )
+    )
