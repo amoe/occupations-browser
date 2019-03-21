@@ -70,5 +70,12 @@ def test_graph_is_retrieved():
      backend = occubrow.system.get_backend({'micromacro_gateway': mock})
      graph = backend.query_micromacro({})
      assert graph.number_of_nodes() == 2
-     
+
+def test_tree_is_retrieved():
+     mock = unittest.mock.Mock()
+     mock.query.return_value = MOCKED_QUERY_RESULT
+     backend = occubrow.system.get_backend({'micromacro_gateway': mock})
+     graph = backend.query_micromacro({})
+     tree = backend.massage_for_depth('Mary', 2, 0)
+     assert tree
     
