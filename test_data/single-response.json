@@ -1,0 +1,559 @@
+[
+    {
+        "id": "17410828.xml",
+        "123": 213.0,
+        "text": " Mary  Broad  . On thursday last I was going to counsel for advice, and going through Bartholamew Fair I met the Prosecutrix. She told me she believed her child got a hurt on some timber in the new buildings; that she was very willing not to hurt the Prisoner, and that it was that curst stuff they gave the child at the workhouse was the occasion of its death. ",
+        "persName": {
+            "spans": [
+                {
+                    "to": 13.0,
+                    "from": 0.0,
+                    "with": "",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                }
+            ],
+            "target": "text"
+        },
+        "new/field": "BLAHBLAHBLH",
+        "new/field2": "BLAHBLAHBLAH",
+        "text-token": {
+            "spans": [
+                {
+                    "to": 5.0,
+                    "from": 1.0,
+                    "with": "Mary",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 12.0,
+                    "from": 7.0,
+                    "with": "Broad",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 15.0,
+                    "from": 14.0,
+                    "with": ".",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 18.0,
+                    "from": 16.0,
+                    "with": "On",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 27.0,
+                    "from": 19.0,
+                    "with": "thursday",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 32.0,
+                    "from": 28.0,
+                    "with": "last",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 34.0,
+                    "from": 33.0,
+                    "with": "I",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 38.0,
+                    "from": 35.0,
+                    "with": "was",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 44.0,
+                    "from": 39.0,
+                    "with": "going",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 47.0,
+                    "from": 45.0,
+                    "with": "to",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 55.0,
+                    "from": 48.0,
+                    "with": "counsel",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 59.0,
+                    "from": 56.0,
+                    "with": "for",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 66.0,
+                    "from": 60.0,
+                    "with": "advice",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 67.0,
+                    "from": 66.0,
+                    "with": ",",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 71.0,
+                    "from": 68.0,
+                    "with": "and",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 77.0,
+                    "from": 72.0,
+                    "with": "going",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 85.0,
+                    "from": 78.0,
+                    "with": "through",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 97.0,
+                    "from": 86.0,
+                    "with": "Bartholamew",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 102.0,
+                    "from": 98.0,
+                    "with": "Fair",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 104.0,
+                    "from": 103.0,
+                    "with": "I",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 108.0,
+                    "from": 105.0,
+                    "with": "met",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 112.0,
+                    "from": 109.0,
+                    "with": "the",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 124.0,
+                    "from": 113.0,
+                    "with": "Prosecutrix",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 125.0,
+                    "from": 124.0,
+                    "with": ".",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 129.0,
+                    "from": 126.0,
+                    "with": "She",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 134.0,
+                    "from": 130.0,
+                    "with": "told",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 137.0,
+                    "from": 135.0,
+                    "with": "me",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 141.0,
+                    "from": 138.0,
+                    "with": "she",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 150.0,
+                    "from": 142.0,
+                    "with": "believed",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 154.0,
+                    "from": 151.0,
+                    "with": "her",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 160.0,
+                    "from": 155.0,
+                    "with": "child",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 164.0,
+                    "from": 161.0,
+                    "with": "got",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 166.0,
+                    "from": 165.0,
+                    "with": "a",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 171.0,
+                    "from": 167.0,
+                    "with": "hurt",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 174.0,
+                    "from": 172.0,
+                    "with": "on",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 179.0,
+                    "from": 175.0,
+                    "with": "some",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 186.0,
+                    "from": 180.0,
+                    "with": "timber",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 189.0,
+                    "from": 187.0,
+                    "with": "in",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 193.0,
+                    "from": 190.0,
+                    "with": "the",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 197.0,
+                    "from": 194.0,
+                    "with": "new",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 207.0,
+                    "from": 198.0,
+                    "with": "buildings",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 208.0,
+                    "from": 207.0,
+                    "with": ";",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 213.0,
+                    "from": 209.0,
+                    "with": "that",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 217.0,
+                    "from": 214.0,
+                    "with": "she",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 221.0,
+                    "from": 218.0,
+                    "with": "was",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 226.0,
+                    "from": 222.0,
+                    "with": "very",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 234.0,
+                    "from": 227.0,
+                    "with": "willing",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 238.0,
+                    "from": 235.0,
+                    "with": "not",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 241.0,
+                    "from": 239.0,
+                    "with": "to",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 246.0,
+                    "from": 242.0,
+                    "with": "hurt",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 250.0,
+                    "from": 247.0,
+                    "with": "the",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 259.0,
+                    "from": 251.0,
+                    "with": "Prisoner",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 260.0,
+                    "from": 259.0,
+                    "with": ",",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 264.0,
+                    "from": 261.0,
+                    "with": "and",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 269.0,
+                    "from": 265.0,
+                    "with": "that",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 272.0,
+                    "from": 270.0,
+                    "with": "it",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 276.0,
+                    "from": 273.0,
+                    "with": "was",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 281.0,
+                    "from": 277.0,
+                    "with": "that",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 287.0,
+                    "from": 282.0,
+                    "with": "curst",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 293.0,
+                    "from": 288.0,
+                    "with": "stuff",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 298.0,
+                    "from": 294.0,
+                    "with": "they",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 303.0,
+                    "from": 299.0,
+                    "with": "gave",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 307.0,
+                    "from": 304.0,
+                    "with": "the",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 313.0,
+                    "from": 308.0,
+                    "with": "child",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 316.0,
+                    "from": 314.0,
+                    "with": "at",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 320.0,
+                    "from": 317.0,
+                    "with": "the",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 330.0,
+                    "from": 321.0,
+                    "with": "workhouse",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 334.0,
+                    "from": 331.0,
+                    "with": "was",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 338.0,
+                    "from": 335.0,
+                    "with": "the",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 347.0,
+                    "from": 339.0,
+                    "with": "occasion",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 350.0,
+                    "from": 348.0,
+                    "with": "of",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 354.0,
+                    "from": 351.0,
+                    "with": "its",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 360.0,
+                    "from": 355.0,
+                    "with": "death",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                },
+                {
+                    "to": 361.0,
+                    "from": 360.0,
+                    "with": ".",
+                    "target": "text",
+                    "withType": "java.lang.String"
+                }
+            ],
+            "target": "text"
+        },
+        "general/date": [
+            1741.0,
+            5.0,
+            1.0
+        ],
+        "statement-id": "t17410828-63-11",
+        "lookup/ob-date": true,
+        "trialAccount-id": "t17410828-63",
+        "general/postgresId": 15038.0,
+        "general/session-date": [
+            1741.0,
+            8.0,
+            28.0
+        ],
+        "general/trialAccount-id": "t17410828-63"
+    }
+]
