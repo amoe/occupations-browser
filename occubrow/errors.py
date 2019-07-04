@@ -12,6 +12,3 @@ class AnnotationNotCreatedError(Exception):
 
 class AmbiguousTaxonException(Exception):
     pass
-
-class CannotContactMicromacroError(Exception):
-    pass

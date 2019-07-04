@@ -1,21 +1,9 @@
 import neo4j
 import networkx
 import networkx.readwrite.json_graph
-import operator
-from logging import debug
-import occubrow.queries
-import json
-import datetime
-import pdb
-import nltk
-import string
-import pprint
-
 import occubrow.errors as errors
 from occubrow.utility \
-  import get_node_by_attribute, dfs_tree_with_node_attributes, is_null_graph, \
-         find_root_by_content
-
+  import get_node_by_attribute, dfs_tree_with_node_attributes, is_null_graph
 from occubrow.drawing import quickplot
 from occubrow.canned_statements \
   import CreateCompoundNodeQuery, CreateCompoundLink, CreateGroupLink, \
@@ -25,7 +13,15 @@ from occubrow.canned_statements \
          GetTokenRootWithTaxonFilterQuery, GetContextsQuery, GetMetricsQuery, \
          SearchTokensQuery, GetAllTokensQuery, GetCentralityQuery, \
          RegisterStopWordQuery, LookupTaxonQuery
-import occubrow.mmconverter.process
+import operator
+from logging import debug
+import occubrow.queries
+import json
+import datetime
+import pdb
+import nltk
+import string
+import pprint
 
 # Used by get_token_tree, this should transform to the format 'TokenDatum'
 # defined in occubrow-graph-view's interfaces.ts file.
@@ -113,11 +109,23 @@ def strict_eq(g1, g2):
 def find_roots(g):
     return [v for v, indegree in g.in_degree() if indegree == 0]
 
+def find_root_by_content(g, wanted):
+   sources = [v for v, indegree in g.in_degree() if indegree == 0]
+   valid_sources = [n for n, content in g.nodes(data='content') if content == wanted]
+
+   if not valid_sources:
+       raise errors.NoRootsFoundError()
+
+   if len(valid_sources) != 1:
+       raise errors.AmbiguousRootError()
+
+   return valid_sources[0]
+
+
 class OccubrowBackend(object):
-    def __init__(self, repository, identifier_function, micromacro_gateway):
+    def __init__(self, repository, identifier_function):
         self.repository = repository
         self.identifier_function = identifier_function
-        self.micromacro_gateway = micromacro_gateway
 
     def get_taxonomy_roots(self):
         result = self.repository.run_canned_statement(GetTaxonomyRootsQuery())
@@ -390,15 +398,3 @@ class OccubrowBackend(object):
 
         return uri[0]
 
-    def query_micromacro(self, query_spec):
-        """
-        Calls through to micromacro and return the result as a graph, which
-        could be very large.
-        """
-        converter = occubrow.mmconverter.process.MicromacroConverter()
-        query_result = self.micromacro_gateway.query(query_spec)
-        return converter.get_graph(query_result)
-
-    def massage_for_depth(self, graph, token, depth_limit, cooccurrence_threshold):
-        converter = occubrow.mmconverter.process.MicromacroConverter()
-        return converter.narrow_graph_to_tree(graph, token, depth_limit, cooccurrence_threshold)

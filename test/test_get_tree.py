@@ -5,6 +5,7 @@ from occubrow.types import Node, Relationship
 import pytest
 import pprint
 
+
 # Note that the root data doesn't have a strength
 WANTED_DATA = {
     'children': [{'children': [{'content': 'shop', 'id': 2, 'label': 'Token', 'strength': 1},
@@ -52,4 +53,4 @@ def test_get_tree():
     backend = make_backend(repository)
     repository.pull_graph.return_value = PRELOADED_SENTENCES
 
-    assert backend.get_token_tree('keep', 4, 0) == WANTED_DATA
+    assert backend.get_token_tree('keep', 4) == WANTED_DATA

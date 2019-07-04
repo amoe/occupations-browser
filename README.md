@@ -10,9 +10,7 @@ Other repositories that are related:
 
 ## Setup & deployment instructions
 
-Start the server:
-
-    make run_backend
+Coming soon!
 
 ## Notes regarding 'key' property
 
@@ -32,5 +30,3 @@ Scenario setup scripts should follow the following template:
 6. Create indexes
 
 License: AGPL.  2019.
-
-Yow!  x1
