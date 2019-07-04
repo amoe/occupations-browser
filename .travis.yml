@@ -5,13 +5,17 @@ matrix:
       python: 3.5
       jdk:
         - openjdk8
-        
       before_install:
         # Workaround https://github.com/travis-ci/travis-ci/issues/7940
         - sudo rm -f /etc/boto.cfg
       install:
-        # - sudo apt install openjdk-8-jdk
-        # - sudo update-java-alternatives -s java-1.8.0-openjdk-amd64
+        - echo $PATH
+        - /usr/local/lib/jvm/openjdk11/bin/java -version
+        - /usr/bin/java -version
+        - source ./travis/jdk_switcher.sh
+        - jdk_switcher use openjdk8
+        - source ./travis/custom_path.sh
+        - export PATH=$(get_filtered_path /usr/local/lib/jvm/openjdk11/bin)
         - java -version
         - pip install pytz==2018.7
         - pip install -r requirements.txt
