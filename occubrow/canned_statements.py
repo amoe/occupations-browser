@@ -282,9 +282,9 @@ class GetContextsQuery(object):
         }
 
 GET_METRICS_QUERY = """
-MATCH (n)
+OPTIONAL MATCH (n)
 WITH COUNT(n) AS order
-MATCH ()-[r]->()
+OPTIONAL MATCH ()-[r]->()
 RETURN order, COUNT(r) AS size
 """
 
