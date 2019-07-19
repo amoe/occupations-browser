@@ -5,7 +5,8 @@ import occubrow.identifier_functions
 
 def get_backend():
     bolt_uri = "bolt://localhost:7688"
-    driver = neo4j.GraphDatabase.driver(bolt_uri)
+    credentials = ('neo4j', 'password')
+    driver = neo4j.GraphDatabase.driver(bolt_uri, auth=credentials)
     repository = occubrow.neo4j_repository.RealNeo4jRepository(driver)
     identifier_function = occubrow.identifier_functions.random_uuid
     return occubrow.backend.OccubrowBackend(
