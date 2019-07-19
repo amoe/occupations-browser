@@ -10,7 +10,9 @@ Other repositories that are related:
 
 ## Setup & deployment instructions
 
-Coming soon!
+To run the backend server, `make run_backend`.
+
+For more detailed instructions, see [Setup Guide 2019-07](doc/SETUP_GUIDE_201907.md).
 
 ## Notes regarding 'key' property
 
