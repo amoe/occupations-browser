@@ -91,3 +91,29 @@ password lead to the message
     WARNING! You are using an unsupported Java runtime. 
     * Please use Oracle(R) Java(TM) 8 or OpenJDK(TM) 8.
     The client is unauthorized due to authentication failure.
+
+Once the metrics check passes, you need to get the front end running.
+Check out occubrow-ui repository.
+Run npm install.
+
+Update all dependencies (Should not be necessary if you are using the latest git
+version of occubrow-ui.):
+    "typescript": "3.1.6",
+    "@vue/cli-service": "3.4.1",
+    "ts-jest": "24.0.0",
+
+
+
+Install the algos.
+
+https://github.com/neo4j-contrib/neo4j-graph-algorithms/releases/download/3.4.8.0/graph-algorithms-algo-3.4.8.0.jar"
+
+https://github.com/neo4j-contrib/neo4j-apoc-procedures/releases/download/3.4.0.2/apoc-3.4.0.2-all.jar
+
+Add these lines to neo4j's conf file to enable the relevant procedures.
+
+    dbms.security.procedures.unrestricted=apoc.*,algo.*
+    apoc.export.file.enabled=true
+    apoc.import.file.enabled=true
+
+Now the initial UI should load up without errors.

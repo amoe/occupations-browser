@@ -14,7 +14,7 @@ from occubrow.canned_statements \
          SearchTokensQuery, GetAllTokensQuery, GetCentralityQuery, \
          RegisterStopWordQuery, LookupTaxonQuery
 import operator
-from logging import debug
+from logging import debug, warn
 import occubrow.queries
 import json
 import datetime
@@ -294,7 +294,8 @@ class OccubrowBackend(object):
         print(g.number_of_edges())
 
         if g.number_of_nodes() == 0:
-            raise Exception('Result tree was empty? 1')
+            warn("empty result tree")
+            return None
 
         # At this stage the occurrence properties should have been migrated to
         # in memory graph.  However they won't appear on the tree export yet.
