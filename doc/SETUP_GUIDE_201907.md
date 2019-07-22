@@ -117,3 +117,7 @@ Add these lines to neo4j's conf file to enable the relevant procedures.
     apoc.import.file.enabled=true
 
 Now the initial UI should load up without errors.
+
+To import some sample data: Run the script `setup_all_demo_data.py`.
+
+To import the Old Bailey data, you can run `setup_full_samuels_data.py`.

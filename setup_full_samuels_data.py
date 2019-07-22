@@ -11,13 +11,13 @@ from occubrow.neo4j_schema_utilities \
 
 # roughly optimal for demo purposes
 SAMPLING_PROBABILITY = 0.001
+SAMUELS_CSV_PATH = "/home/amoe/dev/samdist/intermediate_data/m_nonl_combined.csv"
 
 driver = neo4j.GraphDatabase.driver("bolt://localhost:7688", auth=('neo4j', 'password'))
 
 reset_schema(driver)
 create_constraints(driver)
 create_indexes(driver)
-
 
 ti = occubrow.taxonomy.taxonomy_inserter.TaxonomyInserter(driver)
 
@@ -26,11 +26,14 @@ backend.clear_all_data()
 
 
 loader = SamuelsLoader()
-g = loader.load("/home/amoe/download/media_405073_en.xlsx")
+g = loader.load("resources/media_405073_en.xlsx")
 ti.load_taxonomy(g, 'theme')
 
 loader2 = OBSamuelsCSVLoader(SAMPLING_PROBABILITY)
-loader2.run("/home/amoe/dev/samdist/intermediate_data/m_nonl_combined.csv", 'samuels-annotated.xml')
+
+# The annotated file here is a temporary output, containing the sampled data.
+
+loader2.run(SAMUELS_CSV_PATH, 'samuels-annotated.xml')
 
 import_annotation_file('samuels-annotated.xml')
 
