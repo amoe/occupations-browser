@@ -3,7 +3,7 @@ neo4j==1.7.1
 boltkit==1.2.0
 networkx==2.1
 matplotlib==2.0.0
-nltk==3.3
+nltk==3.4.5
 openpyxl==2.5.3
 fuzzywuzzy==0.14.0
 scipy==1.1.0
